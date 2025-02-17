@@ -47,28 +47,28 @@
                 </a>
                 <div class="space-y-1">
                     <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Productos</div>
-                    <a href="./ver-producto.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
+                    <a href="./ver-producto.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
                         Ver Productos
                     </a>
-                    <a href="./agregar-producto.html" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                    <a href="./agregar-producto.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Agregar Producto
                     </a>
                 </div>
                 <div class="space-y-1">
-                    <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Usuarios</div>
-                    <a href="#usuarios" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
-                        Ver Usuarios
+                    <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Clientes</div>
+                    <a href="./clientes.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                        Clientes
                     </a>
-                    <a href="#agregar-usuario" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
-                        Agregar Usuario
+                    <a href="./agregarCliente.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                        Agregar Clientes
                     </a>
                 </div>
                 <div class="space-y-1">
                     <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Reportes</div>
-                    <a href="#ventas" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                    <a href="./reporteVentas.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Reporte de Ventas
                     </a>
-                    <a href="#inventario" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                    <a href="./inventario.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Inventario
                     </a>
                 </div>
@@ -157,7 +157,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="h-10 w-10 flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full object-cover" src="./images/juego_pastillas_freno.jpg" alt="">
+                                        <img class="h-10 w-10 rounded-full object-cover" src="../images/juego_pastillas_freno.jpg" alt="">
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900 dark:text-white">
