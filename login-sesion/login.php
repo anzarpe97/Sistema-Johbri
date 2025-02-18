@@ -52,7 +52,7 @@
             <span class="hidden dark:inline">☀️</span>
         </button>
     </nav>
-
+    <form action="../logica/loguear.php">
     <main class="min-h-screen flex flex-col items-center justify-center px-4">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full">
             <h2 class="text-2xl font-bold text-custom-blue dark:text-white text-center mb-6">
@@ -61,10 +61,10 @@
             <form class="space-y-6" onsubmit="return validarLogin(event)">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                        Usuario
+                        Correo Electronico
                     </label>
                     <input
-                        type="text"
+                        type="username"
                         id="username"
                         name="username"
                         required
@@ -103,6 +103,7 @@
             </div>
         </div>
     </main>
+    </form>
 
     <footer class="bg-custom-blue/95 dark:bg-gray-800/95 backdrop-blur-sm text-white text-center py-4 fixed bottom-0 w-full text-sm sm:text-base shadow-lg">
         <p>&copy; 2024 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
