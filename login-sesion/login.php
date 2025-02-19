@@ -52,7 +52,7 @@
             <span class="hidden dark:inline">☀️</span>
         </button>
     </nav>
-    <form action="../logica/loguear.php" class="space-y-6">
+    <form action="../logica/loguear.php" method="POST" class="space-y-6">
     <main class="min-h-screen flex flex-col items-center justify-center px-4">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full">
             <h2 class="text-2xl font-bold text-custom-blue dark:text-white text-center mb-6">
