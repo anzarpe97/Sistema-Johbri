@@ -24,7 +24,7 @@
                 linear-gradient(to bottom,
                     rgba(255, 255, 255, 0.85) 0%,
                     rgba(255, 255, 255, 0.85) 100%),
-                url('./images/fondo_home.jpeg');
+                url('../images/fondo_home.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -35,7 +35,7 @@
                 linear-gradient(to bottom,
                     rgba(17, 24, 39, 0.97) 0%,
                     rgba(17, 24, 39, 0.97) 100%),
-                url('./images/fondo_home.jpeg');
+                url('../images/fondo_home.jpeg');
         }
     </style>
 </head>
@@ -52,46 +52,48 @@
             <span class="hidden dark:inline">☀️</span>
         </button>
     </nav>
-    <form action="../logica/loguear.php">
+    <form action="../logica/loguear.php" class="space-y-6">
     <main class="min-h-screen flex flex-col items-center justify-center px-4">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full">
             <h2 class="text-2xl font-bold text-custom-blue dark:text-white text-center mb-6">
                 Iniciar Sesión
             </h2>
             <form class="space-y-6" onsubmit="return validarLogin(event)">
-                <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                        Correo Electronico
-                    </label>
-                    <input
-                        type="username"
-                        id="username"
-                        name="username"
-                        required
-                        class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                            focus:ring-2 focus:ring-custom-blue dark:focus:ring-blue-500
-                            focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    >
-                </div>
-                <div>
-                    <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
-                        Contraseña
-                    </label>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        required
-                        class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                            focus:ring-2 focus:ring-custom-blue dark:focus:ring-blue-500
-                            focus:border-transparent dark:bg-gray-700 dark:text-white"
-                    >
+                <div class="space-y-4">
+                    <div>
+                        <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                            Correo Electronico
+                        </label>
+                        <input
+                            type="username"
+                            id="username"
+                            name="username"
+                            required
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                focus:ring-2 focus:ring-custom-blue dark:focus:ring-blue-500
+                                focus:border-transparent dark:bg-gray-700 dark:text-white"
+                        >
+                    </div>
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
+                            Contraseña
+                        </label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            required
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                focus:ring-2 focus:ring-custom-blue dark:focus:ring-blue-500
+                                focus:border-transparent dark:bg-gray-700 dark:text-white"
+                        >
+                    </div>
                 </div>
                 <button
                     type="submit"
                     class="w-full bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600
                         dark:hover:bg-blue-700 text-white py-2 px-4 rounded-md
-                        transition-colors duration-200 font-semibold"
+                        transition-colors duration-200 font-semibold mt-6"
                 >
                     Ingresar al Sistema
                 </button>
@@ -106,7 +108,7 @@
     </form>
 
     <footer class="bg-custom-blue/95 dark:bg-gray-800/95 backdrop-blur-sm text-white text-center py-4 fixed bottom-0 w-full text-sm sm:text-base shadow-lg">
-        <p>&copy; 2024 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
+        <p>&copy; 2025 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
     </footer>
 
     <!-- Este script detecta si el sistema operativo del usuario está configurado en modo oscuro
@@ -142,4 +144,3 @@
 </html>
 
 
-getrusage
