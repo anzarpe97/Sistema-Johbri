@@ -119,6 +119,14 @@
                                 focus:border-transparent dark:bg-gray-700 dark:text-white"
                         >
                     </div>
+                    <!-- Agregar enlace de olvidaste contraseña -->
+                    <div class="flex items-center justify-end">
+                        <a href="#"
+                        onclick="mostrarRecuperacion(event)"
+                        class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
+                            ¿Olvidaste tu contraseña?
+                        </a>
+                    </div>
                 </div>
                 <button
                     type="submit"
