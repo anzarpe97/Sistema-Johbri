@@ -104,6 +104,13 @@
                 </a>
             </div>
         </div>
+
+        <?php
+                if (isset ($_GET['mensaje'])) {
+                  echo  $_GET['mensaje'];
+                  }
+                ?>
+
     </main>
     </form>
 

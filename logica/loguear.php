@@ -24,7 +24,7 @@ if ($resultado->num_rows > 0) {
 
     } else {
         
-        $error_message = "Contraseña incorrecta.";
+        header("Location: ../login-sesion/login.php?mensaje=Usuario+Registrado+Satisfactoriamente ");
     }
 } else {
 
