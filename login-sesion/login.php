@@ -52,9 +52,40 @@
             <span class="hidden dark:inline">☀️</span>
         </button>
     </nav>
-    <form action="../logica/loguear.php" class="space-y-6">
     <main class="min-h-screen flex flex-col items-center justify-center px-4">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-lg shadow-xl max-w-md w-full">
+            <!-- Alerta de Error -->
+            <div id="errorAlert" class="mb-6 p-4 rounded-md bg-red-50 dark:bg-red-900/50 border border-red-500 hidden">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <!-- Ícono de error -->
+                        <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                                clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-red-500 dark:text-red-400">
+                            Correo electrónico o contraseña incorrectos
+                        </p>
+                    </div>
+                    <!-- Botón cerrar -->
+                    <div class="ml-auto pl-3">
+                        <button type="button"
+                            onclick="document.getElementById('errorAlert').classList.add('hidden')"
+                            class="text-red-400 hover:text-red-500 focus:outline-none">
+                            <span class="sr-only">Cerrar</span>
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
             <h2 class="text-2xl font-bold text-custom-blue dark:text-white text-center mb-6">
                 Iniciar Sesión
             </h2>
@@ -105,7 +136,6 @@
             </div>
         </div>
     </main>
-    </form>
 
     <footer class="bg-custom-blue/95 dark:bg-gray-800/95 backdrop-blur-sm text-white text-center py-4 fixed bottom-0 w-full text-sm sm:text-base shadow-lg">
         <p>&copy; 2025 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
@@ -119,24 +149,22 @@
             document.documentElement.classList.add('dark');
         }
 
-        /**
-         * Valida el inicio de sesión.
-         * @param {Event} event El evento de formulario que se está manejando.
-         * @return {boolean} false para evitar que el formulario se envíe.
-         */
         function validarLogin(event) {
-            event.preventDefault();
+            event.preventDefault(); // Prevenir el envío del formulario
 
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
 
-            // Validación simple: si ambos campos son "admin", redirige al panel de administración
-            if (username === 'admin' && password === 'admin') {
-                window.location.href = 'admin.html';
-            } else {
-                window.location.href = 'sistema.html';
-            }
+            console.log('Validando:', username, password);
 
+            // Simulación de validación
+            if (username === 'admin' && password === 'admin') {
+                window.location.href = '../panelAdmin/admin.php';
+            } else {
+                // Mostrar mensaje de error
+                const errorAlert = document.getElementById('errorAlert');
+                errorAlert.classList.remove('hidden');
+            }
             return false;
         }
     </script>
