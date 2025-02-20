@@ -136,16 +136,6 @@
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
-
-                        <!-- Cargo -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Cargo
-                            </label>
-                            <input type="text"
-                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                    dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
-                        </div>
                     </div>
 
                     <!-- Información de Acceso -->
