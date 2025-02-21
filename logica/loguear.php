@@ -21,10 +21,14 @@ if ($resultado->num_rows > 0) {
         $_SESSION['id'] = $fila['id_administrador'];
 
         header("location: ../panelAdmin/admin.php");
+        exit();
 
     } else {
         
-        header("Location: ../login-sesion/login.php?mensaje=Usuario+Registrado+Satisfactoriamente ");
+        $error_message = "Credenciales incorrectas. Por favor, inténtalo de nuevo.";
+        header("Location: index.php?error_message=" . urlencode($error_message));
+        exit();
+exit();
     }
 } else {
 

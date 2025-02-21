@@ -67,7 +67,11 @@
                     </div>
                     <div class="ml-3">
                         <p class="text-sm text-red-500 dark:text-red-400">
-                            Correo electrónico o contraseña incorrectos
+                        <?php
+                            if (isset($_GET['error_message'])) {
+                                echo urldecode($_GET['error_message']); 
+                            }
+                            ?>
                         </p>
                     </div>
                     <!-- Botón cerrar -->
@@ -89,7 +93,7 @@
             <h2 class="text-2xl font-bold text-custom-blue dark:text-white text-center mb-6">
                 Iniciar Sesión
             </h2>
-            <form class="space-y-6" onsubmit="return validarLogin(event)">
+            <form class="space-y-6" action="../logica/loguear.php" method="POST"">
                 <div class="space-y-4">
                     <div>
                         <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
@@ -143,13 +147,6 @@
                 </a>
             </div>
         </div>
-
-        <?php
-                if (isset ($_GET['mensaje'])) {
-                  echo  $_GET['mensaje'];
-                  }
-                ?>
-
     </main>
 
     <footer class="bg-custom-blue/95 dark:bg-gray-800/95 backdrop-blur-sm text-white text-center py-4 fixed bottom-0 w-full text-sm sm:text-base shadow-lg">
@@ -162,25 +159,6 @@
     <script>
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
-        }
-
-        function validarLogin(event) {
-            event.preventDefault(); // Prevenir el envío del formulario
-
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-
-            console.log('Validando:', username, password);
-
-            // Simulación de validación
-            if (username === 'admin' && password === 'admin') {
-                window.location.href = '../panelAdmin/admin.php';
-            } else {
-                // Mostrar mensaje de error
-                const errorAlert = document.getElementById('errorAlert');
-                errorAlert.classList.remove('hidden');
-            }
-            return false;
         }
     </script>
 </body>
