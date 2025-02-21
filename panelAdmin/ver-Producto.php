@@ -50,7 +50,7 @@ $result = $conn->query($sql);
         </div>
     </nav>
 
-    <!-- Contenido Principal -->
+    <!-- Contenido Princpal -->
     <main class="pt-24 px-6 pb-20">
         <!-- Filtros -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
