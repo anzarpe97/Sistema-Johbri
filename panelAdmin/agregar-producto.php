@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Autorepuestos Johbri</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-              extend: {
-                colors: {
-                  'custom-blue': '#2563eb',
-                  'custom-blue-light': '#3b82f6'
-                }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Autorepuestos Johbri</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+      tailwind.config = {
+          darkMode: 'class',
+          theme: {
+            extend: {
+              colors: {
+                'custom-blue': '#2563eb',
+                'custom-blue-light': '#3b82f6'
+              }
               }
             }
         }
@@ -21,8 +21,8 @@
 
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
+  <!-- Navbar -->
+  <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
             <div class="text-xl font-bold">Autorepuestos Johbri, C.A.</div>
             <div class="flex items-center gap-4">
@@ -64,9 +64,6 @@
                                     placeholder="REP-2024-001"
                                     class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                         dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
-                                <span class="text-xs text-gray-500 dark:text-gray-400 mt-1 block">
-                                    Formato: REP-YYYY-XXX
-                                </span>
                             </div>
                         </div>
 
@@ -156,26 +153,76 @@
                     <!-- Imágenes -->
                     <div>
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Imágenes del Producto
+                            Imágenes del Producto (Máximo 4)
                         </label>
-                        <div class="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
-                            <div class="space-y-1 text-center">
-                                <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                    <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                                <div class="flex text-sm text-gray-600 dark:text-gray-400">
-                                    <label for="file-upload" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
-                                        <span>Subir archivos</span>
-                                        <input id="file-upload" name="file-upload" type="file" class="sr-only" multiple>
-                                    </label>
-                                    <p class="pl-1">o arrastrar y soltar</p>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <!-- Imagen 1 -->
+                            <div class="flex justify-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+                                <div class="space-y-1 text-center">
+                                    <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <div class="flex text-xs text-gray-600 dark:text-gray-400">
+                                        <label for="file-upload-1" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
+                                            <span>Imagen 1</span>
+                                            <input id="file-upload-1" name="file-upload-1" type="file" class="sr-only" accept="image/*">
+                                        </label>
+                                    </div>
                                 </div>
-                                <p class="text-xs text-gray-500 dark:text-gray-400">
-                                    PNG, JPG, GIF hasta 10MB
-                                </p>
+                            </div>
+
+                            <!-- Imagen 2 -->
+                            <div class="flex justify-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+                                <div class="space-y-1 text-center">
+                                    <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <div class="flex text-xs text-gray-600 dark:text-gray-400">
+                                        <label for="file-upload-2" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
+                                            <span>Imagen 2</span>
+                                            <input id="file-upload-2" name="file-upload-2" type="file" class="sr-only" accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Imagen 3 -->
+                            <div class="flex justify-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+                                <div class="space-y-1 text-center">
+                                    <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <div class="flex text-xs text-gray-600 dark:text-gray-400">
+                                        <label for="file-upload-3" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
+                                            <span>Imagen 3</span>
+                                            <input id="file-upload-3" name="file-upload-3" type="file" class="sr-only" accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Imagen 4 -->
+                            <div class="flex justify-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+                                <div class="space-y-1 text-center">
+                                    <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
+                                    <div class="flex text-xs text-gray-600 dark:text-gray-400">
+                                        <label for="file-upload-4" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
+                                            <span>Imagen 4</span>
+                                            <input id="file-upload-4" name="file-upload-4" type="file" class="sr-only" accept="image/*">
+                                        </label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
+                            Formatos permitidos: PNG, JPG, GIF. Tamaño máximo: 10MB por imagen
+                        </p>
                     </div>
                 </div>
 
