@@ -1,3 +1,16 @@
+<?php
+
+require("../logica/conexionbdd.php");
+
+if ($conn->connect_error) {
+    die("Conexión fallida: " . $conn->connect_error);
+}
+
+$sql = "SELECT * FROM productos";   
+$result = $conn->query($sql);
+
+?>
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -76,6 +89,16 @@
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                         <!-- Producto 1 -->
+
+                        <?php
+                        
+                        if ($result->num_rows > 0) {
+                            while ($row = $result->fetch_assoc()) {
+                        
+                        
+                        
+                        ?>
+
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -83,24 +106,39 @@
                                         <img class="h-10 w-10 rounded-full object-cover" src="./images/juego_pastillas_freno.jpg" alt="">
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Pastillas de Freno Delanteras</div>
+                                        <div class="text-sm font-medium text-gray-900 dark:text-white"><?php echo $row['nombre_producto']; ?> </div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-white">Frenos</div>
+                                <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['categoria_producto']; ?></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-white">$45.00</div>
+                                <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['precio_producto']; ?></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-white">15</div>
+                                <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['stock_producto']; ?></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                    Activo
-                                </span>
-                            </td>
+                                
+                                <?php 
+                                 if ($row['stock_producto'] > 5 ){
+
+                                
+                                    echo '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Activo</span>';
+
+                                 }
+
+                                 if ($row['stock_producto'] < 6 ){
+
+                                
+                                    echo '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-500 text-yellow-800 dark:bg-yellow -900 dark:text-yellow-900">Poca existencia</span>';
+
+                                 }
+
+                                ?>
+                            
+                                </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
                                     <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
@@ -112,44 +150,11 @@
                                 </div>
                             </td>
                         </tr>
-
-                        <!-- Producto 2 -->
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="h-10 w-10 flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full object-cover" src="./images/amortiguadores.jpg" alt="">
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Amortiguadores Traseros</div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-white">Suspensión</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-white">$120.00</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900 dark:text-white">5</div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
-                                    Poco Stock
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex space-x-2">
-                                    <button href ="editarProducto.html" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
-                                        Editar
-                                    </button>
-                                    <button class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
-                                        Suspender
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
+                        <?php
+                            }
+                            }
+                        
+                        ?>
                     </tbody>
                 </table>
             </div>
