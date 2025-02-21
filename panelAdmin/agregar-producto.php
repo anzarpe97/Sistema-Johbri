@@ -46,7 +46,7 @@
                 <p class="text-gray-600 dark:text-gray-400">Complete todos los campos para registrar un nuevo producto</p>
             </div>
 
-            <form class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <form action="../logica/agregar-producto.php" method="POST" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                 <!-- Información Básica -->
                 <div class="space-y-6">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">
@@ -61,7 +61,9 @@
                             </label>
                             <div class="relative">
                                 <input type="text" required
-                                    placeholder="REP-2024-001"
+                                    name = "num_parte"
+                                    id = "num_parte"
+                                    placeholder="Ingrese el codigo único"
                                     class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                         dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                                 <span class="text-xs text-gray-500 dark:text-gray-400 mt-1 block">
@@ -75,8 +77,10 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Nombre del Producto *
                             </label>
-                            <input type="text" required
-                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                            <input type="text" required 
+                            id = "nombre_producto"
+                            name = "nombre_producto"
+                            class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
 
@@ -86,6 +90,8 @@
                                 Categoría *
                             </label>
                             <select required
+                                name = "categoria"
+                                id = "categoria"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                                 <option value="">Seleccione una categoría</option>
@@ -103,6 +109,8 @@
                                 Marca *
                             </label>
                             <select required
+                                name = "marca"
+                                id = "marca"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                                 <option value="">Seleccione una marca</option>
@@ -124,6 +132,8 @@
                                     $
                                 </span>
                                 <input type="number" required
+                                    name = "precio"
+                                    id = "precio"
                                     step="0.01" min="0"
                                     placeholder="0.00"
                                     class="w-full pl-8 pr-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
@@ -137,6 +147,8 @@
                                 Stock Inicial *
                             </label>
                             <input type="number" required
+                                name = "stock"
+                                id = "stock"
                                 min="0"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
@@ -149,6 +161,8 @@
                             Descripción
                         </label>
                         <textarea rows="4"
+                            name = "descripcion"
+                            id = "descripcion"
                             class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"></textarea>
                     </div>
