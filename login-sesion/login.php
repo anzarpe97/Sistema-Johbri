@@ -102,7 +102,7 @@
                             Correo Electronico
                         </label>
                         <input
-                            type="username"
+                            type="email"
                             id="username"
                             name="username"
                             required
@@ -158,9 +158,6 @@
     <!-- Este script detecta si el sistema operativo del usuario está configurado en modo oscuro
         y aplica automáticamente el tema oscuro a la página web al cargarla por primera vez.
     -->
-
-
-
 
     <script>
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
