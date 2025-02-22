@@ -13,28 +13,6 @@ $stmt->bind_param("s", $username);
 $stmt->execute();
 $resultado = $stmt->get_result();
 
-//Validar Datos
-if ($flag ==true) {
-
-    //validar Correo
-    if (EmailVa($username)) {
-        $flag == false;
-        $error_message = urlencode("Correo no valido");
-        header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-        exit();
-    }
-
-    //validar Contraseña
-    if (!validated_password($password)) {
-        $flag == false;
-        $error_message = urlencode("LA contraseña debe tener al menos 6 caracteres, una mayúscula, una minúscula, un número y un caracter especial.");
-        header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-        exit();
-    }
-
-}
-
-if  ($flag == true) {
 
     if ($resultado->num_rows > 0) {
 
@@ -84,7 +62,7 @@ if  ($flag == true) {
         header("Location: ../login-sesion/login.php?error_message=" . $error_message);
         exit();
     }
-}
+
 
 if (isset($error_message)) {
 

@@ -46,7 +46,7 @@
                 <p class="text-gray-600 dark:text-gray-400">Complete todos los campos para registrar un nuevo producto</p>
             </div>
 
-            <form action="../logica/agregar-producto.php" method="POST" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <form action="../logica/agregar.php" method="POST" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                 <!-- Información Básica -->
                 <div class="space-y-6">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">

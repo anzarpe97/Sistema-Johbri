@@ -1,3 +1,45 @@
+<?php
+    require '../logica/conexionbdd.php';
+    session_start();
+    
+    if (!isset($_SESSION['id'])) {
+        header('Location: ../login-sesion/login.php');
+        exit();
+    }
+
+    //Obtener datos del administrador
+    $stmt = $conn->prepare("SELECT * FROM administrador WHERE id_administrador = ?");
+    $stmt->bind_param("i", $_SESSION['id']);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $fila = $resultado->fetch_assoc();
+    
+    $sql = "SELECT COUNT(*) FROM productos;";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $cantidad_productos = $row["COUNT(*)"];
+    } else {
+        $cantidad_productos = 0;
+    }
+      
+    $sql = "SELECT COUNT(*) FROM productos WHERE stock_producto = 0;";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        $no_productos = $row["COUNT(*)"];
+    } else {
+        $no_productos = 0;
+    }
+
+    $stmt->close();
+    $conn->close();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -25,7 +67,7 @@
         <div class="flex justify-between items-center">
             <div class="text-xl font-bold">Panel de Administración</div>
             <div class="flex items-center gap-4">
-                <span class="text-sm bg-green-500 px-2 py-1 rounded-full">Administrador</span>
+                <span class="text-sm bg-green-500 px-2 py-1 rounded-full"><?php echo $fila['nombre_administrador']?></span>
                 <button
                     onclick="document.documentElement.classList.toggle('dark')"
                     class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -33,7 +75,7 @@
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="login.html" class="hover:underline">Cerrar Sesión</a>
+                <a href="../logica/cerrar-sesion.php" class="hover:underline">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
@@ -90,7 +132,10 @@
                     </div>
                     <div class="ml-4">
                         <h2 class="text-gray-600 dark:text-gray-400 text-sm">Productos Totales</h2>
-                        <p class="text-2xl font-semibold text-gray-800 dark:text-white">245</p>
+                        <p class="text-2xl font-semibold text-gray-800 dark:text-white">
+
+                            <?php  echo $cantidad_productos; ?>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -118,7 +163,7 @@
                     </div>
                     <div class="ml-4">
                         <h2 class="text-gray-600 dark:text-gray-400 text-sm">Productos sin Stock</h2>
-                        <p class="text-2xl font-semibold text-gray-800 dark:text-white">12</p>
+                        <p class="text-2xl font-semibold text-gray-800 dark:text-white"><?php  echo $no_productos; ?></p>
                     </div>
                 </div>
             </div>
