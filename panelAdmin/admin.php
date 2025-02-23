@@ -33,7 +33,7 @@
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="login.html" class="hover:underline">Cerrar Sesión</a>
+                <a href="../login-sesion/login.php" class="hover:underline">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
