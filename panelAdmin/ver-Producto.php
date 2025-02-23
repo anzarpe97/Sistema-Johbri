@@ -36,7 +36,13 @@ $result = $conn->query($sql);
     <!-- Navbar -->
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
-            <div class="text-xl font-bold">Autorepuestos Johbri, C.A.</div>
+            <a href="admin.php"
+            class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                <span class="text-sm">Volver</span>
+            </a>
             <div class="flex items-center gap-4">
                 <button
                     onclick="document.documentElement.classList.toggle('dark')"
@@ -75,7 +81,7 @@ $result = $conn->query($sql);
 
         <!-- Lista de Productos Sin Stock -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <button onclick="toggleSinStock()" 
+            <button onclick="toggleSinStock()"
                     class="w-full px-6 py-4 flex justify-between items-center text-left text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
                 <div class="flex items-center">
                     <span class="text-lg font-semibold">Productos Sin Stock</span>
@@ -87,7 +93,7 @@ $result = $conn->query($sql);
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
             </button>
-            
+
             <div id="lista-sin-stock" class="hidden">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
@@ -163,12 +169,10 @@ $result = $conn->query($sql);
                         <!-- Producto 1 -->
 
                         <?php
-                        
+
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                        
-                        
-                        
+
                         ?>
 
                         <tr>
@@ -192,24 +196,24 @@ $result = $conn->query($sql);
                                 <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['stock_producto']; ?></div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                
-                                <?php 
-                                 if ($row['stock_producto'] > 5 ){
 
-                                
+                                <?php
+                                if ($row['stock_producto'] > 5 ){
+
+
                                     echo '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">Activo</span>';
 
-                                 }
+                                }
 
-                                 if ($row['stock_producto'] < 6 ){
+                                if ($row['stock_producto'] < 6 ){
 
-                                
+
                                     echo '<span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-500 text-yellow-800 dark:bg-yellow -900 dark:text-yellow-900">Poca existencia</span>';
 
-                                 }
+                                }
 
                                 ?>
-                            
+
                                 </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
@@ -219,11 +223,41 @@ $result = $conn->query($sql);
                                 </div>
                             </td>
                         </tr>
-                        <?php
-                            }
-                            }
-                        
-                        ?>
+
+                        <!-- Producto 2 -->
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="flex items-center">
+                                    <div class="text-sm font-medium text-gray-900 dark:text-white w-24">
+                                        REP-2024-002
+                                    </div>
+                                    <div class="ml-4">
+                                        <div class="text-sm font-medium text-gray-900 dark:text-white">Amortiguadores Traseros</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 dark:text-white">Suspensión</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 dark:text-white">$120.00</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900 dark:text-white">5</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
+                                    Activo
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                <div class="flex space-x-2">
+                                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
+                                        Editar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>

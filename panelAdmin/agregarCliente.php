@@ -23,7 +23,15 @@
     <!-- Navbar -->
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
-            <div class="text-xl font-bold">Autorepuestos Johbri, C.A.</div>
+            <div class="text-xl font-bold">
+            <a href="admin.php"
+            class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                <span class="text-sm">Volver</span>
+            </a>
+            </div>
             <div class="flex items-center gap-4">
                 <button
                     onclick="document.documentElement.classList.toggle('dark')"
@@ -32,7 +40,7 @@
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="login.html" class="hover:underline">Cerrar Sesión</a>
+            <a href="../index.php">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
@@ -75,7 +83,7 @@
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
 
-      <!--OTROS CAMPOS BDD-->
+    <!--OTROS CAMPOS BDD-->
                         <!-- Teléfono Empresa -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -168,12 +176,12 @@
 
                 <!-- Botones de acción -->
                 <div class="mt-8 flex justify-end space-x-4">
-                    <button type="button" 
+                    <button type="button"
                         class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 dark:text-gray-300
                             hover:bg-gray-50 dark:hover:bg-gray-700">
                         Cancelar
                     </button>
-                    <button type="submit" 
+                    <button type="submit"
                         class="px-4 py-2 bg-custom-blue hover:bg-custom-blue-light text-white rounded-md
                             transition-colors duration-200">
                         Registrar Cliente

@@ -41,9 +41,15 @@
 </head>
 <body class="bg-pattern transition-colors duration-200">
     <nav class="bg-custom-blue/95 backdrop-blur-sm dark:bg-gray-800/95 text-white px-6 py-4 flex justify-between items-center fixed w-full top-0 z-50 shadow-lg">
-        <a href="index.html" class="text-xl sm:text-2xl font-bold hover:opacity-90 transition-opacity">
-            Autorepuestos Johbri, C.A.
-        </a>
+        <div>
+        <a href="../index.php"
+            class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                <span class="text-sm">Volver</span>
+            </a>
+        </div>
         <button
             onclick="document.documentElement.classList.toggle('dark')"
             class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
