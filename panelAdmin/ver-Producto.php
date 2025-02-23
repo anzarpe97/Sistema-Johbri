@@ -258,6 +258,11 @@ $result = $conn->query($sql);
                                 </div>
                             </td>
                         </tr>
+
+                        <?php
+                            } // Cierre del while
+                        } // Cierre del if
+                        ?>
                     </tbody>
                 </table>
             </div>
