@@ -198,11 +198,14 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        <tr>
+                        <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors duration-150"
+                            onclick="window.location='../catalogo/producto-detalle.php'">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="h-10 w-10 flex-shrink-0">
-                                        <img class="h-10 w-10 rounded-full object-cover" src="../images/juego_pastillas_freno.jpg" alt="">
+                                        <img class="h-10 w-10 rounded-lg object-cover"
+                                            src="../foto-repuestos/qw32321.png"
+                                            alt="Pastillas de freno">
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900 dark:text-white">
@@ -220,12 +223,9 @@
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex space-x-2">
+                                <div class="flex space-x-2" onclick="event.stopPropagation()">
                                     <button class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300">
                                         Editar
-                                    </button>
-                                    <button class="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">
-                                        Eliminar
                                     </button>
                                 </div>
                             </td>
@@ -235,6 +235,13 @@
             </div>
         </div>
     </main>
+
+    <style>
+        /* Efecto hover para las filas */
+        tr.hover\:bg-gray-50:hover {
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+    </style>
 
     <script>
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
