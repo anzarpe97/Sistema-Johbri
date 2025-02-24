@@ -13,7 +13,8 @@
     $stmt->execute();
     $resultado = $stmt->get_result();
     $fila = $resultado->fetch_assoc();
-    
+
+    //Contar productos
     $sql = "SELECT COUNT(*) FROM productos;";
     $result = $conn->query($sql);
 
@@ -33,6 +34,8 @@
     } else {
         $no_productos = 0;
     }
+
+    //Mostrar Productos
 
     $stmt->close();
     $conn->close();

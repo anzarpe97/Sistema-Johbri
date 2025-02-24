@@ -166,8 +166,6 @@ $result = $conn->query($sql);
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                        <!-- Producto 1 -->
-
                         <?php
 
                         if ($result->num_rows > 0) {
@@ -176,13 +174,16 @@ $result = $conn->query($sql);
                         ?>
 
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                        <a href="../catalogo/producto-detalle.php? echo $row['id_producto']; ?>">
+                            <td class="px-6 py-4 whitespace-nowrap" >
+                            
                                 <div class="flex items-center">
                                     <div class="text-sm font-medium text-gray-900 dark:text-white w-24">
-                                        REP-2024-001
+                                    <?php echo $row['numero_de_parte']; ?>
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900 dark:text-white"><?php echo $row['nombre_producto']; ?> </div>
+                                        
                                     </div>
                                 </div>
                             </td>
@@ -222,6 +223,7 @@ $result = $conn->query($sql);
                                     </button>
                                 </div>
                             </td>
+                            </a>
                         </tr>
                         <?php
                             } // Cierre del while
