@@ -54,7 +54,7 @@
                 <p class="text-gray-600 dark:text-gray-400">Complete todos los campos para registrar un nuevo producto</p>
             </div>
 
-            <form action="../logica/agregar.php" method="POST" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <form action="../logica/agregar.php" method="POST" enctype = "multipart/form-data" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                 <!-- Información Básica -->
                 <div class="space-y-6">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">
@@ -188,7 +188,7 @@
                                     <div class="flex text-xs text-gray-600 dark:text-gray-400">
                                         <label for="file-upload-1" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
                                             <span>Imagen 1</span>
-                                            <input id="file-upload-1" name="file-upload-1" type="file" class="sr-only" accept="image/*">
+                                            <input id="file-upload-1"  id = "file-upload-1" name="file-upload-1" type="file" class="sr-only" accept="image/*">
                                         </label>
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@
                                     <div class="flex text-xs text-gray-600 dark:text-gray-400">
                                         <label for="file-upload-2" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
                                             <span>Imagen 2</span>
-                                            <input id="file-upload-2" name="file-upload-2" type="file" class="sr-only" accept="image/*">
+                                            <input id="file-upload-2"  id = "file-upload-2" name="file-upload-2" type="file" class="sr-only" accept="image/*">
                                         </label>
                                     </div>
                                 </div>
@@ -220,7 +220,7 @@
                                     <div class="flex text-xs text-gray-600 dark:text-gray-400">
                                         <label for="file-upload-3" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
                                             <span>Imagen 3</span>
-                                            <input id="file-upload-3" name="file-upload-3" type="file" class="sr-only" accept="image/*">
+                                            <input id = "file-upload-3" name="file-upload-3" type="file" class="sr-only" accept="image/*">
                                         </label>
                                     </div>
                                 </div>
@@ -236,7 +236,7 @@
                                     <div class="flex text-xs text-gray-600 dark:text-gray-400">
                                         <label for="file-upload-4" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
                                             <span>Imagen 4</span>
-                                            <input id="file-upload-4" name="file-upload-4" type="file" class="sr-only" accept="image/*">
+                                            <input id="file-upload-4"  id = "file-upload-4" name="file-upload-4" type="file" class="sr-only" accept="image/*">
                                         </label>
                                     </div>
                                 </div>
@@ -273,6 +273,16 @@
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
         }
+
+        function mostrarNombre() {
+        const inputArchivo = document.getElementById('archivo');
+        const archivo = inputArchivo.files[0]; // Obtiene el primer archivo seleccionado
+        if (archivo) {
+            console.log('Nombre del archivo:', archivo.name); // Muestra el nombre del archivo
+        }
+}
+
+
     </script>
 </body>
 </html>
