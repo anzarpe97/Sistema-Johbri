@@ -1,6 +1,6 @@
 <?php
-require_once 'conexionbdd.php';
-require_once 'validar.php';
+require 'conexionbdd.php';
+require 'validar.php';
 
 session_start();
 

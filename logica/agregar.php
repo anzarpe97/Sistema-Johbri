@@ -121,7 +121,7 @@ if (isset($_FILES['file-upload-2'])) {
             $ruta_destino = '../assets/foto-repuestos/' . $nombre_archivo;
             if (move_uploaded_file($ruta_temporal, $ruta_destino)) {
 
-                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 1, ?)");
+                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 2, ?)");
                 $stmt->bind_param("si", $ruta_destino, $id_producto); 
                 $stmt->execute();
 
@@ -189,7 +189,7 @@ if (isset($_FILES['file-upload-3'])) {
             $ruta_destino = '../assets/foto-repuestos/' . $nombre_archivo;
             if (move_uploaded_file($ruta_temporal, $ruta_destino)) {
 
-                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 1, ?)");
+                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 3, ?)");
                 $stmt->bind_param("si", $ruta_destino, $id_producto); 
                 $stmt->execute();
 
@@ -257,7 +257,7 @@ if (isset($_FILES['file-upload-4'])) {
             $ruta_destino = '../assets/foto-repuestos/' . $nombre_archivo;
             if (move_uploaded_file($ruta_temporal, $ruta_destino)) {
 
-                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 1, ?)");
+                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 4, ?)");
                 $stmt->bind_param("si", $ruta_destino, $id_producto); 
                 $stmt->execute();
 
