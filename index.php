@@ -35,8 +35,8 @@
                 linear-gradient(to bottom,
                     rgba(17, 24, 39, 0.97) 0%,
                     rgba(17, 24, 39, 0.97) 100%),
-                url('./images/fondo_home.jpeg');
-        }
+                url('./assets/images/fondo_home.jpeg');
+        }   
     </style>
 </head>
 <body class="bg-pattern transition-colors duration-200">
