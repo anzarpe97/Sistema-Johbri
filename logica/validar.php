@@ -2,6 +2,19 @@
 
 require 'conexionbdd.php';
 
+function verificarCadena($cadena) {
+   
+    $patron = "/^[a-zA-Z0-9 .]+$/";
+
+    if (preg_match($patron, $cadena)) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
+
 function EmailVa($email) {
     
     $patron = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';

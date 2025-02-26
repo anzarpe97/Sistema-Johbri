@@ -1,3 +1,13 @@
+<?php
+        session_start();
+        
+        if (!isset($_SESSION['id'])) {
+            header('Location: ../login-sesion/login.php');
+            exit();
+        }
+?>
+
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -40,7 +50,7 @@
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-            <a href="../index.php">Cerrar Sesión</a>
+            <a href="../logica/cerrar-sesion.php">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
@@ -54,22 +64,20 @@
                 <p class="text-gray-600 dark:text-gray-400">Complete todos los campos para registrar un nuevo cliente empresarial</p>
             </div>
 
-            <!-- Formulario -->
-            <form class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <!-- Información de la Empresa -->
+
+            <form action="../logica/registrar-clientes.php" method="POST" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+
                 <div class="space-y-6">
                     <h2 class="text-lg font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 pb-2">
                         Información de la Empresa
                     </h2>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Nombre de la Empresa -->
+
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Nombre de la Empresa *
                             </label>
-                            <input type="text" required
-                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                    dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                            <input type="text" required name = "nombre_empresa" id = "nombre_empresa" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
 
                         <!-- RIF -->
@@ -77,19 +85,16 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 RIF *
                             </label>
-                            <input type="text" required
+                            <input type="text" required name = "rif" id = "rif"
                                 placeholder="J-12345678-9"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
-
-    <!--OTROS CAMPOS BDD-->
-                        <!-- Teléfono Empresa -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Teléfono de la Empresa *
                             </label>
-                            <input type="tel" required
+                            <input type="tel" required name = "telefono_empresa" id = "telefono_empresa"
                                 placeholder="0212-1234567"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
@@ -101,7 +106,7 @@
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Dirección de la Sede *
                         </label>
-                        <textarea required
+                        <textarea required name = "direccion" id = "direccion"
                             rows="2"
                             class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"></textarea>
@@ -118,7 +123,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Nombre Completo *
                             </label>
-                            <input type="text" required
+                            <input type="text" required name = "nombre_contacto" id = "nombre_contacto"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
@@ -128,7 +133,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Cédula *
                             </label>
-                            <input type="text" required
+                            <input type="text" required name = "cedula_encargado" id = "cedula_encargado"
                                 placeholder="V-12345678"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
@@ -137,9 +142,9 @@
                         <!-- Teléfono del Contacto -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Teléfono Móvil *
+                                Teléfono Encargado *
                             </label>
-                            <input type="tel" required
+                            <input type="tel" required name = "telefono_encargado" id = "telefono_encargado"
                                 placeholder="0414-1234567"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
@@ -155,9 +160,9 @@
                         <!-- Correo -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Correo Electrónico *
+                                Correo Electrónico Empresa*
                             </label>
-                            <input type="email" required
+                            <input type="email" required name = "correo_empresa" id = "correo_empresa"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
@@ -167,7 +172,7 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Contraseña *
                             </label>
-                            <input type="password" required
+                            <input type="password" required name = "contrasena" id = "contrasena"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>

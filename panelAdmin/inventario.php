@@ -1,3 +1,14 @@
+<?php
+
+        session_start();
+        
+        if (!isset($_SESSION['id'])) {
+            header('Location: ../login-sesion/login.php');
+            exit();
+        }
+
+?>
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -32,7 +43,7 @@
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="login.html" class="hover:underline">Cerrar Sesión</a>
+                <a href="../logica/cerrar-sesion.php" class="hover:underline">Cerrar Sesión</a>
             </div>
         </div>
     </nav>

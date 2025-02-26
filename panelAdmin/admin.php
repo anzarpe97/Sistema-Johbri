@@ -1,4 +1,7 @@
     <?php
+
+use function PHPSTORM_META\elementType;
+
         require '../logica/validar.php';
         require '../logica/conexionbdd.php';
 
@@ -129,7 +132,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
             
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <a href="agregar-producto.php">
+                <a href="ver-producto.php">
                     <div class="flex items-center">
                         <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
                             <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -242,9 +245,30 @@
                                                 <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['categoria_producto']; ?></div>
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap">
-                                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
-                                                    <?php echo $row['stock_producto']; ?>
-                                                </span>
+
+                                                    <?php
+                                                        if ($row['stock_producto'] > 5 ){
+                                                            ?>
+                                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"> <?php echo $row['stock_producto']; ?></span>
+                                                        
+
+                                                            <?php
+                                                        } elseif ($row['stock_producto'] == 0){
+                                                            ?>
+                                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"> <?php echo $row['stock_producto']; ?></span>
+                                                    
+                                                    <?php
+                                                     }
+                                                        elseif ($row['stock_producto'] < 6){
+                                                            ?>
+                                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-00 dark:bg-yellow-700 dark:text-yellow-100"> <?php echo $row['stock_producto']; ?></span>
+                                                            
+                                                         <?php
+                                                        }
+                                                        ?>
+                                                        
+                                                       
+                                                
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                                 <div class="flex space-x-2">
