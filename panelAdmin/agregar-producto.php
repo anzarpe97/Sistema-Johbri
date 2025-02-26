@@ -101,10 +101,16 @@
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                                 <option value="">Seleccione una categoría</option>
                                 <option>Frenos</option>
+                                <option>Inyección</option>
+                                <option>Estoperas</option>
                                 <option>Suspensión</option>
                                 <option>Motor</option>
+                                <option>Filtos</option>
+                                <option>Carroceria</option>
+                                <option>Accesorios</option>
                                 <option>Transmisión</option>
                                 <option>Electricidad</option>
+                                <option>Otros</option>
                             </select>
                         </div>
 
@@ -119,7 +125,13 @@
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                                 <option value="">Seleccione una marca</option>
+                                <option>Honda</option>
+                                <option>Fiat</option>
+                                <option>Renaul</option>
+                                <option>Hyundai</option>
+                                <option>Kia</option>
                                 <option>Toyota</option>
+                                <option>Mitsubishi</option>
                                 <option>Honda</option>
                                 <option>Chevrolet</option>
                                 <option>Ford</option>

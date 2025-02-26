@@ -49,7 +49,7 @@ function obtenerRutasArchivos($id) {
     $sql = "SELECT ruta_foto FROM foto_productos WHERE id_producto = $id  LIMIT 1";
     $result = $conn->query($sql);
 
-    $ruta_imagen = "ruta/a/imagen_por_defecto.jpg"; // Valor por defecto
+    $ruta_imagen = "../assets/foto-repuestos/no_foto.jpg";
 
     if ($result && $result->num_rows > 0) {
         $row = $result->fetch_assoc();

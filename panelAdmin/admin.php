@@ -125,8 +125,11 @@
         <main class="ml-64 pt-24 px-6 pb-20">
             <!-- Panel de Control -->
             <!-- TARJETA PRODUCTOS TOTALES -->
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
+            
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <a href="agregar-producto.php">
                     <div class="flex items-center">
                         <div class="p-3 bg-blue-100 dark:bg-blue-900 rounded-full">
                             <svg class="w-6 h-6 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -134,27 +137,34 @@
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <h2 class="text-gray-600 dark:text-gray-400 text-sm">Productos Totales</h2>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-white">
-
-                                <?php  echo $cantidad_productos; ?>
-                            </p>
+                            
+                                <h2 class="text-gray-600 dark:text-gray-400 text-sm">Productos Totales</h2>
+                                    <p class="text-2xl font-semibold text-gray-800 dark:text-white">
+                                        <?php  echo $cantidad_productos; ?>
+                                    </p>
+                           
                         </div>
                     </div>
+                    </a>
                 </div>
                 <!-- TARJETA USUARIOS ACTIVOS -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                  <a href="clientes.php">
                     <div class="flex items-center">
                         <div class="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full">
                             <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
                             </svg>
                         </div>
+                       
                         <div class="ml-4">
+                       
                             <h2 class="text-gray-600 dark:text-gray-400 text-sm">Usuarios Activos</h2>
                             <p class="text-2xl font-semibold text-gray-800 dark:text-white">18</p>
                         </div>
+                        
                     </div>
+                    </a>
                 </div>
                 <!-- TARJETA PRODUCTOS SIN STOCK -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
@@ -177,9 +187,11 @@
                 <div class="p-6 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex justify-between items-center">
                         <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Productos Recientes</h3>
+                        <a href="agregar-producto.php">
                         <button class="px-4 py-2 bg-custom-blue hover:bg-custom-blue-light text-white rounded-md transition-colors duration-200">
                             Agregar Producto
                         </button>
+                        </a>
                     </div>
                 </div>
                 <div class="overflow-x-auto">
@@ -201,15 +213,17 @@
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            <tr>
-                                <?php 
-                                    $sql_productos = "SELECT * FROM productos ORDER BY fecha_creacion DESC, hora_creacion DESC LIMIT 5;";
+
+                        <?php 
+                                    $sql_productos = "SELECT * FROM productos ORDER BY fecha_creacion DESC, hora_creacion DESC LIMIT 4;";
                                     $result_productos = $conn->query($sql_productos);
 
                                     if ($result_productos->num_rows > 0) {
                                         while ($row = $result_productos->fetch_assoc()) {
                                             $foto_productos = obtenerRutasArchivos($row['id_producto']);
                                             ?>
+                            <tr>
+
                                             <td class="px-6 py-4 whitespace-nowrap">
                                                 <div class="flex items-center">
                                                     <div class="h-10 w-10 flex-shrink-0">
