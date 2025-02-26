@@ -70,7 +70,7 @@
             <div class="flex justify-between items-center">
                 <div class="text-xl font-bold">Panel de Administración</div>
                 <div class="flex items-center gap-4">
-                    <span class="text-sm bg-green-500 px-2 py-1 rounded-full"><?php echo $fila['nombre_administrador']?></span>
+                    <span class="text-sm bg-blue-900 px-3 py-1 rounded-full">Bienvenido, <?php echo $fila['nombre_administrador']?></span>
                     <button
                         onclick="document.documentElement.classList.toggle('dark')"
                         class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -168,6 +168,7 @@
                 </div>
                 <!-- TARJETA PRODUCTOS SIN STOCK -->
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+                <a href="ver-producto.php">
                     <div class="flex items-center">
                         <div class="p-3 bg-red-100 dark:bg-red-900 rounded-full">
                             <svg class="w-6 h-6 text-red-600 dark:text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -179,7 +180,9 @@
                             <p class="text-2xl font-semibold text-gray-800 dark:text-white"><?php  echo $no_productos; ?></p>
                         </div>
                     </div>
+                    </a>
                 </div>
+                
             </div>
 
             <!-- Tabla de Productos -->
