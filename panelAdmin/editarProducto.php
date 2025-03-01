@@ -1,11 +1,19 @@
 <?php
 
-        session_start();
-        
-        if (!isset($_SESSION['id'])) {
-            header('Location: ../login-sesion/login.php');
-            exit();
-        }
+session_start();
+if(!ISSET($_SESSION['id'])){
+    header('location:../login-sesion/login.php');
+
+}
+
+else{
+   
+    if((time() - $_SESSION['time']) > 900){
+        header('location:../login-sesion/login.php');
+    }
+}
+
+$_SESSION['time'] = time();
 
 ?>
 

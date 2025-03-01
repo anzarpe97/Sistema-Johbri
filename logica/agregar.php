@@ -1,7 +1,6 @@
 <?php
 require("conexionbdd.php");
 
-session_start();
 
 $stmt = $conn->prepare("INSERT INTO productos (
     numero_de_parte, 

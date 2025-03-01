@@ -1,25 +1,30 @@
     <?php
 
-use function PHPSTORM_META\elementType;
-
         require '../logica/validar.php';
         require '../logica/conexionbdd.php';
-
-        session_start();
         
-        if (!isset($_SESSION['id'])) {
-            header('Location: ../login-sesion/login.php');
-            exit();
-        }
+		session_start();
+         
+		if(!ISSET($_SESSION['id'])){
+			header('location:../login-sesion/login.php?error_message=Por favor inicie sesión');
 
-        //Obtener datos del administrador
+		}
+        
+        else{
+           
+			if((time() - $_SESSION['time']) > 900){
+				header('location:../login-sesion/login.php?error_message=La sesión ha expirado');
+			}
+		}
+
+        $_SESSION['time'] = time();
+
         $stmt = $conn->prepare("SELECT * FROM administrador WHERE id_administrador = ?");
         $stmt->bind_param("i", $_SESSION['id']);
         $stmt->execute();
         $resultado = $stmt->get_result();
         $fila = $resultado->fetch_assoc();
 
-        //Contar productos
         $sql = "SELECT COUNT(*) FROM productos;";
         $result = $conn->query($sql);
 

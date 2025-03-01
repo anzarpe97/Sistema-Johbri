@@ -1,10 +1,22 @@
 <?php
-        session_start();
+		session_start();
         
-        if (!isset($_SESSION['id'])) {
-            header('Location: ../login-sesion/login.php');
-            exit();
-        }
+		if(!ISSET($_SESSION['id'])){
+			header('location:../login-sesion/login.php');
+
+		}
+        
+        else{
+           
+			if((time() - $_SESSION['time']) > 900){
+				header('location:../login-sesion/login.php');
+			}
+		}
+
+        $_SESSION['time'] = time();
+
+// Actualizar el tiempo de la última actividad
+$_SESSION['ultimo_acceso'] = time(); 
 ?>
 
 
@@ -77,7 +89,8 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Nombre de la Empresa *
                             </label>
-                            <input type="text" required name = "nombre_empresa" id = "nombre_empresa" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                            <!-- Colocar requ otra vez -->
+                            <input type="text"  name = "nombre_empresa" id = "nombre_empresa" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
 
                         <!-- RIF -->
@@ -85,7 +98,8 @@
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 RIF *
                             </label>
-                            <input type="text" required name = "rif" id = "rif"
+                            <!-- Colocar requ otra vez -->
+                            <input type="text"  name = "rif" id = "rif"
                                 placeholder="J-12345678-9"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">

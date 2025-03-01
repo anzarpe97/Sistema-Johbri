@@ -1,11 +1,20 @@
 <?php
+session_start();
 
-        session_start();
-        
-        if (!isset($_SESSION['id'])) {
-            header('Location: ../login-sesion/login.php');
-            exit();
-        }
+if(!ISSET($_SESSION['id'])){
+    header('location:../login-sesion/login.php?error_message=Acceso denegado');
+
+}
+
+else{
+   
+    if((time() - $_SESSION['time']) > 900){
+        header('location:../login-sesion/login.php?error_message=Tiempo de sesión agotado');
+    }
+}
+
+$_SESSION['time'] = time();
+
 
 ?>
 <!DOCTYPE html>
