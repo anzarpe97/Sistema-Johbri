@@ -26,7 +26,7 @@ if (empty($nombre_empresa)) {
 }
 
 //validar si el nombre de la empresa contiene caracteres especiales
-if (!verificarCadena($nombre_empresa)) {
+ if (!verificarCadena($nombre_empresa)) {
 
     $flag = false;
     $error_message = urlencode("El Nombre de la empresa no puede contener caracteres especiales solo puede contener .");
@@ -196,7 +196,6 @@ if (!validated_password($contraseña)) {
 
 }
 
-
 if ($flag) {
 
     $sql = "INSERT INTO clientes (nombre_empresa, rif, telefono_empresa, direccion, nombre_encargado, cedula_encargado, telefono_encargado, correo_empresa, contraseña) VALUES ('$nombre_empresa', '$rif', '$telefono_empresa', '$direccion', '$nombre_encargado', '$cedula_encargado', '$telefono_encargado', '$correo_empresa', '$contraseña')";
@@ -212,6 +211,8 @@ if ($flag) {
     }
 
 }
+
+$conn->close();
 
 
 ?>

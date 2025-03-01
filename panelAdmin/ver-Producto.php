@@ -10,7 +10,9 @@ if(!ISSET($_SESSION['id'])){
 
 else{
    
-    if((time() - $_SESSION['time']) > 900){
+    if((time() - $_SESSION['time']) > 600){
+        session_unset();
+        session_destroy();
         header('location:../login-sesion/login.php');
     }
 }

@@ -4,15 +4,17 @@
         require '../logica/conexionbdd.php';
         
 		session_start();
-         
-		if(!ISSET($_SESSION['id'])){
+		
+        if(!ISSET($_SESSION['id'])){
 			header('location:../login-sesion/login.php?error_message=Por favor inicie sesión');
 
 		}
-        
+
         else{
            
-			if((time() - $_SESSION['time']) > 900){
+			if((time() - $_SESSION['time']) > 600){
+                session_unset();
+                session_destroy();
 				header('location:../login-sesion/login.php?error_message=La sesión ha expirado');
 			}
 		}

@@ -28,25 +28,16 @@ require 'conexionbdd.php';
         }
     }
 
-    function validated_password ($password){
+    function validated_password($password) {
 
-        $patron = "/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){6,16}$/";
-
+        $patron = "/^(?=.*\d)(?=.*[A-Z])(?=.*[^\w\s])(?=.{8,})|(?=.*[_])/";
         if (preg_match($patron, $password)) {
-
-            return True;
-
-        } 
-
-        else {
-
-            return False;
-
+            echo "holanda";
+            return true; 
+        } else {
+            return false; 
         }
-
-        return True;
-        
-    }
+    }   
 
     function obtenerRutasArchivos($id) {
         
@@ -143,7 +134,6 @@ require 'conexionbdd.php';
 
         }
     }
-
     
 
 ?>
