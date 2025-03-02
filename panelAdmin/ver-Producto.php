@@ -6,7 +6,7 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM productos WHERE stock_producto > 0 ORDER BY nombre_producto ASC;";   
+$sql = "SELECT * FROM productos WHERE stock_producto > 0 ORDER BY nombre_producto ASC;";
 $result = $conn->query($sql);
 
 ?>
@@ -86,12 +86,12 @@ $result = $conn->query($sql);
                 <div class="flex items-center">
                     <span class="text-lg font-semibold">Productos Agotados</span>
                 </div>
-                <svg id="arrow-sin-stock" class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="arrow-sin-stock" class="w-5 h-5 transform rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
             </button>
 
-            <div id="lista-sin-stock" class="hidden">
+            <div id="lista-sin-stock">
                 <div class="overflow-x-auto">
                     <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
                         <thead class="bg-gray-50 dark:bg-gray-700">
@@ -105,13 +105,13 @@ $result = $conn->query($sql);
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700" id="lista-sin-stock">
-                        
-                        <?php	
-                                    $sql_2 = "SELECT * FROM productos WHERE stock_producto = 0 ORDER BY nombre_producto ASC;";   
+
+                        <?php
+                                    $sql_2 = "SELECT * FROM productos WHERE stock_producto = 0 ORDER BY nombre_producto ASC;";
                                     $result_2 = $conn->query($sql_2);
                                     if ($result_2->num_rows > 0) {
                                         while ($row_2 = $result_2->fetch_assoc()) {
-                                    
+
                         ?>
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
@@ -158,7 +158,7 @@ $result = $conn->query($sql);
         </div>
 
         <!-- Lista de Productos Activos -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden" id="lista-productos">   
+        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden" id="lista-productos">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
                 <h2 class="text-lg font-semibold text-gray-900 dark:text-white">Productos Disponibles</h2>
             </div>
@@ -185,14 +185,13 @@ $result = $conn->query($sql);
                         <tr>
                         <a href="../catalogo/producto-detalle.php? echo $row['id_producto']; ?>">
                             <td class="px-6 py-4 whitespace-nowrap" >
-                            
                                 <div class="flex items-center">
                                     <div class="text-sm font-medium text-gray-900 dark:text-white w-24">
                                     <?php echo $row['numero_de_parte']; ?>
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900 dark:text-white"><?php echo $row['nombre_producto']; ?> </div>
-                                        
+
                                     </div>
                                 </div>
                             </td>

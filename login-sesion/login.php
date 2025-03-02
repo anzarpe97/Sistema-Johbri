@@ -74,11 +74,11 @@
                     <div class="ml-3 flex justify-center items-center">
                         <p class="text-sm text-red-500 dark:text-red-400">
                         <?php
-                             if (isset($_GET['error_message'])) {
+                            if (isset($_GET['error_message'])) {
 
-                                echo urldecode($_GET['error_message']); 
+                                echo urldecode($_GET['error_message']);
 
-                            }   
+                            }
                             ?>
                         </p>
                     </div>
@@ -169,15 +169,13 @@
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
         }
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             const errorMessage = "<?php echo isset($_GET['error_message']) ? urldecode($_GET['error_message']) : ''; ?>";
             if (errorMessage) {
                 document.getElementById('errorAlert').classList.remove('hidden');
             }
         });
-    
-    
     </script>
 </body>
 </html>
