@@ -1,3 +1,23 @@
+<?php
+
+session_start();
+if(!ISSET($_SESSION['id'])){
+    header('location:../login-sesion/login.php');
+
+}
+
+else{
+   
+    if((time() - $_SESSION['time']) > 600){
+        session_unset();
+        session_destroy();
+        header('location:../login-sesion/login.php');
+    }
+}
+
+$_SESSION['time'] = time();
+?>
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -32,7 +52,7 @@
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="login.html" class="hover:underline">Cerrar Sesión</a>
+                <a href="../logica/cerrar-sesion.php" class="hover:underline">Cerrar Sesión</a>
             </div>
         </div>
     </nav>

@@ -1,5 +1,7 @@
 <?php
 
+
+
 $conn = new mysqli("localhost","root","","repuestos_johbri");
 
 if ($conn -> connect_errno){

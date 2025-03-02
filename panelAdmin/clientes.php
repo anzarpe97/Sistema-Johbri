@@ -1,3 +1,33 @@
+<?php
+require '../logica/conexionbdd.php';
+
+session_start();
+if (!isset($_SESSION['id'])) {
+    header('location:../login-sesion/login.php');
+    exit();
+} else {
+    if ((time() - $_SESSION['time']) > 600) {
+        session_unset();
+        session_destroy();
+        header('location:../login-sesion/login.php');
+        exit();
+    }
+}
+
+$_SESSION['time'] = time();
+
+// Consulta para obtener los clientes
+$sql = "SELECT * FROM clientes";
+$result = $conn->query($sql);
+
+$clientes = [];
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $clientes[] = $row;
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -40,7 +70,7 @@
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="login.html" class="hover:underline">Cerrar Sesión</a>
+                <a href="../logica/cerrar-sesion.php" class="hover:underline">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
@@ -82,35 +112,35 @@
 
         <!-- Lista de Clientes Desplegable -->
         <div class="max-w-7xl mx-auto">
-            <!-- Cliente 1 -->
+            <?php foreach ($clientes as $cliente): ?>
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-4">
-                <button onclick="toggleCliente('cliente1')"
+                <button onclick="toggleCliente('cliente<?php echo $cliente['id']; ?>')"
                         class="w-full px-6 py-4 flex justify-between items-center text-left text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
                     <div class="flex items-center">
-                        <span class="text-lg font-semibold">Taller Mecánico El Experto</span>
+                        <span class="text-lg font-semibold"><?php echo $cliente['nombre_empresa']; ?></span>
                         <span class="ml-3 px-2 py-1 text-sm bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full">
-                            Activo
+                            <?php echo $cliente['estado_cliente']; ?>
                         </span>
                     </div>
-                    <svg id="arrow-cliente1" class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg id="arrow-cliente<?php echo $cliente['id']; ?>" class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                     </svg>
                 </button>
 
-                <div id="info-cliente1" class="hidden p-6 border-t border-gray-200 dark:border-gray-700">
+                <div id="info-cliente<?php echo $cliente['id']; ?>" class="hidden p-6 border-t border-gray-200 dark:border-gray-700">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <!-- Información de la Empresa -->
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">RIF</p>
-                            <p class="text-lg text-gray-900 dark:text-white">J-12345678-9</p>
+                            <p class="text-lg text-gray-900 dark:text-white"><?php echo $cliente['rif']; ?></p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Teléfono Empresa</p>
-                            <p class="text-lg text-gray-900 dark:text-white">0212-1234567</p>
+                            <p class="text-lg text-gray-900 dark:text-white"><?php echo $cliente['telefono_empresa']; ?></p>
                         </div>
                         <div class="md:col-span-2">
                             <p class="text-sm text-gray-600 dark:text-gray-400">Dirección de la Sede</p>
-                            <p class="text-lg text-gray-900 dark:text-white">Av lalala calle tal zona tuki</p>
+                            <p class="text-lg text-gray-900 dark:text-white"><?php echo $cliente['direccion']; ?></p>
                         </div>
 
                         <!-- Información del Contacto Principal -->
@@ -121,15 +151,15 @@
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Nombre Completo</p>
-                            <p class="text-lg text-gray-900 dark:text-white">Juan Pérez</p>
+                            <p class="text-lg text-gray-900 dark:text-white"><?php echo $cliente['nombre_encargado']; ?></p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Cédula</p>
-                            <p class="text-lg text-gray-900 dark:text-white">V-12345678</p>
+                            <p class="text-lg text-gray-900 dark:text-white"><?php echo $cliente['cedula_encargado']; ?></p>
                         </div>
                         <div>
                             <p class="text-sm text-gray-600 dark:text-gray-400">Teléfono Móvil</p>
-                            <p class="text-lg text-gray-900 dark:text-white">0414-1234567</p>
+                            <p class="text-lg text-gray-900 dark:text-white"><?php echo $cliente['telefono_encargado']; ?></p>
                         </div>
 
                         <!-- Botones de acción -->
@@ -159,8 +189,7 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Agregar más clientes aquí con el mismo formato -->
+            <?php endforeach; ?>
         </div>
     </main>
 

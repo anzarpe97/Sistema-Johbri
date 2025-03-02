@@ -1,3 +1,25 @@
+<?php
+
+session_start();
+if(!ISSET($_SESSION['id'])){
+    header('location:../login-sesion/login.php');
+
+}
+
+else{
+   
+    if((time() - $_SESSION['time']) > 600){
+        session_unset();
+        session_destroy();
+        header('location:../login-sesion/login.php');
+    }
+}
+
+$_SESSION['time'] = time();
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
