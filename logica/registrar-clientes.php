@@ -3,6 +3,8 @@
 require 'conexionbdd.php';	
 require 'validar.php';
 
+session_start();
+
 $flag =true;
 
 $nombre_empresa = $_POST['nombre_empresa'];

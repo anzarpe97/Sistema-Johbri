@@ -162,10 +162,6 @@
         <p>&copy; 2025 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
     </footer>
 
-    <!-- Este script detecta si el sistema operativo del usuario está configurado en modo oscuro
-        y aplica automáticamente el tema oscuro a la página web al cargarla por primera vez.
-    -->
-
     <script>
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');

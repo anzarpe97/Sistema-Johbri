@@ -1,21 +1,42 @@
 <?php
 
 session_start();
-if(!ISSET($_SESSION['id'])){
+if (!isset($_SESSION['id'])) {
     header('location:../login-sesion/login.php');
-
-}
-
-else{
-   
-    if((time() - $_SESSION['time']) > 600){
+    exit();
+} else {
+    if ((time() - $_SESSION['time']) > 600) {
         session_unset();
         session_destroy();
         header('location:../login-sesion/login.php');
+        exit();
     }
 }
 
 $_SESSION['time'] = time();
+
+require '../logica/conexionbdd.php';
+
+if (isset($_GET['numero_de_parte'])) {
+    $numero_de_parte = $_GET['numero_de_parte'];
+
+    $_SESSION['e_num_part'] = $numero_de_parte;
+    
+    $stmt = $conn->prepare("SELECT * FROM productos WHERE numero_de_parte = ?");
+    $stmt->bind_param("s", $numero_de_parte);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        $producto = $result->fetch_assoc();
+    } else {
+        echo "Producto no encontrado.";
+        exit();
+    }
+} else {
+    echo "Número de parte no proporcionado.";
+    exit();
+}
 
 ?>
 
@@ -66,6 +87,16 @@ $_SESSION['time'] = time();
         </div>
     </nav>
 
+    <div id="successAlert" class="hidden ml-3 flex justify-center items-center bg-green-100 dark:bg-green-900 p-4 rounded">
+    <p class="text-sm text-green-500 dark:text-green-400">
+        <?php
+        if (isset($_GET['success_message'])) {
+            echo urldecode($_GET['success_message']);
+        }
+        ?>
+    </p>
+</div>
+
     <!-- Contenido Principal -->
     <main class="pt-24 px-6 pb-20">
         <div class="max-w-4xl mx-auto">
@@ -76,19 +107,30 @@ $_SESSION['time'] = time();
             </div>
 
             <!-- Formulario -->
-            <form class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
+            <form action="../logica/actualizar-producto.php" method="POST" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
                 <!-- Información básica -->
                 <div class="space-y-6">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Número de parte -->
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                                Número de parte
+                            </label>
+                            <input type="text" name="numero_de_parte_campo"
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                    dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"
+                                value="<?php echo $producto['numero_de_parte']; ?>">
+                        </div>
+
                         <!-- Nombre del producto -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Nombre del producto
                             </label>
-                            <input type="text" 
+                            <input type="text" name="nombre_producto"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"
-                                value="Pastillas de Freno Delanteras">
+                                value="<?php echo $producto['nombre_producto']; ?>">
                         </div>
 
                         <!-- Precio -->
@@ -96,10 +138,10 @@ $_SESSION['time'] = time();
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Precio ($)
                             </label>
-                            <input type="number" 
+                            <input type="number" name="precio_producto"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"
-                                value="45.00" step="0.01">
+                                value="<?php echo $producto['precio_producto']; ?>" step="0.01">
                         </div>
 
                         <!-- Categoría -->
@@ -107,14 +149,14 @@ $_SESSION['time'] = time();
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Categoría
                             </label>
-                            <select class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                            <select name="categoria_producto" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
-                                <option>Frenos</option>
-                                <option>Suspensión</option>
-                                <option>Motor</option>
-                                <option>Transmisión</option>
-                                <option>Electricidad</option>
-                                <option>Carrocería</option>
+                                <option <?php if ($producto['categoria_producto'] == 'Frenos') echo 'selected'; ?>>Frenos</option>
+                                <option <?php if ($producto['categoria_producto'] == 'Suspensión') echo 'selected'; ?>>Suspensión</option>
+                                <option <?php if ($producto['categoria_producto'] == 'Motor') echo 'selected'; ?>>Motor</option>
+                                <option <?php if ($producto['categoria_producto'] == 'Transmisión') echo 'selected'; ?>>Transmisión</option>
+                                <option <?php if ($producto['categoria_producto'] == 'Electricidad') echo 'selected'; ?>>Electricidad</option>
+                                <option <?php if ($producto['categoria_producto'] == 'Carrocería') echo 'selected'; ?>>Carrocería</option>
                             </select>
                         </div>
 
@@ -123,13 +165,13 @@ $_SESSION['time'] = time();
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Marca
                             </label>
-                            <select class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                            <select name="marca_producto" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
-                                <option>Toyota</option>
-                                <option>Honda</option>
-                                <option>Chevrolet</option>
-                                <option>Ford</option>
-                                <option>Nissan</option>
+                                <option <?php if ($producto['marca_producto'] == 'Toyota') echo 'selected'; ?>>Toyota</option>
+                                <option <?php if ($producto['marca_producto'] == 'Honda') echo 'selected'; ?>>Honda</option>
+                                <option <?php if ($producto['marca_producto'] == 'Chevrolet') echo 'selected'; ?>>Chevrolet</option>
+                                <option <?php if ($producto['marca_producto'] == 'Ford') echo 'selected'; ?>>Ford</option>
+                                <option <?php if ($producto['marca_producto'] == 'Nissan') echo 'selected'; ?>>Nissan</option>
                             </select>
                         </div>
 
@@ -138,23 +180,12 @@ $_SESSION['time'] = time();
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Stock disponible
                             </label>
-                            <input type="number" 
+                            <input type="number" name="stock_producto"
                                 class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                     dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"
-                                value="15">
+                                value="<?php echo $producto['stock_producto']; ?>">
                         </div>
 
-                        <!-- Estado -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Estado
-                            </label>
-                            <select class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                    dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
-                                <option>Activo</option>
-                                <option>Suspendido</option>
-                            </select>
-                        </div>
                     </div>
 
                     <!-- Descripción -->
@@ -162,43 +193,12 @@ $_SESSION['time'] = time();
                         <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                             Descripción del producto
                         </label>
-                        <textarea 
+                        <textarea name="descripcion_producto"
                             class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"
-                            rows="4"
-                        >Juego de pastillas de freno delanteras de alta calidad, diseñadas para un rendimiento óptimo y durabilidad excepcional.</textarea>
+                            rows="4"><?php echo $producto['descripcion_producto']; ?></textarea>
                     </div>
 
-                    <!-- Imágenes -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Imágenes del producto
-                        </label>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                            <!-- Imagen actual -->
-                            <div class="relative">
-                                <img src="./images/juego_pastillas_freno.jpg" alt="Imagen actual" 
-                                    class="w-full h-32 object-cover rounded-lg">
-                                <button type="button" 
-                                    class="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600">
-                                    ✕
-                                </button>
-                            </div>
-                            
-                            <!-- Subir nueva imagen -->
-                            <div class="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4
-                                    flex items-center justify-center cursor-pointer hover:border-custom-blue">
-                                <div class="text-center">
-                                    <svg class="mx-auto h-12 w-12 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" 
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                    </svg>
-                                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Añadir imagen</p>
-                                </div>
-                                <input type="file" class="hidden" accept="image/*">
-                            </div>
-                        </div>
-                    </div>
                 </div>
 
                 <!-- Botones de acción -->
@@ -214,18 +214,26 @@ $_SESSION['time'] = time();
                         Guardar Cambios
                     </button>
                 </div>
+                <input type="hidden" name="numero_de_parte" value="<?php echo $producto['numero_de_parte']; ?>">
             </form>
         </div>
     </main>
 
     <footer class="bg-custom-blue dark:bg-gray-800 text-white text-center py-4 fixed bottom-0 w-full text-sm">
-        <p>&copy; 2024 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
+        <p>&copy; 2025 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
     </footer>
 
     <script>
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+    const successMessage = "<?php echo isset($_GET['success_message']) ? urldecode($_GET['success_message']) : ''; ?>";
+    if (successMessage) {
+        document.getElementById('successAlert').classList.remove('hidden');
+    }
+});
     </script>
 </body>
 </html>

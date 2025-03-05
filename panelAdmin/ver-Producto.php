@@ -157,9 +157,9 @@ $result = $conn->query($sql);
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex space-x-2">
-                                        <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
+                                        <a href="editarProducto.php?numero_de_parte=<?php echo $row_2['numero_de_parte']; ?>" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
                                             Editar
-                                        </button>
+                                        </a>
                                     </div>
                                 </td>
                             </tr>
@@ -243,9 +243,9 @@ $result = $conn->query($sql);
                                 </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <div class="flex space-x-2">
-                                    <button class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
+                                    <a href="editarProducto.php?numero_de_parte=<?php echo $row['numero_de_parte']; ?>" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
                                         Editar
-                                    </button>
+                                    </a>
                                 </div>
                             </td>
                             </a>

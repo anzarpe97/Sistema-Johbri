@@ -20,15 +20,6 @@ if(empty($username)){
 
 }
 
-if ($flag==true){
-    echo "yes";
-
-}
-else{
-
-    echo "no";
-
-}
 
 if(empty($password)){
 
@@ -38,17 +29,6 @@ if(empty($password)){
     exit();
 
 }
-
-if ($flag==true){
-    echo "yes";
-
-}
-else{
-
-    echo "no";
-
-}
-
 
 //verificar Correo electronico
 if (!EmailVa($username)){
@@ -60,17 +40,6 @@ if (!EmailVa($username)){
 
 }
 
-if ($flag==true){
-    echo "yes";
-
-}
-else{
-
-    echo "no";
-
-}
-
-
 //verificar si el correo existe
 if (!buscarAdmin($username, "administrador")){
 
@@ -80,17 +49,6 @@ if (!buscarAdmin($username, "administrador")){
     exit();
 
 }
-
-if ($flag==true){
-    echo "yes";
-
-}
-else{
-
-    echo "no";
-
-}
-
 
 //Verificar si la contraseña contiene lo esperado
 if (!validated_password($password)){
@@ -102,32 +60,10 @@ if (!validated_password($password)){
 
 }
 
-if ($flag==true){
-    echo "yes";
-
-}
-
-else{
-
-    echo "no";
-
-}
-
 
 if (!verificarContrasena($password, "administrador",$username)){
 
     $flag = false;
-
-}
-
-if ($flag==true){
-    echo "yes";
-
-}
-
-else{
-
-    echo "no";
 
 }
 
@@ -151,7 +87,9 @@ if ($flag == true) {
         header("Location: ../login-sesion/login.php?error_message=" . $error_message);
         exit();
     }
-} else {
+} 
+
+else {
     $error_message = urlencode("Error desconocido. Por favor, intente nuevamente.");
     header("Location: ../login-sesion/login.php?error_message=" . $error_message);
     exit();

@@ -234,6 +234,36 @@ require 'conexionbdd.php';
         }
     }
 
+    function buscarNumPart($correo, $tabla) {
+        $conexion = new mysqli("localhost", "root", "", "repuestos_johbri");
+    
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+    
+        $sql = "SELECT COUNT(*) as total FROM $tabla WHERE numero_de_parte = ?";
+        $stmt = $conexion->prepare($sql);
+    
+        if ($stmt === false) {
+            die("Error en la preparación de la consulta: " . $conexion->error);
+        }
+    
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $fila = $resultado->fetch_assoc();
+    
+        if ($fila['total'] > 0) {
+            $stmt->close();
+            $conexion->close();
+            return false;
+        } else {
+            $stmt->close();
+            $conexion->close();
+            return true;
+        }
+    }
+
 
 ?>
 
