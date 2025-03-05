@@ -17,7 +17,11 @@ if (!isset($_SESSION['id'])) {
 $_SESSION['time'] = time();
 
 // Consulta para obtener los clientes
+$search = isset($_GET['search']) ? $conn->real_escape_string($_GET['search']) : '';
 $sql = "SELECT * FROM clientes";
+if ($search) {
+    $sql .= " WHERE nombre_empresa LIKE '%$search%'";
+}
 $result = $conn->query($sql);
 
 $clientes = [];
@@ -92,22 +96,23 @@ if ($result->num_rows > 0) {
 
         <!-- Filtros -->
         <div class="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-            <div class="flex flex-col md:flex-row gap-4 items-end">
+            <form method="GET" action="clientes.php" class="flex flex-col md:flex-row gap-4 items-end">
                 <div class="w-full md:w-1/3">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Buscar cliente
                     </label>
                     <input
                         type="text"
+                        name="search"
                         placeholder="Nombre de la empresa"
                         class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                             dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                 </div>
-                <button class="w-full md:w-auto px-4 py-2 bg-custom-blue hover:bg-custom-blue-light text-white
+                <button type="submit" class="w-full md:w-auto px-4 py-2 bg-custom-blue hover:bg-custom-blue-light text-white
                         rounded-md transition-colors duration-200">
                     Buscar
                 </button>
-            </div>
+            </form>
         </div>
 
         <!-- Lista de Clientes Desplegable -->

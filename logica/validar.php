@@ -28,11 +28,80 @@ require 'conexionbdd.php';
         }
     }
 
+    function verificarContrasena($contrasenaIngresada, $tabla, $correo) {
+
+        $conexion = new mysqli("localhost", "root", "", "repuestos_johbri");
+
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+    
+        $sql = "SELECT contrasena, intentos FROM $tabla WHERE correo = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+    
+        if ($resultado->num_rows > 0) {
+            $fila = $resultado->fetch_assoc();
+            $contrasenaGuardada = $fila['contrasena'];
+            $intentos = $fila['intentos'];
+    
+            if ($intentos >= 3) {
+
+                $error_message = urlencode("El usuario está bloqueado. Contacte al administrador.");
+                    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+                    exit();
+
+                return false;
+            }
+    
+            if ($contrasenaIngresada === $contrasenaGuardada) {
+
+                $sqlUpdate = "UPDATE $tabla SET intentos = 0 WHERE correo = ?";
+                $stmtUpdate = $conexion->prepare($sqlUpdate);
+                $stmtUpdate->bind_param("s", $correo);
+                $stmtUpdate->execute();
+    
+                return true;
+
+            } else {
+                // Contraseña incorrecta: incrementar intentos
+                $intentos++;
+                $sqlUpdate = "UPDATE $tabla SET intentos = ? WHERE correo = ?";
+                $stmtUpdate = $conexion->prepare($sqlUpdate);
+                $stmtUpdate->bind_param("is", $intentos, $correo);
+                $stmtUpdate->execute();
+    
+                if ($intentos >= 3) {
+
+                    $error_message = urlencode("El usuario ha sido bloqueado.");
+                    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+                    exit();
+
+                } else {
+
+                    $error_message = urlencode("Contraseña incorrecta. Intentos restantes: " . (3 - $intentos));
+                    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+                    exit();
+
+                }
+
+                return false;
+            }
+        } else {
+            return false;
+        }
+    
+        // Cerrar la conexión
+        $stmt->close();
+        $conexion->close();
+    }
+
     function validated_password($password) {
 
         $patron = "/^(?=.*\d)(?=.*[A-Z])(?=.*[^\w\s])(?=.{8,})|(?=.*[_])/";
         if (preg_match($patron, $password)) {
-            echo "holanda";
             return true; 
         } else {
             return false; 
@@ -98,6 +167,36 @@ require 'conexionbdd.php';
         }
     }
 
+    function buscarAdmin($correo, $tabla) {
+        $conexion = new mysqli("localhost", "root", "", "repuestos_johbri");
+    
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+    
+        $sql = "SELECT COUNT(*) as total FROM $tabla WHERE correo = ?";
+        $stmt = $conexion->prepare($sql);
+    
+        if ($stmt === false) {
+            die("Error en la preparación de la consulta: " . $conexion->error);
+        }
+    
+        $stmt->bind_param("s", $correo);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+        $fila = $resultado->fetch_assoc();
+    
+        if ($fila['total'] > 0) {
+            $stmt->close();
+            $conexion->close();
+            return true;
+        } else {
+            $stmt->close();
+            $conexion->close();
+            return false;
+        }
+    }
+
     function validar_RIF($codigo) {
         $patron = '/^J-\d{8}-\d$/';
         if (preg_match($patron, $codigo)) {
@@ -134,6 +233,7 @@ require 'conexionbdd.php';
 
         }
     }
-    
+
 
 ?>
+
