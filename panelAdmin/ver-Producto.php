@@ -4,7 +4,9 @@ require("../logica/conexionbdd.php");
 
 session_start();
 if(!ISSET($_SESSION['id'])){
-    header('location:../login-sesion/login.php');
+
+     header('location:../login-sesion/login.php?error_message=Por favor inicie sesión');
+     exit();
 
 }
 
@@ -13,7 +15,8 @@ else{
     if((time() - $_SESSION['time']) > 600){
         session_unset();
         session_destroy();
-        header('location:../login-sesion/login.php');
+        header('location:../login-sesion/login.php?error_message=La sesión ha expirado');
+        exit();
     }
 }
 
@@ -23,7 +26,14 @@ if ($conn->connect_error) {
     die("Conexión fallida: " . $conn->connect_error);
 }
 
-$sql = "SELECT * FROM productos WHERE stock_producto > 0 ORDER BY nombre_producto ASC;";
+$search_query = "";
+if (isset($_GET['search'])) {
+    $search_query = $_GET['search'];
+    $sql = "SELECT * FROM productos WHERE nombre_producto LIKE '%$search_query%' ORDER BY nombre_producto ASC;";
+} else {
+    $sql = "SELECT * FROM productos WHERE stock_producto > 0 ORDER BY nombre_producto ASC;";
+}
+
 $result = $conn->query($sql);
 
 ?>
@@ -77,23 +87,25 @@ $result = $conn->query($sql);
     <main class="pt-24 px-6 pb-20">
         <!-- Filtros -->
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-            <div class="flex flex-col sm:flex-row gap-4 items-end">
+            <form method="GET" action="ver-Producto.php" class="flex flex-col sm:flex-row gap-4 items-end">
                 <div class="w-full sm:w-1/3">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Buscar producto
                     </label>
                     <input
                         type="text"
+                        name="search"
                         placeholder="Nombre del producto..."
                         class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                             dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"
+                        value="<?php echo htmlspecialchars($search_query); ?>"
                     >
                 </div>
-                <button class="w-full sm:w-auto px-4 py-2 bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600
+                <button type="submit" class="w-full sm:w-auto px-4 py-2 bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600
                             dark:hover:bg-blue-700 text-white rounded-md transition-colors duration-200">
                     Buscar
                 </button>
-            </div>
+            </form>
         </div>
 
         <!-- Lista de Productos Sin Stock -->

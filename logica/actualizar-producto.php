@@ -50,13 +50,6 @@ if (empty($marca_producto)) {
     exit();
 }
 
-if (empty($stock_producto)) {
-    $flag = false;
-    $error_message = urlencode("El campo stock disponinble no puede estar vacio.");
-    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
-    exit();
-}
-
 //verificar si el nombre del producto tiene caracteres especiales
 if (!verificarCadena($nombre_producto)) {
     $flag = false;
@@ -77,13 +70,28 @@ if ($numero_de_parte != $_SESSION['e_num_part']) {
     }
 }
 
-if (!is_numeric($precio_producto) || !is_numeric($stock_producto)) {
+if (!is_numeric($precio_producto)) {
     $flag = false;
     $error_message = urlencode("El precio y el stock deben ser numericos.");
     header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
     exit();
     
 }   
+
+if($stock_producto < 0){
+    $flag = false;
+    $error_message = urlencode("El stock no puede ser negativo.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
+    exit();
+}  
+
+if($stock_producto != (int)$stock_producto){
+    $flag = false;
+    $error_message = urlencode("El stock debe ser un numero entero.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
+    exit();
+}
+
 
 if ($flag) {
     $conexion = new mysqli('localhost', 'root', '', 'repuestos_johbri');
