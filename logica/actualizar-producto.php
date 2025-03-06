@@ -5,6 +5,7 @@ require 'validar.php';
 
 session_start();
 
+$flag = true;
 $numero_de_parte = $_POST['numero_de_parte_campo'];
 $nombre_producto = $_POST['nombre_producto'];
 $precio_producto = $_POST['precio_producto'];
@@ -13,63 +14,91 @@ $marca_producto = $_POST['marca_producto'];
 $stock_producto = $_POST['stock_producto'];
 $descripcion_producto = $_POST['descripcion_producto'];
 
-//verificar si los campos no estan vacios
 // Verificar si los campos no están vacíos
-if (empty($nombre_producto)) {
-    $error_message = urlencode("El Campo producto no puede estar vacio.");
+if (empty($numero_de_parte)) {
+    $error_message = urlencode("El campo numero de parte no puede estar vacio.");
     header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
     exit();
 }
 
+if (empty($nombre_producto)) {
+    $flag = false;
+    $error_message = urlencode("El campo nombre producto no puede estar vacio.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
+    exit();
+
+}
+
 if (empty($precio_producto)) {
-    $error_message_editar = urlencode("El Campo precio no puede estar vacio.");
-    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message_editar=" . $error_message_editar);
+    $flag = false;
+    $error_message = urlencode("El campo precio no puede estar vacio.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
     exit();
 }
 
 if (empty($categoria_producto)) {
-    $error_message_editar = urlencode("El Campo categoria no puede estar vacio.");
-    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message_editar=" . $error_message_editar);
+    $flag = false;
+    $error_message = urlencode("El campo categoria no puede estar vacio.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
     exit();
 }
 
 if (empty($marca_producto)) {
-    $error_message_editar = urlencode("El Campo marca no puede estar vacio.");
-    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message_editar=" . $error_message_editar);
+    $flag = false;
+    $error_message = urlencode("El campo marca no puede estar vacio.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
     exit();
 }
 
 if (empty($stock_producto)) {
-    $error_message_editar = urlencode("El Campo stock no puede estar vacio.");
-    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message_editar=" . $error_message_editar);
+    $flag = false;
+    $error_message = urlencode("El campo stock disponinble no puede estar vacio.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
     exit();
 }
 
-if (empty($descripcion_producto)) {
-    $error_message_editar = urlencode("El Campo descripcion no puede estar vacio.");
-    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message_editar=" . $error_message_editar);
+//verificar si el nombre del producto tiene caracteres especiales
+if (!verificarCadena($nombre_producto)) {
+    $flag = false;
+    $error_message = urlencode("El nombre del producto no puede contener caracteres especiales.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
     exit();
 }
-
 
 //verificar si el numero de parte ya existe
 if ($numero_de_parte != $_SESSION['e_num_part']) {
 
     if (!buscarNumPart($numero_de_parte, 'productos')) {
-
-        $error_message_editar = urlencode("El numero de parte ya existe.");
-        header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message_editar=" . $error_message_editar);
+        $flag = false;
+        $error_message = urlencode("El numero de parte ya existe, Por favor intente con otro.");
+        header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
         exit();
 
     }
 }
 
-// if (!is_numeric($precio_producto) || !is_numeric($stock_producto)) {
-//     $error_message_editar = urlencode("El precio y el stock deben ser numericos.");
-//     header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $numero_de_parte . "&error_message_editar=" . $error_message_editar);
-//     exit();
-// }   
+if (!is_numeric($precio_producto) || !is_numeric($stock_producto)) {
+    $flag = false;
+    $error_message = urlencode("El precio y el stock deben ser numericos.");
+    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
+    exit();
+    
+}   
 
-// conexion a la base de datos
+if ($flag) {
+    $conexion = new mysqli('localhost', 'root', '', 'repuestos_johbri');
+    if ($conexion->connect_error) {
+        die("Error de conexión: " . $conexion->connect_error);
+    }
+    $sql = "UPDATE productos SET numero_de_parte = ?, nombre_producto = ?, categoria_producto = ?, marca_producto = ?, precio_producto = ?, stock_producto = ?, descripcion_producto = ? WHERE numero_de_parte = ?";
+    $stmt = $conexion->prepare($sql);
+    $stmt->bind_param("ssssdiss", $numero_de_parte, $nombre_producto, $categoria_producto, $marca_producto, $precio_producto, $stock_producto, $descripcion_producto, $_SESSION['e_num_part']);
+    $stmt->execute();
+    $stmt->close();
+    $conexion->close();
+    header("Location: ../panelAdmin/ver-Producto.php");
+    
+    exit();
+}
 
 ?>

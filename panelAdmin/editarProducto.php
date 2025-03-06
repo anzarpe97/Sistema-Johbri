@@ -66,7 +66,7 @@ if (isset($_GET['numero_de_parte'])) {
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
             <div class="text-xl font-bold">
-                <a href="admin.php"
+                <a href="ver-Producto.php"
                 class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
@@ -87,19 +87,26 @@ if (isset($_GET['numero_de_parte'])) {
         </div>
     </nav>
 
-    <div id="successAlert" class="hidden ml-3 flex justify-center items-center bg-green-100 dark:bg-green-900 p-4 rounded">
-    <p class="text-sm text-green-500 dark:text-green-400">
-        <?php
-        if (isset($_GET['success_message'])) {
-            echo urldecode($_GET['success_message']);
-        }
-        ?>
-    </p>
-</div>
+
 
     <!-- Contenido Principal -->
     <main class="pt-24 px-6 pb-20">
+
         <div class="max-w-4xl mx-auto">
+
+            <div id="errorAlert" class="hidden ml-3 flex justify-between items-center bg-red-100 dark:bg-red-700 p-4 rounded">
+                <p class="text-sm text-red-500 dark:text-red-100">
+                    <?php
+                    if (isset($_GET['error_message'])) {
+                        echo urldecode($_GET['error_message']);
+                    }
+                    ?>
+                </p>
+                <button onclick="document.getElementById('errorAlert').classList.add('hidden')" class="text-red-500 dark:text-red-400">
+                    &times;
+                </button>
+        </div>
+            <br>
             <!-- Encabezado -->
             <div class="mb-6">
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Editar Producto</h1>
@@ -229,11 +236,14 @@ if (isset($_GET['numero_de_parte'])) {
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-    const successMessage = "<?php echo isset($_GET['success_message']) ? urldecode($_GET['success_message']) : ''; ?>";
-    if (successMessage) {
-        document.getElementById('successAlert').classList.remove('hidden');
-    }
-});
+
+            const errorMessage = "<?php echo isset($_GET['error_message']) ? urldecode($_GET['error_message']) : ''; ?>";
+            
+            if (errorMessage) {
+                document.getElementById('errorAlert').classList.remove('hidden');
+            }
+
+        });
     </script>
 </body>
 </html>
