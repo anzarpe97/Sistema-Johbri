@@ -125,7 +125,7 @@ if ($result->num_rows > 0) {
                 </div>
                 <div class="space-y-1">
                     <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Reportes</div>
-                    <a href="./reporteVentas.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                    <a href="./reportes.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Reporte de Ventas
                     </a>
                     <a href="./ordenes.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
