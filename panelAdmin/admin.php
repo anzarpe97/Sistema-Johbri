@@ -128,8 +128,8 @@ if ($result->num_rows > 0) {
                     <a href="./reporteVentas.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Reporte de Ventas
                     </a>
-                    <a href="./inventario.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
-                        Órdenes pendientes
+                    <a href="./ordenes.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                        Órdenes
                     </a>
                 </div>
             </nav>
@@ -202,7 +202,7 @@ if ($result->num_rows > 0) {
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <h2 class="text-gray-600 dark:text-gray-400 text-sm">Órdenes por Validar</h2>
+                            <h2 class="text-gray-600 dark:text-gray-400 text-sm">Órdenes pendientes</h2>
                             <p class="text-2xl font-semibold text-gray-800 dark:text-white">php aqui</p>
                         </div>
                     </div>
@@ -272,25 +272,19 @@ if ($result->num_rows > 0) {
                                                     if ($row['stock_producto'] > 5 ){
                                                         ?>
                                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"> <?php echo $row['stock_producto']; ?></span>
-                                                    
-
                                                         <?php
                                                     } elseif ($row['stock_producto'] == 0){
                                                         ?>
                                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200"> <?php echo $row['stock_producto']; ?></span>
-                                                
+
                                                 <?php
-                                                 }
+                                                }
                                                     elseif ($row['stock_producto'] < 6){
                                                         ?>
                                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-00 dark:bg-yellow-700 dark:text-yellow-100"> <?php echo $row['stock_producto']; ?></span>
-                                                        
-                                                     <?php
+                                                    <?php
                                                     }
                                                     ?>
-                                                    
-                                                   
-                                            
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex space-x-2">
