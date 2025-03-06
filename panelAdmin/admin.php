@@ -129,7 +129,7 @@ if ($result->num_rows > 0) {
                         Reporte de Ventas
                     </a>
                     <a href="./inventario.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
-                        Inventario
+                        Órdenes pendientes
                     </a>
                 </div>
             </nav>
