@@ -45,7 +45,7 @@ $_SESSION['ultimo_acceso'] = time();
         <div class="flex justify-between items-center">
             <div class="text-xl font-bold">
                 <a href="admin.php"
-                   class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
+                class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
                     </svg>
@@ -85,10 +85,10 @@ $_SESSION['ultimo_acceso'] = time();
                                 Nombre de la Empresa *
                             </label>
                             <input type="text" required
-                                   id="nombre_empresa"
-                                   name="nombre_empresa"
-                                   class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                   dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                                id="nombre_empresa"
+                                name="nombre_empresa"
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
 
                         <!-- RIF -->
@@ -97,22 +97,22 @@ $_SESSION['ultimo_acceso'] = time();
                                 RIF *
                             </label>
                             <input type="text" required
-                                   id="rif"
-                                   name="rif"
-                                   placeholder="J-12345678-9"
-                                   class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                   dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                                id="rif"
+                                name="rif"
+                                placeholder="J-12345678-9"
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                                 Teléfono de la Empresa *
                             </label>
                             <input type="tel" required
-                                   id="telefono_empresa"
-                                   name="telefono_empresa"
-                                   placeholder="0212-1234567"
-                                   class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                   dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                                id="telefono_empresa"
+                                name="telefono_empresa"
+                                placeholder="0212-1234567"
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
                     </div>
 
@@ -122,9 +122,9 @@ $_SESSION['ultimo_acceso'] = time();
                             Dirección de la Sede *
                         </label>
                         <textarea required name="direccion" id="direccion"
-                                  rows="2"
-                                  class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                  dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"></textarea>
+                                rows="2"
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"></textarea>
                     </div>
 
                     <!-- Información del Contacto -->
@@ -139,8 +139,8 @@ $_SESSION['ultimo_acceso'] = time();
                                 Nombre Completo *
                             </label>
                             <input type="text" required name="nombre_contacto" id="nombre_contacto"
-                                   class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                   dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
 
                         <!-- Cédula del Contacto -->
@@ -149,9 +149,9 @@ $_SESSION['ultimo_acceso'] = time();
                                 Cédula *
                             </label>
                             <input type="text" required name="cedula_encargado" id="cedula_encargado"
-                                   placeholder="V-12345678"
-                                   class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                   dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                                placeholder="V-12345678"
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
 
                         <!-- Teléfono del Contacto -->
@@ -160,9 +160,9 @@ $_SESSION['ultimo_acceso'] = time();
                                 Teléfono Encargado *
                             </label>
                             <input type="tel" required name="telefono_encargado" id="telefono_encargado"
-                                   placeholder="0414-1234567"
-                                   class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                   dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                                placeholder="0414-1234567"
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
                     </div>
 
@@ -178,8 +178,8 @@ $_SESSION['ultimo_acceso'] = time();
                                 Correo Electrónico Empresa*
                             </label>
                             <input type="email" required name="correo_empresa" id="correo_empresa"
-                                   class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                   dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                                class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                                dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         </div>
 
                         <!-- Contraseña -->
@@ -189,10 +189,10 @@ $_SESSION['ultimo_acceso'] = time();
                             </label>
                             <div class="relative">
                                 <input type="password" required
-                                       id="password"
-                                       name="password"
-                                       class="w-full px-4 py-2 pr-10 rounded-md border border-gray-300 dark:border-gray-600
-                                       dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
+                                    id="password"
+                                    name="password"
+                                    class="w-full px-4 py-2 pr-10 rounded-md border border-gray-300 dark:border-gray-600
+                                    dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                                 <button type="button"
                                         onclick="togglePassword()"
                                         class="absolute inset-y-0 right-0 pr-3 flex items-center">
