@@ -5,13 +5,13 @@ require("../logica/conexionbdd.php");
 session_start();
 if(!ISSET($_SESSION['id'])){
 
-     header('location:../login-sesion/login.php?error_message=Por favor inicie sesión');
-     exit();
+    header('location:../login-sesion/login.php?error_message=Por favor inicie sesión');
+    exit();
 
 }
 
 else{
-   
+
     if((time() - $_SESSION['time']) > 600){
         session_unset();
         session_destroy();
@@ -172,6 +172,21 @@ $result = $conn->query($sql);
                                         <a href="editarProducto.php?numero_de_parte=<?php echo $row_2['numero_de_parte']; ?>" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
                                             Editar
                                         </a>
+                                        <!--colocar accion -->
+                                        <a href="#" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal()">
+                                            Eliminar
+                                        </a>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md">
+                                            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Confirmar Eliminación</h2>
+                                            <p class="text-gray-700 dark:text-gray-300 mb-6">¿Estás seguro de que deseas eliminar este producto?</p>
+                                            <div class="flex justify-end space-x-4">
+                                                <button onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Cancelar</button>
+                                                <a href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>
@@ -254,11 +269,26 @@ $result = $conn->query($sql);
 
                                 </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <div class="flex space-x-2">
-                                    <a href="editarProducto.php?numero_de_parte=<?php echo $row['numero_de_parte']; ?>" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
-                                        Editar
-                                    </a>
-                                </div>
+                            <div class="flex space-x-2">
+                                        <a href="editarProducto.php?numero_de_parte=<?php echo $row['numero_de_parte']; ?>" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded-md transition-colors duration-200">
+                                            Editar
+                                        </a>
+                                        <!--colocar accion con numero de parte-->
+                                        <a href="#" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal()">
+                                            Eliminar
+                                        </a>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div id="deleteModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+                                        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 w-full max-w-md">
+                                            <h2 class="text-lg font-semibold text-gray-900 dark:text-white mb-4">Confirmar Eliminación</h2>
+                                            <p class="text-gray-700 dark:text-gray-300 mb-6">¿Estás seguro de que deseas eliminar este producto?</p>
+                                            <div class="flex justify-end space-x-4">
+                                                <button onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Cancelar</button>
+                                                <a href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
+                                            </div>
+                                        </div>
+                                    </div>
                             </td>
                             </a>
                         </tr>
@@ -291,6 +321,14 @@ $result = $conn->query($sql);
                 lista.classList.add('hidden');
                 arrow.classList.remove('rotate-180');
             }
+        }
+        // Función para abrir y cerrar la confirmacion de eliminacion
+        function openModal() {
+        document.getElementById('deleteModal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('deleteModal').classList.add('hidden');
         }
     </script>
 </body>
