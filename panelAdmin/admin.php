@@ -93,7 +93,7 @@ if ($result->num_rows > 0) {
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="../login-sesion/login.php" class="hover:underline">Cerrar Sesión</a>
+                <a href="../logica/cerrar-sesion.php" class="hover:underline">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
@@ -194,7 +194,7 @@ if ($result->num_rows > 0) {
             </div>
             <!-- TARJETA ORDENES PENDIENTES -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <a href="ordenes-pendientes.php">
+                <a href="ordenes.php">
                     <div class="flex items-center">
                         <div class="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full">
                             <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">

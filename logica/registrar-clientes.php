@@ -15,7 +15,7 @@ $nombre_encargado = $_POST['nombre_contacto'];
 $cedula_encargado = $_POST['cedula_encargado'];
 $telefono_encargado = $_POST['telefono_encargado'];
 $correo_empresa = $_POST['correo_empresa'];
-$contraseña = $_POST['contrasena'];
+$contraseña = $_POST['password'];
 
 //Validar si el nombre de la empresa esta vacio
 if (empty($nombre_empresa)) {
