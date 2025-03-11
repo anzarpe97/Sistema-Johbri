@@ -113,9 +113,7 @@
                             id="username"
                             name="username"
                             required
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                focus:ring-2 focus:ring-custom-blue dark:focus:ring-blue-500
-                                focus:border-transparent dark:bg-gray-700 dark:text-white"
+                            class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-custom-blue dark:focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                         >
                     </div>
                     <div>
@@ -127,18 +125,15 @@
                             id="password"
                             name="password"
                             required
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                focus:ring-2 focus:ring-custom-blue dark:focus:ring-blue-500
-                                focus:border-transparent dark:bg-gray-700 dark:text-white"
+                            class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-custom-blue dark:focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                         >
                     </div>
                     <!-- Agregar enlace de olvidaste contraseña -->
                     <div class="flex items-center justify-end">
-                        <a href="#"
-                        onclick="mostrarRecuperacion(event)"
-                        class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
-                            ¿Olvidaste tu contraseña?
-                        </a>
+                      <a href="olvidarContraseña.php"
+                      class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
+                        ¿Olvidaste tu contraseña?
+                      </a>
                     </div>
                 </div>
                 <button
