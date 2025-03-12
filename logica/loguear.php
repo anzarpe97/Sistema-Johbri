@@ -4,73 +4,68 @@ require 'validar.php';
 
 session_start();
 
-$username = $_POST['username'];
-$password = $_POST['password'];
 $flag = true;
 
-$stmt = $conn->prepare("SELECT * FROM administrador WHERE correo_administrador = ?");
-$stmt->bind_param("s", $username);
-$stmt->execute();
-$resultado = $stmt->get_result();
+$username = $_POST['username'];
+$password = $_POST['password'];
 
 
-    if ($resultado->num_rows > 0) {
+//Verificar si los campos estan vacios
+if(empty($username)){
 
-        $fila = $resultado->fetch_assoc();
-
-        if ($password == $fila['contrasena_administrador']) { 
-
-            $stmt = $conn->prepare("UPDATE administrador SET intentos = 0 WHERE id_administrador = ?");
-            $stmt->bind_param("i",  $fila['id_administrador']); 
-            $stmt->execute();
-
-            $_SESSION['id'] = $fila['id_administrador'];
-            $id=$fila['id_administrador'];
-            header("location: ../panelAdmin/admin.php");
-            exit();
-
-        } else {
-
-            $intento = $fila['intentos'] + 1;
-
-            if ($fila['intentos'] < 2){
-                $stmt = $conn->prepare("UPDATE administrador SET intentos = ? WHERE id_administrador = ?");
-                $stmt->bind_param("ii", $intento, $fila['id_administrador']); 
-                $stmt->execute();
-
-                if ($intento == 1){
-                    $error_message = urlencode("Usuario o contraseña incorrectos, te quedan ". 3 - $intento ." intentos.");    
-                }
-
-                else{
-                    $error_message = urlencode("Usuario o contraseña incorrectos, te quedan ". 3 - $intento ." intento.");
-                }
-            }
-
-            else{
-                $error_message = urlencode("Usuario bloqueado, por contacte con el administrador.");
-            }
-
-            header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-            exit();
-
-        }
-    } 
-    
-    else {
-        $error_message = urlencode("Correo no registrado");
-        header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-        exit();
-    }
-
-
-if (isset($error_message)) {
-
-    echo "<p style='color: red;'>$error_message</p>"; 
+    $flag = false;
+    $error_message = urlencode("Debe ingresar su correo electronico.");
+    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+    exit();
 
 }
-//holanda
-$stmt->close();
-$conn->close();
 
-?>  
+
+if(empty($password)){
+
+    $flag = false;
+    $error_message = urlencode("Debe ingresar su contraseña.");
+    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+    exit();
+
+}
+
+//verificar Correo electronico
+if (!EmailVa($username)){
+
+    $flag = false;
+    $error_message = urlencode("Formato correo electronico invalido");
+    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+    exit();
+
+}
+
+//verificar si el correo existe
+if (!buscarAdmin($username, "administrador")){
+
+    $flag = false;
+    $error_message = urlencode("Correo electronico no registrado porfavor comuniquese con el administrador");
+    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+    exit();
+
+}
+
+//Verificar si la contraseña contiene lo esperado
+if (!validated_password($password)){
+
+    $flag = false;
+    $error_message = urlencode("La contraseña debe tener al menos 8 caracteres e incluir una combinación de letras mayúsculas y minúsculas, números y caracteres especiales.");
+    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+    exit();
+
+}
+
+
+if (!verificarContrasena($password, "administrador",$username)){
+
+    $flag = false;
+
+}
+
+
+?>

@@ -43,6 +43,21 @@
     <nav class="bg-custom-blue/95 backdrop-blur-sm dark:bg-gray-800/95 text-white px-6 py-4 flex justify-between items-center fixed w-full top-0 z-50 shadow-lg">
         <div class="text-xl sm:text-2xl font-bold">Autorepuestos Johbri, C.A.</div>
         <div class="flex items-center gap-4">
+
+
+            <a
+                href="login-sesion/loginCliente.php"
+                class="px-6 py-2 bg-white text-custom-blue dark:bg-gray-700 dark:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
+            >
+                cliente
+            </a>
+
+            <a
+                href="login-sesion/login.php"
+                class="px-6 py-2 bg-white text-custom-blue dark:bg-gray-700 dark:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
+            >
+                Iniciar Sesión
+            </a>
             <button
                 onclick="document.documentElement.classList.toggle('dark')"
                 class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -50,12 +65,6 @@
                 <span class="dark:hidden">🌙</span>
                 <span class="hidden dark:inline">☀️</span>
             </button>
-            <a
-                href="login-sesion/login.php"
-                class="px-6 py-2 bg-white text-custom-blue dark:bg-gray-700 dark:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
-            >
-                Iniciar Sesión
-            </a>
         </div>
     </nav>
 

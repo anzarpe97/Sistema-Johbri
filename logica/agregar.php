@@ -45,7 +45,7 @@ if (isset($_FILES['file-upload-1'])) {
         $tamano_archivo = $archivo['size'];
         $ruta_temporal = $archivo['tmp_name'];
 
-        $tipos_permitidos = array('image/jpeg', 'image/png');
+        $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
         $tamano_maximo = 10 * 1024 * 1024;
 
         if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
@@ -113,7 +113,7 @@ if (isset($_FILES['file-upload-2'])) {
         $tamano_archivo = $archivo['size'];
         $ruta_temporal = $archivo['tmp_name'];
 
-        $tipos_permitidos = array('image/jpeg', 'image/png');
+        $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
         $tamano_maximo = 10 * 1024 * 1024;
 
         if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
@@ -181,7 +181,7 @@ if (isset($_FILES['file-upload-3'])) {
         $tamano_archivo = $archivo['size'];
         $ruta_temporal = $archivo['tmp_name'];
 
-        $tipos_permitidos = array('image/jpeg', 'image/png');
+        $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
         $tamano_maximo = 10 * 1024 * 1024;
 
         if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
@@ -249,7 +249,7 @@ if (isset($_FILES['file-upload-4'])) {
         $tamano_archivo = $archivo['size'];
         $ruta_temporal = $archivo['tmp_name'];
 
-        $tipos_permitidos = array('image/jpeg', 'image/png');
+        $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
         $tamano_maximo = 10 * 1024 * 1024;
 
         if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
@@ -300,11 +300,12 @@ if (isset($_FILES['file-upload-4'])) {
 } // IF Subir Foto 1
 else { 
 } 
-
-header("location: ../panelAdmin/admin.php");
-exit();
-
 $stmt->close();
 $conn->close();
+header("location: ../panelAdmin/agregar-producto.php?success_message=Producto agregado correctamente");
+
+exit();
+
+
 ?>
 

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -74,11 +75,11 @@
                     <div class="ml-3 flex justify-center items-center">
                         <p class="text-sm text-red-500 dark:text-red-400">
                         <?php
-                             if (isset($_GET['error_message'])) {
+                            if (isset($_GET['error_message'])) {
 
-                                echo urldecode($_GET['error_message']); 
+                                echo urldecode($_GET['error_message']);
 
-                            }   
+                            }
                             ?>
                         </p>
                     </div>
@@ -112,9 +113,7 @@
                             id="username"
                             name="username"
                             required
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                focus:ring-2 focus:ring-custom-blue dark:focus:ring-blue-500
-                                focus:border-transparent dark:bg-gray-700 dark:text-white"
+                            class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-custom-blue dark:focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                         >
                     </div>
                     <div>
@@ -126,18 +125,15 @@
                             id="password"
                             name="password"
                             required
-                            class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
-                                focus:ring-2 focus:ring-custom-blue dark:focus:ring-blue-500
-                                focus:border-transparent dark:bg-gray-700 dark:text-white"
+                            class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-custom-blue dark:focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                         >
                     </div>
                     <!-- Agregar enlace de olvidaste contraseña -->
                     <div class="flex items-center justify-end">
-                        <a href="#"
-                        onclick="mostrarRecuperacion(event)"
-                        class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
-                            ¿Olvidaste tu contraseña?
-                        </a>
+                      <a href="olvidarContraseña.php"
+                      class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
+                        ¿Olvidaste tu contraseña?
+                      </a>
                     </div>
                 </div>
                 <button
@@ -161,23 +157,17 @@
         <p>&copy; 2025 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
     </footer>
 
-    <!-- Este script detecta si el sistema operativo del usuario está configurado en modo oscuro
-        y aplica automáticamente el tema oscuro a la página web al cargarla por primera vez.
-    -->
-
     <script>
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
         }
-        
+
         document.addEventListener('DOMContentLoaded', function() {
             const errorMessage = "<?php echo isset($_GET['error_message']) ? urldecode($_GET['error_message']) : ''; ?>";
             if (errorMessage) {
                 document.getElementById('errorAlert').classList.remove('hidden');
             }
         });
-    
-    
     </script>
 </body>
 </html>
