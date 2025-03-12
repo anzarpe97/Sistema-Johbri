@@ -50,14 +50,6 @@ if (empty($marca_producto)) {
     exit();
 }
 
-//verificar si el nombre del producto tiene caracteres especiales
-if (!verificarCadena($nombre_producto)) {
-    $flag = false;
-    $error_message = urlencode("El nombre del producto no puede contener caracteres especiales.");
-    header("Location: ../panelAdmin/editarProducto.php?numero_de_parte=" . $_SESSION['e_num_part'] . "&error_message=" . $error_message);
-    exit();
-}
-
 //verificar si el numero de parte ya existe
 if ($numero_de_parte != $_SESSION['e_num_part']) {
 

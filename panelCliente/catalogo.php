@@ -1,3 +1,30 @@
+<?php
+
+require '../logica/validar.php';
+require '../logica/conexionbdd.php';
+
+session_start();
+
+if (!isset($_SESSION['id'])) {
+    header('location:../login-sesion/loginCliente.php?error_message=Por favor inicie sesión');
+    exit();
+} else {
+    if ((time() - $_SESSION['time']) > 600) {
+        session_unset();
+        session_destroy();
+        header('location:../login-sesion/loginCliente.php?error_message=La sesión ha expirado');
+        exit();
+    }
+}
+
+$_SESSION['time'] = time();
+
+// Fetch available products from the database
+$product_query = "SELECT numero_de_parte, nombre_producto, precio_producto, stock_producto FROM productos WHERE stock_producto > 0";
+$product_result = $conn->query($product_query);
+
+?>
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -23,6 +50,14 @@
     <!-- Navbar -->
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
+        <a href="cliente.php"
+                class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <span class="text-sm">Volver</span>
+            </a>
+
             <div class="text-xl font-bold">Autorepuestos Johbri, C.A.</div>
             <div class="flex items-center gap-4">
                 <button
@@ -111,105 +146,37 @@
 
         <!-- Grid de Productos -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Producto 1 -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div class="relative">
-                    <img src="./images/juego_pastillas_freno.jpg" alt="Pastillas de Freno" class="w-full h-48 object-cover">
-                    <span class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
-                        En Stock
-                    </span>
-                </div>
-                <div class="p-4">
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Frenos</div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        Pastillas de Freno Delanteras
-                    </h3>
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-2xl font-bold text-custom-blue dark:text-blue-400">$45.00</span>
+            <?php while ($product = $product_result->fetch_assoc()):              
+                
+                
+                
+                
+                ?>
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                    <div class="relative">
+                        <img src="../assets/img/repuesto1.jpg" alt="<?php echo htmlspecialchars($product['nombre_producto']); ?>" class="w-full h-48 object-cover">
+                        <span class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
+                            En Stock
+                        </span>
                     </div>
-                    <div>
-                        <a href="producto-detalle.html?id=1"
-                        class="block w-full text-center bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
-                            Ver Detalles
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 2 -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div class="relative">
-                    <img src="./images/amortiguadores.jpg" alt="Amortiguadores" class="w-full h-48 object-cover">
-                    <span class="absolute top-2 right-2 bg-yellow-500 text-white px-2 py-1 rounded-full text-xs">
-                        Poco Stock
-                    </span>
-                </div>
-                <div class="p-4">
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Suspensión</div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        Amortiguadores Traseros
-                    </h3>
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-2xl font-bold text-custom-blue dark:text-blue-400">$120.00</span>
-                    </div>
-                    <div>
-                        <a href="producto-detalle.html?id=2"
-                        class="block w-full text-center bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
-                            Ver Detalles
-                        </a>
+                    <div class="p-4">
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Categoría</div>
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            <?php echo htmlspecialchars($product['nombre_producto']); ?>
+                        </h3>
+                        <div class="flex justify-between items-center mb-3">
+                            <span class="text-2xl font-bold text-custom-blue dark:text-blue-400">$<?php echo htmlspecialchars($product['precio_producto']); ?></span>
+                        </div>
+                        <div>
+                            <a href="producto-detalle.php?id=<?php echo htmlspecialchars($product['numero_de_parte']); ?>"
+                            class="block w-full text-center bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
+                                Ver Detalles
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <!-- Producto 3 -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div class="relative">
-                    <img src="./images/filtro_aceite_premium.png" alt="Filtro de Aceite" class="w-full h-48 object-cover">
-                    <span class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
-                        En Stock
-                    </span>
-                </div>
-                <div class="p-4">
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Motor</div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        Filtro de Aceite Premium
-                    </h3>
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-2xl font-bold text-custom-blue dark:text-blue-400">$12.99</span>
-                    </div>
-                    <div>
-                        <a href="producto-detalle.html?id=3"
-                        class="block w-full text-center bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
-                            Ver Detalles
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Producto 4 -->
-            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <div class="relative">
-                    <img src="./images/pack_bujias.jpg" alt="Bujías" class="w-full h-48 object-cover">
-                    <span class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs">
-                        Último
-                    </span>
-                </div>
-                <div class="p-4">
-                    <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Motor</div>
-                    <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        Kit de Bujías
-                    </h3>
-                    <div class="flex justify-between items-center mb-3">
-                        <span class="text-2xl font-bold text-custom-blue dark:text-blue-400">$89.99</span>
-                    </div>
-                    <div>
-                        <a href="producto-detalle.html?id=4"
-                        class="block w-full text-center bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
-                            Ver Detalles
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <?php 
+        endwhile; ?>
         </div>
     </main>
 

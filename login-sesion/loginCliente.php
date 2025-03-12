@@ -102,7 +102,7 @@
             <h2 class="text-2xl font-bold text-custom-blue dark:text-white text-center mb-6">
                 Iniciar Sesión
             </h2>
-            <form class="space-y-6" action="../logica/loguear.php" method="POST"">
+            <form class="space-y-6" action="../logica/loguear-cliente.php" method="POST"">
                 <div class="space-y-4">
                     <div>
                         <label for="username" class="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
@@ -145,7 +145,7 @@
                     Ingresar al Sistema
                 </button>
             </form>
-            <div class="mt-4 text-center">
+            <div class="mt-4    text-center">
                 <a href="index.html" class="text-custom-blue dark:text-blue-400 hover:underline text-sm">
                     Volver al inicio
                 </a>

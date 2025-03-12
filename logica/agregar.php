@@ -300,11 +300,12 @@ if (isset($_FILES['file-upload-4'])) {
 } // IF Subir Foto 1
 else { 
 } 
-
-header("location: ../panelAdmin/admin.php");
-exit();
-
 $stmt->close();
 $conn->close();
+header("location: ../panelAdmin/agregar-producto.php?success_message=Producto agregado correctamente");
+
+exit();
+
+
 ?>
 

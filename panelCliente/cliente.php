@@ -1,3 +1,35 @@
+<?php
+
+require '../logica/validar.php';
+require '../logica/conexionbdd.php';
+
+session_start();
+
+if (!isset($_SESSION['id'])) {
+    header('location:../login-sesion/loginCliente.php?error_message=Por favor inicie sesión');
+    exit();
+} else {
+    if ((time() - $_SESSION['time']) > 600) {
+        session_unset();
+        session_destroy();
+        header('location:../login-sesion/loginCliente.php?error_message=La sesión ha expirado');
+        exit();
+    }
+}
+
+$_SESSION['time'] = time();
+
+$client_id = $_SESSION['id'];
+$query = "SELECT nombre_empresa, nombre_encargado, rif FROM clientes WHERE id = ?";
+
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $client_id);
+$stmt->execute();
+$result = $stmt->get_result();
+$client_data = $result->fetch_assoc();
+
+?>
+
 <!DOCTYPE html>
 <html lang="es" class="dark">
 <head>
@@ -73,9 +105,11 @@
     <!-- Navbar -->
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
-            <div class="text-xl font-bold">Panel de Cliente</div>
+
+        <div class="text-xl font-bold">Autorepuestos Johbri, C.A.</div>
+            <div class="text-xl font-bold"> <?php echo htmlspecialchars($client_data['nombre_empresa']) . "     " . htmlspecialchars($client_data['rif']); ?></div>
             <div class="flex items-center gap-4">
-                <span class="text-sm bg-blue-900 px-3 py-1 rounded-full">Bienvenido, Usuario</span>
+                <span class="text-sm bg-blue-900 px-3 py-1 rounded-full">Bienvenido, <?php echo htmlspecialchars($client_data['nombre_encargado']); ?></span>
                 <button
                     onclick="document.documentElement.classList.toggle('dark')"
                     class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -83,8 +117,8 @@
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="#" class="hover:underline">Cerrar Sesión</a>
-            </div>
+                <a href="../logica/cerrar-sesion.php" class="hover:underline">Cerrar Sesión</a>
+            </div>  
         </div>
     </nav>
 
@@ -99,6 +133,9 @@
                     <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Mi Cuenta</div>
                     <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
                         Mis Compras
+                    </a>
+                    <a href="catalogo.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
+                        Catálogo de Productos
                     </a>
                     <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Facturas
