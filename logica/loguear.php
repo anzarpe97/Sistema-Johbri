@@ -67,32 +67,5 @@ if (!verificarContrasena($password, "administrador",$username)){
 
 }
 
-if ($flag == true) {
-    $sql = "SELECT id_administrador FROM administrador WHERE correo = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("s", $username);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows > 0) {
-        $row = $result->fetch_assoc();
-        $id_admin = $row["id_administrador"];
-        
-        $_SESSION['time'] = time();
-        $_SESSION['id'] = $id_admin;
-        header("Location: ../panelAdmin/admin.php");
-        exit();
-    } else {
-        $error_message = urlencode("Error desconocido. Por favor, intente nuevamente.");
-        header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-        exit();
-    }
-} 
-
-else {
-    $error_message = urlencode("Error desconocido. Por favor, intente nuevamente.");
-    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-    exit();
-}
 
 ?>

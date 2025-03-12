@@ -144,10 +144,10 @@ $success_message = isset($_GET['success_message']) ? $_GET['success_message'] : 
                     </h2>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <!-- Código Único -->
+
                         <div>
                             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                                Código Único del Repuesto *
+                                Código Único del Repuestos *
                             </label>
                             <div class="relative">
                                 <input type="text" required
@@ -187,7 +187,7 @@ $success_message = isset($_GET['success_message']) ? $_GET['success_message'] : 
                                 <option>Estoperas</option>
                                 <option>Suspensión</option>
                                 <option>Motor</option>
-                                <option>Filtos</option>
+                                <option>Filtros</option>
                                 <option>Carroceria</option>
                                 <option>Accesorios</option>
                                 <option>Transmisión</option>
@@ -210,6 +210,9 @@ $success_message = isset($_GET['success_message']) ? $_GET['success_message'] : 
                                 <option>Honda</option>
                                 <option>Fiat</option>
                                 <option>Renaul</option>
+                                <option>Peugeot</option>
+                                <option>Mercedes Benz</option>
+                                <option>Chery</option>
                                 <option>Hyundai</option>
                                 <option>Kia</option>
                                 <option>Toyota</option>
