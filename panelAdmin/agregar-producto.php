@@ -187,7 +187,7 @@ $success_message = isset($_GET['success_message']) ? $_GET['success_message'] : 
                                 <option>Estoperas</option>
                                 <option>Suspensión</option>
                                 <option>Motor</option>
-                                <option>Filtos</option>
+                                <option>Filtros</option>
                                 <option>Carroceria</option>
                                 <option>Accesorios</option>
                                 <option>Transmisión</option>
@@ -210,6 +210,9 @@ $success_message = isset($_GET['success_message']) ? $_GET['success_message'] : 
                                 <option>Honda</option>
                                 <option>Fiat</option>
                                 <option>Renaul</option>
+                                <option>Peugeot</option>
+                                <option>Mercedes Benz</option>
+                                <option>Chery</option>
                                 <option>Hyundai</option>
                                 <option>Kia</option>
                                 <option>Toyota</option>

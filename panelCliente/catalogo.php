@@ -20,7 +20,7 @@ if (!isset($_SESSION['id'])) {
 $_SESSION['time'] = time();
 
 // Fetch available products from the database
-$product_query = "SELECT numero_de_parte, nombre_producto, precio_producto, stock_producto FROM productos WHERE stock_producto > 0";
+$product_query = "SELECT id_producto, numero_de_parte, nombre_producto, precio_producto, categoria_producto, stock_producto FROM productos WHERE stock_producto > 0";
 $product_result = $conn->query($product_query);
 
 ?>
@@ -67,7 +67,7 @@ $product_result = $conn->query($product_query);
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="login.html" class="hover:underline">Cerrar Sesión</a>
+                <a href="../logica/cerrar-sesion.php" class="hover:underline">Cerrar Sesión</a>
             </div>
         </div>
     </nav>
@@ -137,7 +137,7 @@ $product_result = $conn->query($product_query);
                         <option>Más vendidos</option>
                     </select>
                 </div>
-                <button class="w-full sm:w-auto px-3 py-1 bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600
+                <button class="w-full sm:w-auto px-1 py-1 bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600
                             dark:hover:bg-blue-700 text-white rounded-md transition-colors duration-200">
                     Aplicar Filtros
                 </button>
@@ -145,22 +145,22 @@ $product_result = $conn->query($product_query);
         </div>
 
         <!-- Grid de Productos -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="grid grid-cols-4 sm:grid-cols-4 pl-40 pr-40 mt-20 lg:grid-cols-3 xl:grid-cols-3 gap-6">
             <?php while ($product = $product_result->fetch_assoc()):              
                 
-                
+                $foto_productos = obtenerRutasArchivos($product['id_producto']);
                 
                 
                 ?>
                 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
                     <div class="relative">
-                        <img src="../assets/img/repuesto1.jpg" alt="<?php echo htmlspecialchars($product['nombre_producto']); ?>" class="w-full h-48 object-cover">
+                        <img src="<?php echo $foto_productos; ?>" alt="<?php echo htmlspecialchars($product['nombre_producto']); ?>" class="w-full h-48 object-cover">
                         <span class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
                             En Stock
                         </span>
                     </div>
                     <div class="p-4">
-                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1">Categoría</div>
+                        <div class="text-xs text-gray-500 dark:text-gray-400 mb-1"> <?php echo htmlspecialchars($product['categoria_producto']); ?></div>
                         <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
                             <?php echo htmlspecialchars($product['nombre_producto']); ?>
                         </h3>
