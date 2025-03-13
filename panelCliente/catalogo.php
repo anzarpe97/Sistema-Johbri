@@ -237,7 +237,7 @@ $product_result = $conn->query($product_query);
                             <span class="text-2xl font-bold text-custom-blue dark:text-blue-400">$<?php echo htmlspecialchars($product['precio_producto']); ?></span>
                         </div>
                         <div>
-                            <a href="producto-detalle.php?id=<?php echo htmlspecialchars($product['numero_de_parte']); ?>"
+                            <a href="producto-detalle.php?id=<?php echo htmlspecialchars($product['id_producto']); ?>"
                             class="block w-full text-center bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
                                 Ver Detalles
                             </a>
