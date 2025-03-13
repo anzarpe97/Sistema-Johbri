@@ -1,71 +1,50 @@
 <?php
 require 'conexionbdd.php';
-require 'validar.php';
-
 session_start();
 
-$flag = true;
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $username = $_POST['username'];
+    $password = $_POST['password'];
 
-$username = $_POST['username'];
-$password = $_POST['password'];
+    // Check admin login
+    $stmt = $conn->prepare("SELECT * FROM administrador WHERE correo = ? AND contrasena = ?");
+    $stmt->bind_param("ss", $username, $password);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
+    if ($result->num_rows > 0) {
+        // Admin login successful
+        $admin = $result->fetch_assoc();
+        $_SESSION['id'] = $admin['id_administrador'];
+        $_SESSION['nombre'] = $admin['nombre_administrador'];
+        $_SESSION['cargo'] = $admin['cargo'];
+        $_SESSION['tipo'] = 'admin';
+        $_SESSION['time'] = time();
+        header('Location: ../panelAdmin/admin.php');
+        exit();
+    } else {
+        // Check client login
+        $stmt = $conn->prepare("SELECT * FROM clientes WHERE correo = ? AND contrasena = ? AND estado_cliente = 1");
+        $stmt->bind_param("ss", $username, $password);
+        $stmt->execute();
+        $result = $stmt->get_result();
 
-//Verificar si los campos estan vacios
-if(empty($username)){
-
-    $flag = false;
-    $error_message = urlencode("Debe ingresar su correo electronico.");
-    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+        if ($result->num_rows > 0) {
+            // Client login successful
+            $cliente = $result->fetch_assoc();
+            $_SESSION['id'] = $cliente['id'];
+            $_SESSION['nombre_empresa'] = $cliente['nombre_empresa'];
+            $_SESSION['tipo'] = 'cliente';
+            header('Location: ../panelCliente/cliente.php');
+            exit();
+        } else {
+            // Login failed
+            header('Location: ../login-sesion/login.php?error_message=' . urlencode('Credenciales incorrectas'));
+            exit();
+        }
+    }
+} else {
+    header('Location: ../login-sesion/login.php?error_message=' . urlencode('Método no permitido'));
     exit();
-
 }
-
-
-if(empty($password)){
-
-    $flag = false;
-    $error_message = urlencode("Debe ingresar su contraseña.");
-    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-    exit();
-
-}
-
-//verificar Correo electronico
-if (!EmailVa($username)){
-
-    $flag = false;
-    $error_message = urlencode("Formato correo electronico invalido");
-    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-    exit();
-
-}
-
-//verificar si el correo existe
-if (!buscarAdmin($username, "administrador")){
-
-    $flag = false;
-    $error_message = urlencode("Correo electronico no registrado porfavor comuniquese con el administrador");
-    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-    exit();
-
-}
-
-//Verificar si la contraseña contiene lo esperado
-if (!validated_password($password)){
-
-    $flag = false;
-    $error_message = urlencode("La contraseña debe tener al menos 8 caracteres e incluir una combinación de letras mayúsculas y minúsculas, números y caracteres especiales.");
-    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-    exit();
-
-}
-
-
-if (!verificarContrasena($password, "administrador",$username)){
-
-    $flag = false;
-
-}
-
-
 ?>
