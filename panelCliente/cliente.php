@@ -208,190 +208,81 @@ $client_data = $result->fetch_assoc();
 
     <!-- Contenido Principal -->
     <main class="ml-64 pt-24 px-6 pb-20">
-            <!-- Carrusel de Productos -->
+        <!-- Carrusel de Productos -->
         <div id="product-carousel" class="relative overflow-hidden rounded-lg shadow-lg">
-        <!-- Carrusel Track -->
-        <div id="carousel-track" class="flex h-[500px]">
-            <?php
-            if ($result_productos->num_rows > 0) {
-                while ($row = $result_productos->fetch_assoc()) {
-                    // obtener la imagen del producto
-                    $foto_productos = obtenerRutasArchivos($row['id_producto']);
-                    ?>
-            <!-- Producto 1 -->
-            <div class="w-full flex-shrink-0">
-            <div class="flex flex-col md:flex-row h-full">
-                <!-- Imagen del Producto -->
-                <div class="relative w-full md:w-1/2 h-64 md:h-full">
-                <img
-                    src="<?php echo $foto_productos; ?>" alt="<?php echo $row['nombre_producto']; ?>"
-                    class="w-full h-full object-cover"
-                >
-                </div>
+            <!-- Carrusel Track -->
+            <div id="carousel-track" class="flex h-[500px] transition-transform duration-500 ease-in-out">
+                <?php
+                if ($result_productos->num_rows > 0) {
+                    while ($row = $result_productos->fetch_assoc()) {
+                        $foto_productos = obtenerRutasArchivos($row['id_producto']);
+                ?>
+                <!-- Producto -->
+                <div class="w-full flex-shrink-0">
+                    <div class="flex flex-col md:flex-row h-full">
+                        <!-- Imagen del Producto -->
+                        <div class="relative w-full md:w-1/2 h-64 md:h-full">
+                            <img src="<?php echo $foto_productos; ?>" alt="<?php echo $row['nombre_producto']; ?>" class="w-full h-full object-cover">
+                        </div>
 
-                <!-- Detalles del Producto -->
-                <div class="w-full md:w-1/2 p-6 md:p-8 bg-white dark:bg-gray-800 flex flex-col">
-                <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white"><?php echo $row['nombre_producto']; ?></h3>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">
-                    Código: <?php echo $row['numero_de_parte']; ?>
-                    </span>
-                </div>
+                        <!-- Detalles del Producto -->
+                        <div class="w-full md:w-1/2 p-6 md:p-8 bg-white dark:bg-gray-800 flex flex-col">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white"><?php echo $row['nombre_producto']; ?></h3>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">
+                                    Código: <?php echo $row['numero_de_parte']; ?>
+                                </span>
+                            </div>
 
-                <div class="mb-2 text-sm font-medium text-blue-600 dark:text-blue-400">
-                    <?php echo $row['categoria_producto']; ?>
-                </div>
+                            <div class="mb-2 text-sm font-medium text-blue-600 dark:text-blue-400">
+                                <?php echo $row['categoria_producto']; ?>
+                            </div>
 
-                <p class="text-gray-600 dark:text-gray-300 mb-6 flex-grow">
-                    <?php echo $row['descripcion_producto']; ?>
-                </p>
+                            <p class="text-gray-600 dark:text-gray-300 mb-6 flex-grow">
+                                <?php echo $row['descripcion_producto']; ?>
+                            </p>
 
-                <div class="mt-auto">
-                    <div class="flex items-baseline gap-2 mb-4">
-                        <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                        $<?php echo number_format($row['precio_producto'], 2); ?>
-                        </span>
+                            <div class="mt-auto">
+                                <div class="flex items-baseline gap-2 mb-4">
+                                    <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                                        $<?php echo number_format($row['precio_producto'], 2); ?>
+                                    </span>
+                                </div>
+
+                                <button
+                                    onclick="addToCart(<?php echo $row['id_producto']; ?>, '<?php echo $row['nombre_producto']; ?>', <?php echo $row['precio_producto']; ?>)"
+                                    class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
+                        </div>
                     </div>
-
-                    <button
-                    onclick="addToCart(<?php echo $row['id_producto']; ?>, '<?php echo $row['nombre_producto']; ?>', <?php echo $row['precio_producto']; ?>)"
-                    class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2"
-                    >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    Agregar al Carrito
-                    </button>
                 </div>
-                </div>
-            </div>
-            </div>
-            <?php
-            }
-        } else {
-            echo "<p>No hay productos disponibles</p>";
-        }
-            ?>
-            <!-- Producto 2 -->
-            <div class="w-full flex-shrink-0">
-            <div class="flex flex-col md:flex-row h-full">
-                <!-- Imagen del Producto -->
-                <div class="relative w-full md:w-1/2 h-64 md:h-full">
-                <img
-                    src="../assets/foto-repuestos/INT-MIT-2011 - 2.jpg"
-                    alt="Pastillas de Freno Cerámicas"
-                    class="w-full h-full object-cover"
-                >
-                </div>
-
-                <!-- Detalles del Producto -->
-                <div class="w-full md:w-1/2 p-6 md:p-8 bg-white dark:bg-gray-800 flex flex-col">
-                <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Pastillas de Freno Cerámicas</h3>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">
-                    Código: FRE-002
-                    </span>
-                </div>
-
-                <div class="mb-2 text-sm font-medium text-blue-600 dark:text-blue-400">
-                    Frenos
-                </div>
-
-                <p class="text-gray-600 dark:text-gray-300 mb-6 flex-grow">
-                    Pastillas de freno cerámicas avanzadas para un frenado silencioso y sin polvo. Ofrecen un rendimiento superior y mayor durabilidad en todas las condiciones.
-                </p>
-
-                <div class="mt-auto">
-                    <div class="flex items-baseline gap-2 mb-4">
-                    <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                        $49.99
-                    </span>
-                    </div>
-
-                    <button
-                    onclick="addToCart(2, 'Pastillas de Freno Cerámicas', 49.99)"
-                    class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2"
-                    >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    Agregar al Carrito
-                    </button>
-                </div>
-                </div>
-            </div>
+                <?php
+                    }
+                } else {
+                    echo "<p>No hay productos disponibles</p>";
+                }
+                ?>
             </div>
 
-            <!-- Producto 3 -->
-            <div class="w-full flex-shrink-0">
-            <div class="flex flex-col md:flex-row h-full">
-                <!-- Imagen del Producto -->
-                <div class="relative w-full md:w-1/2 h-64 md:h-full">
-                <img
-                    src="https://placehold.co/800x400/e2e8f0/1e293b?text=Bujías+de+Platino" 
-                    alt="Bujías de Platino"
-                    class="w-full h-full object-cover"
-                >
-                </div>
+            <!-- Botones de Navegación (Mismo Estilo Anterior) -->
+            <button id="prev-button" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
 
-                <!-- Detalles del Producto -->
-                <div class="w-full md:w-1/2 p-6 md:p-8 bg-white dark:bg-gray-800 flex flex-col">
-                <div class="flex justify-between items-start mb-2">
-                    <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Bujías de Platino</h3>
-                    <span class="text-sm text-gray-500 dark:text-gray-400">
-                    Código: IGN-003
-                    </span>
-                </div>
-
-                <div class="mb-2 text-sm font-medium text-blue-600 dark:text-blue-400">
-                    Ignición
-                </div>
-
-                <p class="text-gray-600 dark:text-gray-300 mb-6 flex-grow">
-                    Bujías de platino de larga duración para mejorar la eficiencia del combustible. Diseñadas para proporcionar un encendido confiable y un rendimiento óptimo del motor.
-                </p>
-
-                <div class="mt-auto">
-                    <div class="flex items-baseline gap-2 mb-4">
-                    <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                        $8.99
-                    </span>
-                    </div>
-
-                    <button
-                    onclick="addToCart(3, 'Bujías de Platino', 8.99)"
-                    class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2"
-                    >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                    </svg>
-                    Agregar al Carrito
-                    </button>
-                </div>
-                </div>
-            </div>
-            </div>
+            <button id="next-button" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
         </div>
-
-        <!-- Botones de Navegación -->
-        <button
-            id="prev-button"
-            class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full carousel-button"
-            aria-label="Producto anterior"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-            </svg>
-        </button>
-            <button
-            id="next-button"
-            class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full carousel-button"
-            aria-label="Siguiente producto"
-        >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-            </svg>
-        </button>
 
         <!-- Indicadores -->
         <div id="carousel-indicators" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
@@ -432,57 +323,37 @@ $client_data = $result->fetch_assoc();
             document.documentElement.classList.add('dark');
         }
 
-        // Carrusel de productos
-        document.addEventListener('DOMContentLoaded', function() {
-            const track = document.getElementById('carousel-track');
-            const slides = track.children;
-            const prevButton = document.getElementById('prev-button');
-            const nextButton = document.getElementById('next-button');
-            let currentIndex = 0;
-            let interval;
+        document.addEventListener('DOMContentLoaded', function () {
+    const track = document.getElementById('carousel-track');
+    const slides = Array.from(track.children);
+    const prevButton = document.getElementById('prev-button');
+    const nextButton = document.getElementById('next-button');
+    const totalSlides = slides.length;
+    let currentIndex = 0;
 
-            // Función para mostrar el slide específico
-            function showSlide(index) {
-                if (index < 0) {
-                    currentIndex = slides.length - 1;
-                } else if (index >= slides.length) {
-                    currentIndex = 0;
-                } else {
-                    currentIndex = index;
-                }
-                track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            }
+    function updateCarousel() {
+        const slideWidth = slides[0].offsetWidth; // Obtener el ancho de un slide
+        track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+    }
 
-            // Función para el slide siguiente
-            function nextSlide() {
-                showSlide(currentIndex + 1);
-            }
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides; // Reiniciar al llegar al último
+        updateCarousel();
+    }
 
-            // Función para el slide anterior
-            function prevSlide() {
-                showSlide(currentIndex - 1);
-            }
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; // Ir al último si es negativo
+        updateCarousel();
+    }
 
-            // Event listeners para los botones
-            prevButton.addEventListener('click', () => {
-                prevSlide();
-                resetInterval();
-            });
+    nextButton.addEventListener('click', nextSlide);
+    prevButton.addEventListener('click', prevSlide);
 
-            nextButton.addEventListener('click', () => {
-                nextSlide();
-                resetInterval();
-            });
+    // Auto-rotación cada 5s
+    setInterval(nextSlide, 5000);
 
-            // Función para reiniciar el intervalo
-            function resetInterval() {
-                clearInterval(interval);
-                interval = setInterval(nextSlide, 5000);
-            }
-
-            // Iniciar el carrusel automático
-            resetInterval();
-        });
+    window.addEventListener('resize', updateCarousel);
+});
     </script>
 </body>
 </html>
