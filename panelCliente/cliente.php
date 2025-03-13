@@ -199,7 +199,7 @@ $client_data = $result->fetch_assoc();
                         <span>Carrito de Compras</span>
                         <span id="cart-count" class="bg-custom-blue text-white text-xs px-2 py-1 rounded-full"></span>
                     </a>
-                    <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                    <a href="./datosCliente.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Mis Datos
                     </a>
                 </div>
