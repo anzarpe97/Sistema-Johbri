@@ -104,7 +104,7 @@ $foto_producto = obtenerRutasArchivos($producto['id_producto']);
             </div>
 
             <!-- Información del Producto -->
-            <div class="lg:col-span-2 space-y-6">
+            <div class="space-y-6">
                 <div class="flex justify-between items-start">
                     <div>
                         <h1 class="text-2xl font-bold text-gray-900 dark:text-white"><?php echo $producto['nombre_producto']; ?></h1>
@@ -138,18 +138,14 @@ $foto_producto = obtenerRutasArchivos($producto['id_producto']);
                 <?php if ($producto['stock_producto'] > 0): ?>
                 <div class="flex items-center gap-4">
                     <label for="quantity" class="text-gray-700 dark:text-gray-300">Cantidad:</label>
-                    <div class="flex items-center">
-                        <button onclick="updateQuantity(-1)"
-                            class="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-l-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
-                            -
-                        </button>
-                        <input type="number" id="quantity" value="1" min="1" max="<?php echo $producto['stock_producto']; ?>"
-                            class="w-16 text-center border-y border-gray-200 dark:border-gray-700 py-1 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
-                            onchange="validateQuantity(this, <?php echo $producto['stock_producto']; ?>)">
-                        <button onclick="updateQuantity(1)"
-                            class="bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-3 py-1 rounded-r-md hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors duration-200">
-                            +
-                        </button>
+                    <div class="flex items-center border rounded-lg dark:border-gray-600">
+                        <button class="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            onclick="updateQuantity(-1)">-</button>
+                        <input type="text" id="quantity" value="1"
+                            class="w-12 text-center border-x dark:border-gray-600 bg-transparent dark:text-white"
+                            readonly>
+                        <button class="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                            onclick="updateQuantity(1)">+</button>
                     </div>
                 </div>
                 <?php endif; ?>
@@ -181,15 +177,16 @@ $foto_producto = obtenerRutasArchivos($producto['id_producto']);
 
         function updateQuantity(change) {
             const input = document.getElementById('quantity');
-            let value = parseInt(input.value) + change;
-            input.value = value;
-            validateQuantity(input, <?php echo $producto['stock_producto']; ?>);
+            let newValue = parseInt(input.value) + change;
+            validateQuantity(input, <?php echo $producto['stock_producto']; ?>, newValue);
         }
 
-        function validateQuantity(input, maxStock) {
-            let value = parseInt(input.value);
+        function validateQuantity(input, maxStock, value) {
             if (isNaN(value) || value < 1) value = 1;
-            if (value > maxStock) value = maxStock;
+            if (value > maxStock) {
+                alert('No hay suficiente stock disponible');
+                return;
+            }
             input.value = value;
         }
 
