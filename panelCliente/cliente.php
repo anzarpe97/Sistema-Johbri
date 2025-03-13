@@ -288,33 +288,6 @@ $client_data = $result->fetch_assoc();
         <div id="carousel-indicators" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
         </div>
     </div>
-
-        <!-- Catálogo de Productos -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Catálogo de Productos</h3>
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="Buscar productos..." class="px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <button class="bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-custom-blue-light transition-colors">
-                            Buscar
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-                <!-- Producto 1 -->
-                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-4">
-                    <img src="../assets/img/repuesto1.jpg" alt="Filtro de Aceite" class="w-full h-40 object-cover rounded-lg mb-2">
-                    <h3 class="font-semibold text-gray-800 dark:text-white">Filtro de Aceite</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">Código: ABC123</p>
-                    <p class="text-lg font-bold text-custom-blue dark:text-blue-400 mt-2">$25.99</p>
-                    <button class="w-full mt-2 bg-custom-blue text-white py-2 rounded hover:bg-custom-blue-light transition-colors">
-                        Agregar al carrito
-                    </button>
-                </div>
-            </div>
-        </div>
     </main>
 
     <script>
@@ -324,36 +297,36 @@ $client_data = $result->fetch_assoc();
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-    const track = document.getElementById('carousel-track');
-    const slides = Array.from(track.children);
-    const prevButton = document.getElementById('prev-button');
-    const nextButton = document.getElementById('next-button');
-    const totalSlides = slides.length;
-    let currentIndex = 0;
+        const track = document.getElementById('carousel-track');
+        const slides = Array.from(track.children);
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const totalSlides = slides.length;
+        let currentIndex = 0;
 
-    function updateCarousel() {
-        const slideWidth = slides[0].offsetWidth; // Obtener el ancho de un slide
-        track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-    }
+        function updateCarousel() {
+            const slideWidth = slides[0].offsetWidth; // Obtener el ancho de un slide
+            track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+        }
 
-    function nextSlide() {
-        currentIndex = (currentIndex + 1) % totalSlides; // Reiniciar al llegar al último
-        updateCarousel();
-    }
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides; // Reiniciar al llegar al último
+            updateCarousel();
+        }
 
-    function prevSlide() {
-        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; // Ir al último si es negativo
-        updateCarousel();
-    }
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; // Ir al último si es negativo
+            updateCarousel();
+        }
 
-    nextButton.addEventListener('click', nextSlide);
-    prevButton.addEventListener('click', prevSlide);
+        nextButton.addEventListener('click', nextSlide);
+        prevButton.addEventListener('click', prevSlide);
 
-    // Auto-rotación cada 5s
-    setInterval(nextSlide, 5000);
+        // Auto-rotación cada 5s
+        setInterval(nextSlide, 5000);
 
-    window.addEventListener('resize', updateCarousel);
-});
+        window.addEventListener('resize', updateCarousel);
+    });
     </script>
 </body>
 </html>
