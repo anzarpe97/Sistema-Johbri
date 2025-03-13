@@ -28,8 +28,31 @@ $stmt->execute();
 $result = $stmt->get_result();
 $client_data = $result->fetch_assoc();
 
-?>
+// Obtener productos del carrito desde la base de datos
+$cart_items = [];
+$subtotal = 0;
+$total_items = 0;
 
+// Consulta para obtener los productos en el carrito
+$query = "SELECT c.cantidad, p.* FROM carrito c
+        INNER JOIN productos p ON c.producto_id = p.id_producto
+        WHERE c.cliente_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $client_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+while ($item = $result->fetch_assoc()) {
+    $item['subtotal'] = $item['cantidad'] * $item['precio_producto'];
+    $item['foto'] = obtenerRutasArchivos($item['id_producto']);
+    $cart_items[] = $item;
+    $subtotal += $item['subtotal'];
+    $total_items += $item['cantidad'];
+}
+
+$iva = $subtotal * 0.16;
+$total = $subtotal + $iva;
+?>
 <!DOCTYPE html>
 <html lang="es" class="dark">
 
@@ -67,7 +90,9 @@ $client_data = $result->fetch_assoc();
                 </a>
             </div>
             <div class="flex items-center gap-4">
-                <span class="text-sm bg-blue-900 px-3 py-1 rounded-full">Bienvenido, <?php echo htmlspecialchars($client_data['nombre_encargado']); ?></span>
+                <span class="text-sm bg-blue-900 px-3 py-1 rounded-full">
+                    Bienvenido, <?php echo htmlspecialchars($client_data['nombre_encargado']); ?>
+                </span>
                 <button
                     onclick="document.documentElement.classList.toggle('dark')"
                     class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200">
@@ -82,85 +107,96 @@ $client_data = $result->fetch_assoc();
     <!-- Contenido Principal -->
     <main class="pt-24 px-6 pb-20">
         <h2 class="text-2xl font-bold mb-6 dark:text-white">Carrito de Compras</h2>
-        <div class="flex gap-6">
-            <!-- Productos en el carrito -->
-            <div class="flex-grow">
-                <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-6">
-                    <!-- Producto en carrito -->
-                    <div class="flex items-center border-b dark:border-gray-700 pb-4 mb-4">
-                        <img src="../assets/placeholder.jpg" alt="Repuesto" class="w-24 h-24 object-cover rounded-lg">
-                        <div class="ml-4 flex-grow">
-                            <h3 class="text-lg font-semibold dark:text-white">Filtro de Aceite Original Toyota</h3>
-                            <p class="text-gray-600 dark:text-gray-400">Código: TOY-15613-YZZAZ</p>
-                            <div class="flex items-center mt-2">
-                                <div class="flex items-center border rounded-lg dark:border-gray-600">
-                                    <button class="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700" onclick="updateQuantity(this, -1)">-</button>
-                                    <input type="text" value="1" class="w-12 text-center border-x dark:border-gray-600 bg-transparent dark:text-white" readonly>
-                                    <button class="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700" onclick="updateQuantity(this, 1)">+</button>
+
+        <?php if (empty($cart_items)): ?>
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 text-center">
+                <p class="text-gray-600 dark:text-gray-400 mb-4">Tu carrito está vacío</p>
+                <a href="catalogo.php"
+                    class="inline-block bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-colors duration-200">
+                    Ir al Catálogo
+                </a>
+            </div>
+        <?php else: ?>
+            <div class="flex gap-6">
+                <!-- Productos en el carrito -->
+                <div class="flex-grow">
+                    <?php foreach ($cart_items as $item): ?>
+                        <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-6">
+                            <div class="flex items-center border-b dark:border-gray-700 pb-4">
+                                <img src="<?php echo $item['foto']; ?>" alt="<?php echo htmlspecialchars($item['nombre_producto']); ?>"
+                                    class="w-24 h-24 object-cover rounded-lg">
+                                <div class="ml-4 flex-grow">
+                                    <h3 class="text-lg font-semibold dark:text-white">
+                                        <?php echo htmlspecialchars($item['nombre_producto']); ?>
+                                    </h3>
+                                    <p class="text-gray-600 dark:text-gray-400">
+                                        Código: <?php echo htmlspecialchars($item['numero_de_parte']); ?>
+                                    </p>
+                                    <div class="flex items-center mt-2">
+                                        <div class="flex items-center border rounded-lg dark:border-gray-600">
+                                            <button class="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                onclick="updateCartQuantity(<?php echo $item['id_producto']; ?>, -1, <?php echo $item['stock_producto']; ?>)">-</button>
+                                            <input type="text" value="<?php echo $item['cantidad']; ?>"
+                                                class="w-12 text-center border-x dark:border-gray-600 bg-transparent dark:text-white"
+                                                id="quantity_<?php echo $item['id_producto']; ?>" readonly>
+                                            <button class="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                                onclick="updateCartQuantity(<?php echo $item['id_producto']; ?>, 1, <?php echo $item['stock_producto']; ?>)">+</button>
+                                        </div>
+                                        <button onclick="removeFromCart(<?php echo $item['id_producto']; ?>)"
+                                            class="ml-4 text-red-600 hover:text-red-800 dark:hover:text-red-400">
+                                            Eliminar
+                                        </button>
+                                    </div>
                                 </div>
-                                <button class="ml-4 text-red-600 hover:text-red-800 dark:hover:text-red-400">
-                                    Eliminar
-                                </button>
+                                <div class="text-right">
+                                    <p class="text-lg font-semibold dark:text-white">
+                                        $<?php echo number_format($item['subtotal'], 2); ?>
+                                    </p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">
+                                        $<?php echo number_format($item['precio_producto'], 2); ?> c/u
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <p class="text-lg font-semibold dark:text-white">$45.99</p>
-                            <p class="text-sm text-gray-500 dark:text-gray-400">En stock</p>
+                    <?php endforeach; ?>
+                </div>
+
+                <!-- Resumen del pedido -->
+                <div class="w-80">
+                    <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 sticky top-24">
+                        <h3 class="text-lg font-semibold mb-4 dark:text-white">Resumen del pedido</h3>
+                        <div class="space-y-2 mb-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600 dark:text-gray-400">
+                                    Subtotal (<?php echo $total_items; ?> items)
+                                </span>
+                                <span class="font-semibold dark:text-white">
+                                    $<?php echo number_format($subtotal, 2); ?>
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600 dark:text-gray-400">IVA (16%)</span>
+                                <span class="font-semibold dark:text-white">
+                                    $<?php echo number_format($iva, 2); ?>
+                                </span>
+                            </div>
                         </div>
+                        <div class="border-t dark:border-gray-700 pt-4 mb-4">
+                            <div class="flex justify-between">
+                                <span class="font-semibold dark:text-white">Total</span>
+                                <span class="font-semibold text-lg dark:text-white">
+                                    $<?php echo number_format($total, 2); ?>
+                                </span>
+                            </div>
+                        </div>
+                        <button onclick="window.location.href='checkout.php'"
+                            class="w-full bg-custom-blue hover:bg-custom-blue-light text-white py-2 px-4 rounded-lg transition-colors">
+                            Proceder al pago
+                        </button>
                     </div>
                 </div>
             </div>
-
-            <!-- Resumen y productos recomendados -->
-            <div class="w-80">
-                <!-- Resumen del carrito -->
-                <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6 mb-6">
-                    <h3 class="text-lg font-semibold mb-4 dark:text-white">Resumen del pedido</h3>
-                    <div class="space-y-2 mb-4">
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600 dark:text-gray-400">Subtotal (2 items)</span>
-                            <span class="font-semibold dark:text-white">$135.98</span>
-                        </div>
-                        <div class="flex justify-between text-sm">
-                            <span class="text-gray-600 dark:text-gray-400">IVA (16%)</span>
-                            <span class="font-semibold dark:text-white">$21.76</span>
-                        </div>
-                    </div>
-                    <div class="border-t dark:border-gray-700 pt-4 mb-4">
-                        <div class="flex justify-between">
-                            <span class="font-semibold dark:text-white">Total</span>
-                            <span class="font-semibold text-lg dark:text-white">$157.74</span>
-                        </div>
-                    </div>
-                    <button class="w-full bg-custom-blue hover:bg-custom-blue-light text-white py-2 px-4 rounded-lg transition-colors">
-                        Proceder al pago
-                    </button>
-                </div>
-
-                <!-- Productos recomendados -->
-                <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-                    <h3 class="text-lg font-semibold mb-4 dark:text-white">Productos recomendados</h3>
-                    <div class="space-y-4">
-                        <div class="flex items-center">
-                            <img src="../assets/placeholder.jpg" alt="Repuesto recomendado" class="w-16 h-16 object-cover rounded">
-                            <div class="ml-3">
-                                <h4 class="font-medium dark:text-white">Bujías NGK Iridium</h4>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">$12.99/unidad</p>
-                                <button class="text-sm text-custom-blue hover:text-custom-blue-light">Agregar al carrito</button>
-                            </div>
-                        </div>
-                        <div class="flex items-center">
-                            <img src="../assets/placeholder.jpg" alt="Repuesto recomendado" class="w-16 h-16 object-cover rounded">
-                            <div class="ml-3">
-                                <h4 class="font-medium dark:text-white">Aceite Mobil 5W-30</h4>
-                                <p class="text-sm text-gray-600 dark:text-gray-400">$35.99</p>
-                                <button class="text-sm text-custom-blue hover:text-custom-blue-light">Agregar al carrito</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <?php endif; ?>
     </main>
 
     <footer class="bg-custom-blue dark:bg-gray-800 text-white text-center py-4 fixed bottom-0 w-full text-sm">
@@ -168,16 +204,139 @@ $client_data = $result->fetch_assoc();
     </footer>
 
     <script>
+        // Modo oscuro
+        /**
+         * Toggles dark mode based on system preferences
+         */
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
         }
 
-        function updateQuantity(button, change) {
-            const input = button.parentElement.querySelector('input');
-            let value = parseInt(input.value) + change;
-            if (value < 1) value = 1;
-            if (value > 99) value = 99;
-            input.value = value;
+        /**
+         * Updates the quantity of a product in the shopping cart
+         * @param {number} productId - The ID of the product to update
+         * @param {number} change - The amount to change the quantity by (+1 or -1)
+         * @param {number} maxStock - The maximum stock available for this product
+         */
+        function updateCartQuantity(productId, change, maxStock) {
+            const quantityInput = document.getElementById(`quantity_${productId}`);
+            let newQuantity = parseInt(quantityInput.value) + change;
+
+            if (newQuantity < 1) return;
+            if (newQuantity > maxStock) {
+                alert('No hay suficiente stock disponible');
+                return;
+            }
+
+            fetch('../logica/cart-handler.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=update&product_id=${productId}&quantity=${newQuantity}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Update quantity
+                    quantityInput.value = newQuantity;
+
+                    // Find product container and price elements
+                    const productContainer = quantityInput.closest('.bg-white.dark\\:bg-gray-800');
+                    const pricePerUnit = parseFloat(productContainer.querySelector('.text-right .text-sm.text-gray-500').textContent.replace(/[^\d.]/g, ''));
+                    const productSubtotal = (newQuantity * pricePerUnit).toFixed(2);
+
+                    // Update product subtotal
+                    productContainer.querySelector('.text-right .text-lg.font-semibold').textContent = `$${productSubtotal}`;
+
+                    // Calculate cart totals
+                    let cartSubtotal = 0;
+                    let cartItems = 0;
+
+                    // Sum up all products
+                    document.querySelectorAll('.flex-grow .bg-white.dark\\:bg-gray-800').forEach(container => {
+                        const qty = parseInt(container.querySelector('input[type="text"]').value);
+                        const price = parseFloat(container.querySelector('.text-right .text-sm.text-gray-500').textContent.replace(/[^\d.]/g, ''));
+                        cartItems += qty;
+                        cartSubtotal += qty * price;
+                    });
+
+                    const iva = cartSubtotal * 0.16;
+                    const total = cartSubtotal + iva;
+
+                    // Update summary section
+                    const summarySection = document.querySelector('.w-80 .bg-white.dark\\:bg-gray-800');
+                    summarySection.querySelector('.space-y-2 .font-semibold.dark\\:text-white').textContent = `$${cartSubtotal.toFixed(2)}`;
+                    summarySection.querySelector('.space-y-2').children[1].querySelector('.font-semibold.dark\\:text-white').textContent = `$${iva.toFixed(2)}`;
+                    summarySection.querySelector('.border-t .font-semibold.text-lg.dark\\:text-white').textContent = `$${total.toFixed(2)}`;
+                    summarySection.querySelector('.text-gray-600.dark\\:text-gray-400').textContent = `Subtotal (${cartItems} items)`;
+                } else {
+                    alert('Error al actualizar el carrito');
+                    quantityInput.value = parseInt(quantityInput.value) - change;
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al actualizar el carrito');
+                quantityInput.value = parseInt(quantityInput.value) - change;
+            });
+        }
+
+        // Eliminar producto del carrito
+        function removeFromCart(productId) {
+            if (confirm('¿Está seguro que desea eliminar este producto del carrito?')) {
+                fetch('../logica/cart-handler.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `action=remove&product_id=${productId}`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            window.location.reload();
+                        } else {
+                            alert(data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al eliminar del carrito');
+                    });
+            }
+        }
+
+        // Función para recalcular totales
+        function updateTotals() {
+            const subtotalElements = document.querySelectorAll('.bg-white .text-lg.font-semibold');
+            let subtotal = 0;
+            let totalItems = 0;
+
+            // Calcular nuevo subtotal y total de items
+            subtotalElements.forEach(element => {
+                if (element.textContent.includes('$')) {
+                    const amount = parseFloat(element.textContent.replace('$', ''));
+                    subtotal += amount;
+                    const quantity = parseInt(element.closest('.bg-white').querySelector('input[type="text"]').value);
+                    totalItems += quantity;
+                }
+            });
+
+            // Calcular IVA y total
+            const iva = subtotal * 0.16;
+            const total = subtotal + iva;
+
+            // Actualizar valores en el resumen
+            const subtotalDisplay = document.querySelector('.space-y-2 .font-semibold.dark\\:text-white');
+            const ivaDisplay = document.querySelector('.space-y-2').children[1].querySelector('.font-semibold.dark\\:text-white');
+            const totalDisplay = document.querySelector('.border-t .font-semibold.text-lg.dark\\:text-white');
+            const itemCountDisplay = document.querySelector('.text-gray-600.dark\\:text-gray-400');
+
+            if (subtotalDisplay) subtotalDisplay.textContent = `$${subtotal.toFixed(2)}`;
+            if (ivaDisplay) ivaDisplay.textContent = `$${iva.toFixed(2)}`;
+            if (totalDisplay) totalDisplay.textContent = `$${total.toFixed(2)}`;
+            if (itemCountDisplay) itemCountDisplay.textContent = `Subtotal (${totalItems} items)`;
         }
     </script>
 </body>
