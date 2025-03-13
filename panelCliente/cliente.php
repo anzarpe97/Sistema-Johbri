@@ -23,7 +23,7 @@ $client_id = $_SESSION['id'];
 $query = "SELECT nombre_empresa, nombre_encargado, rif FROM clientes WHERE id = ?";
 
 // consulta para productos aleatorios de la bdd
-$sql_productos = "SELECT * FROM productos ORDER BY RAND() LIMIT 4;";
+$sql_productos = "SELECT * FROM productos where stock_producto > 0 ORDER BY RAND() LIMIT 4;";
 $result_productos = $conn->query($sql_productos);
 
 $stmt = $conn->prepare($query);
@@ -195,8 +195,9 @@ $client_data = $result->fetch_assoc();
                     <a href="catalogo.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
                         Catálogo de Productos
                     </a>
-                    <a href="./carrito.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
-                        Carrito de Compras
+                    <a href="./carrito.php" class="flex px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors items-center justify-between">
+                        <span>Carrito de Compras</span>
+                        <span id="cart-count" class="bg-custom-blue text-white text-xs px-2 py-1 rounded-full"></span>
                     </a>
                     <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Mis Datos
@@ -249,8 +250,9 @@ $client_data = $result->fetch_assoc();
                                     </span>
                                 </div>
 
+                                <!-- In the carousel section, change the button onclick to: -->
                                 <button
-                                    onclick="addToCart(<?php echo $row['id_producto']; ?>, '<?php echo $row['nombre_producto']; ?>', <?php echo $row['precio_producto']; ?>)"
+                                    onclick="addToCart(<?php echo $row['id_producto']; ?>)"
                                     class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2"
                                 >
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -290,6 +292,39 @@ $client_data = $result->fetch_assoc();
     </div>
     </main>
 
+    <!-- Productos Destacados -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+        <?php while ($producto = $result_productos->fetch_assoc()): ?>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                <?php
+                $id_producto = $producto['id_producto'];
+                $rutaImagen = obtenerRutasArchivos($id_producto);
+                ?>
+                <img src="<?php echo $rutaImagen; ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 dark:text-white"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-2">Código: <?php echo htmlspecialchars($producto['numero_de_parte']); ?></p>
+                    <p class="text-custom-blue dark:text-blue-400 font-bold mb-4">$<?php echo number_format($producto['precio_producto'], 2); ?></p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <button
+                                onclick="addToCart(<?php echo $producto['id_producto']; ?>)"
+                                class="bg-custom-blue hover:bg-custom-blue-light text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            Stock: <?php echo $producto['stock_producto']; ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        <?php endwhile; ?>
+    </div>
+
     <script>
         // Modo oscuro
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
@@ -327,6 +362,62 @@ $client_data = $result->fetch_assoc();
 
         window.addEventListener('resize', updateCarousel);
     });
+
+    // Función para agregar al carrito
+    // Modify the addToCart function to:
+    function addToCart(productId) {
+        fetch('../logica/cart-handler.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=add&product_id=${productId}&quantity=1`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Mostrar notificación de éxito
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-500';
+                notification.textContent = 'Producto agregado al carrito';
+                document.body.appendChild(notification);
+    
+                // Actualizar contador del carrito
+                updateCartCount();
+    
+                // Eliminar notificación después de 3 segundos
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 500);
+                }, 3000);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al agregar al carrito');
+        });
+    }
+
+    // Función para actualizar el contador del carrito
+    function updateCartCount() {
+        fetch('get_cart_count.php')
+        .then(response => response.json())
+        .then(data => {
+            const cartCount = document.getElementById('cart-count');
+            if (data.count > 0) {
+                cartCount.textContent = data.count;
+                cartCount.style.display = 'inline';
+            } else {
+                cartCount.style.display = 'none';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Actualizar contador del carrito al cargar la página
+    document.addEventListener('DOMContentLoaded', updateCartCount);
     </script>
 </body>
 </html>
