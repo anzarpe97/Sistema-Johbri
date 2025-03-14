@@ -189,7 +189,7 @@ $total = $subtotal + $iva;
                                 </span>
                             </div>
                         </div>
-                        <button onclick="window.location.href='checkout.php'"
+                        <button onclick="createOrder()"
                             class="w-full bg-custom-blue hover:bg-custom-blue-light text-white py-2 px-4 rounded-lg transition-colors">
                             Proceder al pago
                         </button>
@@ -342,3 +342,26 @@ $total = $subtotal + $iva;
 </body>
 
 </html>
+
+<script>
+function createOrder() {
+    if (confirm('¿Está seguro que desea realizar la orden?')) {
+        fetch('../logica/create-order.php', {
+            method: 'POST'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Orden creada exitosamente. El administrador revisará su orden.');
+                window.location.href = 'cliente.php';
+            } else {
+                alert(data.message || 'Error al crear la orden');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al procesar la orden');
+        });
+    }
+}
+</script>

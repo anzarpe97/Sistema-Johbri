@@ -130,10 +130,10 @@
                     </div>
                     <!-- Agregar enlace de olvidaste contraseña -->
                     <div class="flex items-center justify-end">
-                      <a href="olvidarContraseña.php"
+                    <a href="olvidarContraseña.php"
                       class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
                         ¿Olvidaste tu contraseña?
-                      </a>
+                    </a>
                     </div>
                     <div class="flex items-center justify-end">
                       <a href="loginCliente.php"
