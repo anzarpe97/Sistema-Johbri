@@ -128,18 +128,19 @@
                             class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-custom-blue dark:focus:border-blue-500 dark:bg-gray-700 dark:text-white"
                         >
                     </div>
-                    <!-- Agregar enlace de olvidaste contraseña -->
-                    <div class="flex items-center justify-end">
-                      <a href="olvidarContraseña.php"
-                      class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
-                        ¿Olvidaste tu contraseña?
-                      </a>
+                    <!-- Enlaces de navegación -->
+                    <div class="flex items-center justify-between">
+                        <a href="./login.php"
+                        class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
+                            ¿Eres Admin?
+                        </a>
+                        <a href="./olvidarContraseña.php"
+                        class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
+                            ¿Olvidaste tu contraseña?
+                        </a>
                     </div>
                     <div class="flex items-center justify-end">
-                      <a href="login.php"
-                      class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
-                        ¿Eres Admin?
-                      </a>
+
                     </div>
                 </div>
                 <button
