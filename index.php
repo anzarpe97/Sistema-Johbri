@@ -64,7 +64,7 @@
         </div>
         <a
                 href="login-sesion/loginCliente.php"
-                class="px-6 py-2 bg-custom-blue-light text-white dark:bg-custom-blue dark:text-white rounded-full hover:bg-custom-blue dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
+                class="px-8 py-3 text-lg bg-custom-blue-light text-white dark:bg-custom-blue dark:text-white rounded-full hover:bg-custom-blue dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
             >
                 Iniciar Sesión
             </a>
