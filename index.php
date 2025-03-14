@@ -24,7 +24,7 @@
                 linear-gradient(to bottom,
                     rgba(255, 255, 255, 0.85) 0%,
                     rgba(255, 255, 255, 0.85) 100%),
-                url('./images/fondo_home.jpeg');
+                url('../assets/images/fondo_home.jpeg');
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
@@ -35,20 +35,14 @@
                 linear-gradient(to bottom,
                     rgba(17, 24, 39, 0.97) 0%,
                     rgba(17, 24, 39, 0.97) 100%),
-                url('./assets/images/fondo_home.jpeg');
-        }   
+                url('../assets/images/fondo_home.jpeg');
+        }
     </style>
 </head>
 <body class="bg-pattern transition-colors duration-200">
     <nav class="bg-custom-blue/95 backdrop-blur-sm dark:bg-gray-800/95 text-white px-6 py-4 flex justify-between items-center fixed w-full top-0 z-50 shadow-lg">
         <div class="text-xl sm:text-2xl font-bold">Autorepuestos Johbri, C.A.</div>
         <div class="flex items-center gap-4">
-            <a
-                href="login-sesion/loginCliente.php"
-                class="px-6 py-2 bg-white text-custom-blue dark:bg-gray-700 dark:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
-            >
-                Iniciar Sesión
-            </a>
             <button
                 onclick="document.documentElement.classList.toggle('dark')"
                 class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -68,6 +62,12 @@
                 Tu solución integral en repuestos automotrices. Ofrecemos una amplia gama de productos de alta calidad para mantener tu vehículo en óptimas condiciones.
             </p>
         </div>
+        <a
+                href="login-sesion/loginCliente.php"
+                class="px-6 py-2 bg-custom-blue-light text-white dark:bg-custom-blue dark:text-white rounded-full hover:bg-custom-blue dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
+            >
+                Iniciar Sesión
+            </a>
     </main>
 
     <footer class="bg-custom-blue/95 dark:bg-gray-800/95 backdrop-blur-sm text-white text-center py-4 fixed bottom-0 w-full text-sm sm:text-base shadow-lg">
