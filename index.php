@@ -43,17 +43,8 @@
     <nav class="bg-custom-blue/95 backdrop-blur-sm dark:bg-gray-800/95 text-white px-6 py-4 flex justify-between items-center fixed w-full top-0 z-50 shadow-lg">
         <div class="text-xl sm:text-2xl font-bold">Autorepuestos Johbri, C.A.</div>
         <div class="flex items-center gap-4">
-
-
             <a
                 href="login-sesion/loginCliente.php"
-                class="px-6 py-2 bg-white text-custom-blue dark:bg-gray-700 dark:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
-            >
-                cliente
-            </a>
-
-            <a
-                href="login-sesion/login.php"
                 class="px-6 py-2 bg-white text-custom-blue dark:bg-gray-700 dark:text-white rounded-full hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors duration-200 font-semibold shadow-md"
             >
                 Iniciar Sesión
@@ -76,20 +67,6 @@
             <p class="text-xl sm:text-2xl text-gray-700 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed mb-12">
                 Tu solución integral en repuestos automotrices. Ofrecemos una amplia gama de productos de alta calidad para mantener tu vehículo en óptimas condiciones.
             </p>
-            <div class="space-y-4 sm:space-y-0 sm:space-x-4 flex flex-col sm:flex-row items-center justify-center">
-                <a
-                    href="#contacto"
-                    class="px-8 py-3 bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white rounded-full transition-all duration-300 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                >
-                    Habla con nosotros
-                </a>
-                <a
-                    href="./sistema.html"
-                    class="px-8 py-3 bg-white hover:bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-full transition-all duration-300 text-lg font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                >
-                Explora nuestra tienda
-                </a>
-            </div>
         </div>
     </main>
 

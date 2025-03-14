@@ -91,7 +91,7 @@
               </div>
           </div>
     <h2 class="text-3xl font-semibold mb-6 text-center text-custom-blue dark:text-white">Recuperar Contraseña</h2>
-    <form id="passwordRecoveryForm" action="recuperar-contraseña.php" method="POST" onsubmit="showSuccessMessage(event)">
+    <form id="passwordRecoveryForm" action="../logica/enviar-contraseña.php" method="GET" onsubmit="showSuccessMessage(event)">
       <div class="mb-5">
         <label for="email" class="block text-gray-700 dark:text-gray-200 font-medium mb-2">Correo Electrónico:</label>
         <input type="email" id="email" name="email" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-custom-blue dark:focus:border-blue-500 dark:bg-gray-700 dark:text-white" required>

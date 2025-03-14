@@ -135,6 +135,12 @@
                         ¿Olvidaste tu contraseña?
                       </a>
                     </div>
+                    <div class="flex items-center justify-end">
+                      <a href="login.php"
+                      class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
+                        ¿Eres Admin?
+                      </a>
+                    </div>
                 </div>
                 <button
                     type="submit"
@@ -146,7 +152,7 @@
                 </button>
             </form>
             <div class="mt-4    text-center">
-                <a href="index.html" class="text-custom-blue dark:text-blue-400 hover:underline text-sm">
+                <a href="../index.php" class="text-custom-blue dark:text-blue-400 hover:underline text-sm">
                     Volver al inicio
                 </a>
             </div>

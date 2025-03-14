@@ -100,7 +100,7 @@
             </div>
 
             <h2 class="text-2xl font-bold text-custom-blue dark:text-white text-center mb-6">
-                Iniciar Sesión
+                Iniciar Sesión - Admin
             </h2>
             <form class="space-y-6" action="../logica/loguear.php" method="POST"">
                 <div class="space-y-4">
@@ -135,6 +135,13 @@
                         ¿Olvidaste tu contraseña?
                       </a>
                     </div>
+                    <div class="flex items-center justify-end">
+                      <a href="loginCliente.php"
+                      class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
+                        ¿Eres cliente?
+                      </a>
+                    </div>
+
                 </div>
                 <button
                     type="submit"
@@ -146,7 +153,7 @@
                 </button>
             </form>
             <div class="mt-4 text-center">
-                <a href="index.html" class="text-custom-blue dark:text-blue-400 hover:underline text-sm">
+                <a href="../index.php" class="text-custom-blue dark:text-blue-400 hover:underline text-sm">
                     Volver al inicio
                 </a>
             </div>
