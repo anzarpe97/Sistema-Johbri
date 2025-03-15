@@ -6,6 +6,28 @@ include 'validar.php';
 $id = $_GET['id_producto'];
 $id_producto = obtenerIdProducto($id);
 
+// Eliminar fotos de la carpeta
+$foto_path = "../assets/foto-repuestos/";
+$foto_query = "SELECT ruta_foto FROM foto_productos WHERE id_producto = ?";
+if ($stmt_foto = $conn->prepare($foto_query)) {
+    $stmt_foto->bind_param("i", $id_producto);
+    $stmt_foto->execute();
+    $stmt_foto->bind_result($nombre_foto);
+    while ($stmt_foto->fetch()) {
+        $file = $nombre_foto;
+        if (file_exists($file)) {
+
+           
+            if (!unlink($file)) {
+                error_log("Error al eliminar la foto: " . $file);
+            }
+        } else {
+            error_log("La foto no existe: " . $file);
+        }
+    }
+    $stmt_foto->close();
+}
+
 $sql = "DELETE FROM foto_productos WHERE id_producto = ?";
 
 if ($stmt = $conn->prepare($sql)) {

@@ -116,7 +116,7 @@ if ($result->num_rows > 0) {
                 </div>
                 <div class="space-y-1">
                     <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Clientes</div>
-                    <a href="./clientes.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                    <a href="verClientes.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Clientes
                     </a>
                     <a href="./agregarCliente.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">

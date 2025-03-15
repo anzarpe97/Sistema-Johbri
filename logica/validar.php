@@ -294,7 +294,7 @@ require 'conexionbdd.php';
         $conn = new mysqli('localhost', 'root', '', 'repuestos_johbri');
             if ($archivo['error'] === UPLOAD_ERR_OK) {
         
-                $nombre_variable = $_POST['num_parte']." - 1";// Asumiendo que se envía a través de un formulario
+                $nombre_variable = $_POST['num_parte']." - ". $fotonum;
         
                 $nombre_archivo = $nombre_variable . "." . pathinfo($archivo['name'], PATHINFO_EXTENSION);
                 $tipo_archivo = $archivo['type'];
