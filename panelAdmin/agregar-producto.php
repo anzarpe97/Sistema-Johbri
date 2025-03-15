@@ -269,119 +269,108 @@ $success_message = isset($_GET['success_message']) ? $_GET['success_message'] : 
                                 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"></textarea>
                     </div>
 
-                    <!-- Imágenes -->
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                            Imágenes del Producto (Máximo 4)
-                        </label>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <!-- Imagen 1 -->
-                            <div class="flex justify-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
-                                <div class="space-y-1 text-center">
-                                    <div id="preview-1" class="hidden">
-                                        <img class="mx-auto h-24 w-24 object-cover rounded-lg" src="" alt="Vista previa">
-                                        <button onclick="removeImage(1)" class="mt-2 text-xs text-red-500 hover:text-red-700">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                    <div id="upload-1">
-                                        <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <div class="flex text-xs text-gray-600 dark:text-gray-400">
-                                            <label for="file-upload-1" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
-                                                <span>Imagen 1</span>
-                                                <input id="file-upload-1" name="file-upload-1" type="file" class="sr-only" accept="image/*" onchange="previewImage(this, 1)">
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div id="error-1" class="hidden">
-                                        <p class="text-xs text-red-500"></p>
-                                    </div>
-                                </div>
-                            </div>
+<!-- Contenedor de imágenes -->
+<div class="flex flex-wrap justify-center gap-4">
+    <!-- Imagen 1 -->
+    <div class="flex flex-col items-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+        <div id="preview-1" class="hidden">
+            <img class="mx-auto h-24 w-24 object-cover rounded-lg" src="" alt="Vista previa">
+            <button type="button" onclick="removeImage(1)" class="mt-2 text-xs text-red-500 hover:text-red-700">
+                Eliminar
+            </button>
+        </div>
+        <div id="upload-1">
+            <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="flex text-xs text-gray-600 dark:text-gray-400">
+                <label for="file-upload-1" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
+                    <span>Imagen 1</span>
+                    <input id="file-upload-1" name="file-upload-1" type="file" class="sr-only" accept="image/*" onchange="previewImage(this, 1)">
+                </label>
+            </div>
+        </div>
+        <div id="error-1" class="hidden">
+            <p class="text-xs text-red-500"></p>
+        </div>
+    </div>
 
-                            <!-- Imagen 2 -->
-                            <div class="flex justify-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
-                                <div class="space-y-1 text-center">
-                                    <div id="preview-2" class="hidden">
-                                        <img class="mx-auto h-24 w-24 object-cover rounded-lg" src="" alt="Vista previa">
-                                        <button onclick="removeImage(2)" class="mt-2 text-xs text-red-500 hover:text-red-700">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                    <div id="upload-2">
-                                        <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <div class="flex text-xs text-gray-600 dark:text-gray-400">
-                                            <label for="file-upload-2" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
-                                                <span>Imagen 2</span>
-                                                <input id="file-upload-2" name="file-upload-2" type="file" class="sr-only" accept="image/*" onchange="previewImage(this, 2)">
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div id="error-2" class="hidden">
-                                        <p class="text-xs text-red-500"></p>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Imagen 2 -->
+    <div class="flex flex-col items-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+        <div id="preview-2" class="hidden">
+            <img class="mx-auto h-24 w-24 object-cover rounded-lg" src="" alt="Vista previa">
+            <button type="button" onclick="removeImage(2)" class="mt-2 text-xs text-red-500 hover:text-red-700">
+                Eliminar
+            </button>
+        </div>
+        <div id="upload-2">
+            <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="flex text-xs text-gray-600 dark:text-gray-400">
+                <label for="file-upload-2" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
+                    <span>Imagen 2</span>
+                    <input id="file-upload-2" name="file-upload-2" type="file" class="sr-only" accept="image/*" onchange="previewImage(this, 2)">
+                </label>
+            </div>
+        </div>
+        <div id="error-2" class="hidden">
+            <p class="text-xs text-red-500"></p>
+        </div>
+    </div>
 
-                            <!-- Imagen 3 -->
-                            <div class="flex justify-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
-                                <div class="space-y-1 text-center">
-                                    <div id="preview-3" class="hidden">
-                                        <img class="mx-auto h-24 w-24 object-cover rounded-lg" src="" alt="Vista previa">
-                                        <button onclick="removeImage(3)" class="mt-2 text-xs text-red-500 hover:text-red-700">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                    <div id="upload-3">
-                                        <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <div class="flex text-xs text-gray-600 dark:text-gray-400">
-                                            <label for="file-upload-3" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
-                                                <span>Imagen 3</span>
-                                                <input id="file-upload-3" name="file-upload-3" type="file" class="sr-only" accept="image/*" onchange="previewImage(this, 3)">
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div id="error-3" class="hidden">
-                                        <p class="text-xs text-red-500"></p>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Imagen 3 -->
+    <div class="flex flex-col items-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+        <div id="preview-3" class="hidden">
+            <img class="mx-auto h-24 w-24 object-cover rounded-lg" src="" alt="Vista previa">
+            <button type="button" onclick="removeImage(3)" class="mt-2 text-xs text-red-500 hover:text-red-700">
+                Eliminar
+            </button>
+        </div>
+        <div id="upload-3">
+            <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="flex text-xs text-gray-600 dark:text-gray-400">
+                <label for="file-upload-3" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
+                    <span>Imagen 3</span>
+                    <input id="file-upload-3" name="file-upload-3" type="file" class="sr-only" accept="image/*" onchange="previewImage(this, 3)">
+                </label>
+            </div>
+        </div>
+        <div id="error-3" class="hidden">
+            <p class="text-xs text-red-500"></p>
+        </div>
+    </div>
 
-                            <!-- Imagen 4 -->
-                            <div class="flex justify-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
-                                <div class="space-y-1 text-center">
-                                    <div id="preview-4" class="hidden">
-                                        <img class="mx-auto h-24 w-24 object-cover rounded-lg" src="" alt="Vista previa">
-                                        <button onclick="removeImage(4)" class="mt-2 text-xs text-red-500 hover:text-red-700">
-                                            Eliminar
-                                        </button>
-                                    </div>
-                                    <div id="upload-4">
-                                        <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                                            <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                                        </svg>
-                                        <div class="flex text-xs text-gray-600 dark:text-gray-400">
-                                            <label for="file-upload-4" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
-                                                <span>Imagen 4</span>
-                                                <input id="file-upload-4" name="file-upload-4" type="file" class="sr-only" accept="image/*" onchange="previewImage(this, 4)">
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div id="error-4" class="hidden">
-                                        <p class="text-xs text-red-500"></p>
-                                    </div>
-                                </div>
-                            </div>
+    <!-- Imagen 4 -->
+    <div class="flex flex-col items-center px-4 pt-3 pb-3 border-2 border-gray-300 dark:border-gray-600 border-dashed rounded-md">
+        <div id="preview-4" class="hidden">
+            <img class="mx-auto h-24 w-24 object-cover rounded-lg" src="" alt="Vista previa">
+            <button type="button" onclick="removeImage(4)" class="mt-2 text-xs text-red-500 hover:text-red-700">
+                Eliminar
+            </button>
+        </div>
+        <div id="upload-4">
+            <svg class="mx-auto h-8 w-8 text-gray-400" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <div class="flex text-xs text-gray-600 dark:text-gray-400">
+                <label for="file-upload-4" class="relative cursor-pointer rounded-md font-medium text-custom-blue hover:text-custom-blue-light">
+                    <span>Imagen 4</span>
+                    <input id="file-upload-4" name="file-upload-4" type="file" class="sr-only" accept="image/*" onchange="previewImage(this, 4)">
+                </label>
+            </div>
+        </div>
+        <div id="error-4" class="hidden">
+            <p class="text-xs text-red-500"></p>
+        </div>
+    </div>
+</div>
                         </div>
                         <p class="text-xs text-gray-500 dark:text-gray-400 mt-2">
                             Formatos permitidos: PNG, JPG, GIF. Tamaño máximo: 10MB por imagen

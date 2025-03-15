@@ -264,6 +264,95 @@ require 'conexionbdd.php';
         }
     }
 
+    function obtenerIdProducto($numeroParte) {
+        $conexion = new mysqli("localhost", "root", "", "repuestos_johbri");
+    
+        if ($conexion->connect_error) {
+            die("Error de conexión: " . $conexion->connect_error);
+        }
+    
+        $sql = "SELECT id_producto FROM productos WHERE numero_de_parte = ?";
+        $stmt = $conexion->prepare($sql);
+        $stmt->bind_param("s", $numeroParte);
+        $stmt->execute();
+        $resultado = $stmt->get_result();
+    
+        if ($resultado->num_rows > 0) {
+            $fila = $resultado->fetch_assoc();
+            $id_producto = $fila['id_producto'];
+        } else {
+            $id_producto = null;
+        }
+    
+        $stmt->close();
+        $conexion->close();
+    
+        return $id_producto;
+    }
+
+    function insertarFotos($archivo, $fotonum, $id_producto) {
+        $conn = new mysqli('localhost', 'root', '', 'repuestos_johbri');
+            if ($archivo['error'] === UPLOAD_ERR_OK) {
+        
+                $nombre_variable = $_POST['num_parte']." - ". $fotonum;
+        
+                $nombre_archivo = $nombre_variable . "." . pathinfo($archivo['name'], PATHINFO_EXTENSION);
+                $tipo_archivo = $archivo['type'];
+                $tamano_archivo = $archivo['size'];
+                $ruta_temporal = $archivo['tmp_name'];
+        
+                $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
+                $tamano_maximo = 10 * 1024 * 1024;
+        
+                if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
+        
+                    $ruta_destino = '../assets/foto-repuestos/' . $nombre_archivo;
+                    if (move_uploaded_file($ruta_temporal, $ruta_destino)) {
+        
+                        $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, ?, ?)");
+                        $stmt->bind_param("ssi", $ruta_destino, $fotonum, $id_producto); 
+                        $stmt->execute();
+        
+                        $stmt->close();
+                        $conn->close();
+        
+                    } else {
+                        echo "Error al mover el archivo.";
+                    }
+                } else {
+                    echo "Error: Tipo de archivo no permitido o tamaño excedido.";
+                }
+        
+            } else {
+                switch ($archivo['error']) {
+                    case UPLOAD_ERR_INI_SIZE:
+                        echo "Error: El archivo excede el tamaño máximo permitido por PHP.";
+                        break;
+                    case UPLOAD_ERR_FORM_SIZE:
+                        echo "Error: El archivo excede el tamaño máximo permitido por el formulario.";
+                        break;
+                    case UPLOAD_ERR_PARTIAL:
+                        echo "Error: El archivo fue subido parcialmente.";
+                        break;
+                    case UPLOAD_ERR_NO_FILE:
+                        echo "Error: No se ha subido ningún archivo.";
+                        break;
+                    case UPLOAD_ERR_NO_TMP_DIR:
+                        echo "Error: No se ha encontrado la carpeta temporal.";
+                        break;
+                    case UPLOAD_ERR_CANT_WRITE:
+                        echo "Error: No se pudo escribir el archivo en el disco.";
+                        break;
+                    case UPLOAD_ERR_EXTENSION:
+                        echo "Error: Una extensión de PHP impidió la subida del archivo.";
+                        break;
+                    default:
+                        echo "Error desconocido al subir el archivo.";
+                }
+            }
+        } 
+
+        
 
 ?>
 

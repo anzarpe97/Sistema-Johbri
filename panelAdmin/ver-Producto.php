@@ -35,6 +35,8 @@ if (isset($_GET['search'])) {
 }
 
 $result = $conn->query($sql);
+$success_message = isset($_GET['success_message']) ? $_GET['success_message'] : '';
+
 
 ?>
 
@@ -59,7 +61,39 @@ $result = $conn->query($sql);
         }
     </script>
 </head>
+
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+                  <!-- Alerta de éxito -->
+    <?php if ($success_message): ?>
+        <div id="alertaExito" class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-300 ease-in-out">
+            <div class="max-w-4xl mx-auto mt-20 p-4 rounded-md bg-green-50 dark:bg-green-900 border border-green-500">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <!-- Ícono de éxito -->
+                        <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.707a1 1 0 011.414 0L10 12.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-green-700 dark:text-green-200"><?php echo htmlspecialchars($success_message); ?></p>
+                    </div>
+                    <div class="ml-auto pl-3">
+                        <div class="-mx-1.5 -my-1.5">
+                            <button onclick="cerrarAlertaExito()" class="inline-flex rounded-md p-1.5 text-green-500 hover:bg-green-100 dark:hover:bg-green-800 transition-colors duration-200">
+                                <span class="sr-only">Cerrar</span>
+                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
     <!-- Navbar -->
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
@@ -85,7 +119,9 @@ $result = $conn->query($sql);
 
     <!-- Contenido Princpal -->
     <main class="pt-24 px-6 pb-20">
-        <!-- Filtros -->
+        
+
+
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <form method="GET" action="ver-Producto.php" class="flex flex-col sm:flex-row gap-4 items-end">
                 <div class="w-full sm:w-1/3">
@@ -115,7 +151,7 @@ $result = $conn->query($sql);
                 <div class="flex items-center">
                     <span class="text-lg font-semibold">Productos Agotados</span>
                 </div>
-                <svg id="arrow-sin-stock" class="w-5 h-5 transform rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="arrow-sin-stock" class="w-5 h-5 transform rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
             </button>
@@ -173,7 +209,7 @@ $result = $conn->query($sql);
                                             Editar
                                         </a>
                                         <!--colocar accion -->
-                                        <a href="#" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal()">
+                                        <a href="../logica/eliminar-producto.php?id_producto=<?php echo $row_2['numero_de_parte']; ?>" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal(event)">
                                             Eliminar
                                         </a>
                                     </div>
@@ -184,7 +220,7 @@ $result = $conn->query($sql);
                                             <p class="text-gray-700 dark:text-gray-300 mb-6">¿Estás seguro de que deseas eliminar este producto?</p>
                                             <div class="flex justify-end space-x-4">
                                                 <button onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Cancelar</button>
-                                                <a href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
+                                                <a id="deleteLink" href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
                                             </div>
                                         </div>
                                     </div>
@@ -274,7 +310,7 @@ $result = $conn->query($sql);
                                             Editar
                                         </a>
                                         <!--colocar accion con numero de parte-->
-                                        <a href="#" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal()">
+                                        <a href="../logica/eliminar-producto.php?id_producto=<?php echo $row['numero_de_parte']; ?>" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal(event)">
                                             Eliminar
                                         </a>
                                     </div>
@@ -285,12 +321,12 @@ $result = $conn->query($sql);
                                             <p class="text-gray-700 dark:text-gray-300 mb-6">¿Estás seguro de que deseas eliminar este producto?</p>
                                             <div class="flex justify-end space-x-4">
                                                 <button onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Cancelar</button>
-                                                <a href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
+                                                <a id="deleteLink" href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
                                             </div>
                                         </div>
                                     </div>
                             </td>
-                            </a>
+                            </a>    
                         </tr>
                         <?php
                             } // Cierre del while
@@ -323,13 +359,29 @@ $result = $conn->query($sql);
             }
         }
         // Función para abrir y cerrar la confirmacion de eliminacion
-        function openModal() {
-        document.getElementById('deleteModal').classList.remove('hidden');
+        function openModal(event) {
+            event.preventDefault();
+            const deleteLink = event.target.closest('a').getAttribute('href');
+            document.getElementById('deleteLink').setAttribute('href', deleteLink + '&deleted=true');
+            document.getElementById('deleteModal').classList.remove('hidden');
         }
 
         function closeModal() {
             document.getElementById('deleteModal').classList.add('hidden');
         }
+
+        function cerrarAlertaExito() {
+            const alertaExito = document.getElementById('alertaExito');
+            alertaExito.classList.add('-translate-y-full');
+        }
+
+        <?php if ($success_message): ?>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alertaExito = document.getElementById('alertaExito');
+        alertaExito.classList.remove('-translate-y-full');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+<?php endif; ?>
     </script>
 </body>
 </html>
