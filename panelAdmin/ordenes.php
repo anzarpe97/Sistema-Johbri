@@ -300,12 +300,6 @@ $result_aprobadas = $conn->query($sql_aprobadas);
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
-                            <?php else: ?>
-                                <tr>
-                                    <td colspan="6" class="px-6 py-4 text-center text-gray-500 dark:text-gray-400">
-                                        No hay órdenes pendientes
-                                    </td>
-                                </tr>
                             <?php endif; ?>
                         </tbody>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
