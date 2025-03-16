@@ -18,7 +18,7 @@ else{
 
 $_SESSION['time'] = time();
 
-// Fetch pending orders
+// obtener ordenes pendientes
 $sql_pendientes = "SELECT o.id_orden, o.fecha_creacion, o.estado, c.nombre_empresa,
                      SUM(d.cantidad * d.precio_unitario) as total
                 FROM ordenes o
@@ -29,7 +29,7 @@ $sql_pendientes = "SELECT o.id_orden, o.fecha_creacion, o.estado, c.nombre_empre
                 ORDER BY o.fecha_creacion DESC";
 $result_pendientes = $conn->query($sql_pendientes);
 
-// Fetch approved orders
+// obtener ordenes aprobadas
 $sql_aprobadas = "SELECT o.id_orden, o.fecha_creacion, o.estado, c.nombre_empresa,
                   SUM(d.cantidad * d.precio_unitario) as total
                 FROM ordenes o
@@ -165,8 +165,8 @@ $result_aprobadas = $conn->query($sql_aprobadas);
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex space-x-2">
-                                                <a href="detalleOrden.php?orden_id=<?php echo $row['id_orden']; ?>"
-                                                   class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300"
+                                                <a href="detalleOrden.php?id=<?php echo $row['id_orden']; ?>"
+                                                class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300"
                                                 title="Ver detalles">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -274,13 +274,16 @@ $result_aprobadas = $conn->query($sql_aprobadas);
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex space-x-2">
-                                                <a href="detalleOrden.php?orden_id=<?php echo $row['id_orden']; ?>"
-                                                   class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300"
-                                                title="Ver detalles">
+                                                <a href="detalleOrden.php?id_orden=<?php echo $row['id_orden']; ?>"
+                                                <a href="javascript:void(0)"
+                                                    onclick="verDetalleOrden(<?php echo $row['id_orden']; ?>)"
+                                                    class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300"
+                                                    title="Ver detalles">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
                                                     </svg>
+                                                </a>
                                                 </a>
                                                 <button onclick="aprobarOrden(<?php echo $row['id_orden']; ?>)"
                                                         class="text-green-500 hover:text-green-600 dark:text-green-400 dark:hover:text-green-300"
@@ -333,7 +336,7 @@ $result_aprobadas = $conn->query($sql_aprobadas);
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex space-x-2">
-                                                <a href="detalleOrden.php?orden_id=<?php echo $row['id_orden']; ?>"
+                                                <a href="detalleOrden.php?id=<?php echo $row['id_orden']; ?>"
                                                    class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300"
                                                 title="Ver detalles">
                                                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -374,4 +377,15 @@ function rechazarOrden(id) {
         window.location.href = `../logica/rechazar-orden.php?id=${id}`;
     }
 }
+
+function toggleAprobadas() {
+    var listaAprobadas = document.getElementById('lista-aprobadas');
+    var arrowAprobadas = document.getElementById('arrow-aprobadas');
+}
+
+function togglePendientes(){
+    var listaPendientes = document.getElementById('lista-pendientes');
+    var arrowPendientes = document.getElementById('arrow-pendientes');
+}
+
 </script>
