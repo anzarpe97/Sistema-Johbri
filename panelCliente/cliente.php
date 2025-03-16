@@ -189,10 +189,10 @@ $client_data = $result->fetch_assoc();
                 </a>
                 <div class="space-y-1">
                     <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Mi Cuenta</div>
-                    <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
+                    <a href="./comprasCliente.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
                         Mis Compras
                     </a>
-                    <a href="catalogo.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
+                    <a href="./catalogo.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
                         Catálogo de Productos
                     </a>
                     <a href="./carrito.php" class="flex px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors items-center justify-between">

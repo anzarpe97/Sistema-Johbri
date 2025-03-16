@@ -56,6 +56,18 @@ if ($result->num_rows > 0) {
     $usuarios_activos = 0;
 }
 
+// Add this after the other SQL queries, around line 45
+// Obtener la cantidad de órdenes pendientes
+$sql = "SELECT COUNT(*) FROM ordenes WHERE estado = 'pendiente'";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    $row = $result->fetch_assoc();
+    $ordenes_pendientes = $row["COUNT(*)"];
+} else {
+    $ordenes_pendientes = 0;
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -204,7 +216,7 @@ if ($result->num_rows > 0) {
                         </div>
                         <div class="ml-4">
                             <h2 class="text-gray-600 dark:text-gray-400 text-sm">Órdenes pendientes</h2>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-white">php aqui</p>
+                            <p class="text-2xl font-semibold text-gray-800 dark:text-white"><?php echo $ordenes_pendientes; ?></p>
                         </div>
                     </div>
                 </a>
