@@ -1,36 +1,90 @@
 <?php
-require '../logica/conexionbdd.php';
-require '../vendor/autoload.php';
+require '../vendor/autoload.php'; // Cargar DOMPDF
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
-// Configurar DOMPDF
+// Configuración de DOMPDF
 $options = new Options();
-$options->set('isHtml5ParserEnabled', true);
-$options->set('isRemoteEnabled', true);
+$options->set('isRemoteEnabled', true); // Permitir cargar recursos remotos como fuentes o imágenes
 $dompdf = new Dompdf($options);
 
-// Datos de la factura (puedes obtener estos datos de tu base de datos)
-$factura = [
-    'numero' => '12345',
-    'fecha' => '2025-03-15',
-    'cliente' => 'Juan Pérez',
-    'direccion' => 'Calle Falsa 123, Ciudad, País',
-    'productos' => [
-        ['descripcion' => 'Producto 1', 'cantidad' => 2, 'precio' => 10.00],
-        ['descripcion' => 'Producto 2', 'cantidad' => 1, 'precio' => 20.00],
-        ['descripcion' => 'Producto 3', 'cantidad' => 3, 'precio' => 15.00],
-    ],
+// Datos de la factura
+$productos = [
+    ['nombre' => 'Producto A', 'cantidad' => 2, 'precio' => 100],
+    ['nombre' => 'Producto B', 'cantidad' => 1, 'precio' => 150],
+    ['nombre' => 'Producto C', 'cantidad' => 3, 'precio' => 50],
 ];
 
-// Calcular el total y el IVA
-$total = 0;
-foreach ($factura['productos'] as $producto) {
-    $total += $producto['precio'] * $producto['cantidad'];
+$subtotal = 0;
+foreach ($productos as $producto) {
+    $subtotal += $producto['cantidad'] * $producto['precio'];
 }
-$iva = $total * 0.16;
-$total_con_iva = $total + $iva;
+$iva = $subtotal * 0.16; // IVA al 16%
+$total = $subtotal + $iva;
+
+// Tailwind CSS styles
+$tailwindCSS = '
+<style>
+@import url("https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css");
+
+body {
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+h1, h2, h3 {
+    color: #1a202c;
+}
+
+table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.5rem;
+    border: 1px solid #e2e8f0;
+}
+
+th {
+    background-color: #edf2f7;
+    font-weight: 600;
+}
+
+tr:nth-child(even) {
+    background-color: #f7fafc;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.container {
+    width: 100%;
+    padding: 2rem;
+    box-sizing: border-box;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.logo {
+    max-width: 150px;
+}
+</style>
+';
 
 // HTML de la factura
 $html = '
@@ -40,93 +94,84 @@ $html = '
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Factura</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        body { font-family: Arial, sans-serif; }
-        .invoice-box { max-width: 800px; margin: auto; padding: 30px; border: 1px solid #eee; box-shadow: 0 0 10px rgba(0, 0, 0, 0.15); }
-        .invoice-box table { width: 100%; line-height: inherit; text-align: left; }
-        .invoice-box table td { padding: 5px; vertical-align: top; }
-        .invoice-box table tr td:nth-child(2) { text-align: right; }
-        .invoice-box table tr.top table td { padding-bottom: 20px; }
-        .invoice-box table tr.information table td { padding-bottom: 40px; }
-        .invoice-box table tr.heading td { background: #eee; border-bottom: 1px solid #ddd; font-weight: bold; }
-        .invoice-box table tr.details td { padding-bottom: 20px; }
-        .invoice-box table tr.item td { border-bottom: 1px solid #eee; }
-        .invoice-box table tr.item.last td { border-bottom: none; }
-        .invoice-box table tr.total td:nth-child(2) { border-top: 2px solid #eee; font-weight: bold; }
-    </style>
+    ' . $tailwindCSS . '
 </head>
-<body>
-    <div class="invoice-box">
-        <table cellpadding="0" cellspacing="0">
-            <tr class="top">
-                <td colspan="2">
-                    <table>
-                        <tr>
-                            <td class="title">
-                                <h2>Factura</h2>
-                            </td>
-                            <td>
-                                Número de Factura: ' . $factura['numero'] . '<br>
-                                Fecha: ' . $factura['fecha'] . '
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr class="information">
-                <td colspan="2">
-                    <table>
-                        <tr>
-                            <td>
-                                ' . $factura['cliente'] . '<br>
-                                ' . $factura['direccion'] . '
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr class="heading">
-                <td>Descripción</td>
-                <td>Precio</td>
-            </tr>';
+<body class="bg-gray-100">
+    <div class="container bg-white shadow-lg rounded-lg w-full h-full" style="min-height: 100vh;">
+        <!-- Header -->
+        <div class="header">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Factura</h1>
+                <p class="text-sm text-gray-500">Fecha: ' . date('d/m/Y') . '</p>
+            </div>
+            <div class="flex justify-end">
+                <img src="../images/Logo1.jpg" alt="Logo de la Empresa" class="logo" style="max-width: 150px;">
+            </div>
+        </div>
 
-foreach ($factura['productos'] as $producto) {
-    $html .= '
-            <tr class="item">
-                <td>' . $producto['descripcion'] . ' (x' . $producto['cantidad'] . ')</td>
-                <td>$' . number_format($producto['precio'] * $producto['cantidad'], 2) . '</td>
-            </tr>';
-}
+        <!-- Cliente -->
+        <div class="mb-6">
+            <h3 class="text-lg font-semibold text-gray-700">Datos del Cliente</h3>
+            <p class="text-sm text-gray-500">Nombre: Juan Pérez</p>
+            <p class="text-sm text-gray-500">Dirección: Calle Falsa 123</p>
+        </div>
 
+        <!-- Tabla de productos -->
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-200 text-gray-700">
+                        <th class="py-2 px-4 border">Producto</th>
+                        <th class="py-2 px-4 border">Cantidad</th>
+                        <th class="py-2 px-4 border">Precio Unitario</th>
+                        <th class="py-2 px-4 border">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>';
+                foreach ($productos as $producto) {
+                    $subtotal_producto = $producto['cantidad'] * $producto['precio'];
+                    $html .= '
+                    <tr>
+                        <td class="py-2 px-4 border">' . $producto['nombre'] . '</td>
+                        <td class="py-2 px-4 border text-center">' . $producto['cantidad'] . '</td>
+                        <td class="py-2 px-4 border text-right">$' . number_format($producto['precio'], 2) . '</td>
+                        <td class="py-2 px-4 border text-right">$' . number_format($subtotal_producto, 2) . '</td>
+                    </tr>';
+                }
 $html .= '
-            <tr class="total">
-                <td></td>
-                <td>Subtotal: $' . number_format($total, 2) . '</td>
-            </tr>
-            <tr class="total">
-                <td></td>
-                <td>IVA (16%): $' . number_format($iva, 2) . '</td>
-            </tr>
-            <tr class="total">
-                <td></td>
-                <td>Total: $' . number_format($total_con_iva, 2) . '</td>
-            </tr>
-        </table>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Totales -->
+        <div class="mt-6 text-right">
+            <div class="flex justify-end items-center">
+                <p class="text-gray-700 font-semibold">Subtotal:</p>
+                <p class="ml-4 text-gray-800 font-bold">$' . number_format($subtotal, 2) . '</p>
+            </div>
+            <div class="flex justify-end items-center mt-2">
+                <p class="text-gray-700 font-semibold">IVA (16%):</p>
+                <p class="ml-4 text-gray-800 font-bold">$' . number_format($iva, 2) . '</p>
+            </div>
+            <div class="flex justify-end items-center mt-2">
+                <p class="text-gray-700 font-semibold">Total:</p>
+                <p class="ml-4 text-gray-800 font-bold">$' . number_format($total, 2) . '</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 text-center text-gray-500 text-sm">
+            <p>Gracias por tu compra</p>
+            <p>Tu Empresa © ' . date('Y') . '</p>
+        </div>
     </div>
 </body>
 </html>';
 
-// Cargar el HTML en DOMPDF
+// Generar el PDF
 $dompdf->loadHtml($html);
-
-// (Opcional) Configurar el tamaño del papel y la orientación
-$dompdf->setPaper('A4', 'portrait');
-
-// Renderizar el HTML como PDF
+$dompdf->setPaper('A4', 'portrait'); // Configurar tamaño y orientación del papel
 $dompdf->render();
 
-// Enviar el PDF generado al navegador
-$dompdf->stream("factura_" . $factura['numero'] . ".pdf", ["Attachment" => false]);
-
-?>  
+// Descargar el PDF
+$dompdf->stream("factura.pdf", ["Attachment" => true]);

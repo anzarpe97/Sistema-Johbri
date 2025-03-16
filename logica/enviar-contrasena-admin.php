@@ -1,10 +1,10 @@
 <?php
-ob_start(); // Add this line
+ob_start(); 
 require '../vendor/autoload.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-use PHPMailer\PHPMailer\SMTP; // Add this line
+use PHPMailer\PHPMailer\SMTP;
 
 // Conexión a la base de datos
 $servername = "localhost";
@@ -27,7 +27,7 @@ if (empty($email)) {
 }
 
 // Verificar si el correo electrónico existe en la base de datos
-$sql = "SELECT nombre_encargado, correo, contrasena, nombre_empresa FROM clientes WHERE correo = ?";
+$sql = "SELECT nombre_administrador, correo, contrasena FROM administrador WHERE correo = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $email);
 $stmt->execute();
@@ -37,10 +37,9 @@ if ($result->num_rows > 0) {
     // El correo electrónico existe, obtener los datos relacionados
     $user = $result->fetch_assoc();
     
-    $nombre_encargado = $user['nombre_encargado'];
+    $nombre_administrador = $user['nombre_administrador'];
     $correo_empresa = $user['correo'];
     $contraseña = $user['contrasena'];
-    $nombre_empresa = $user['nombre_empresa'];
 
     // Enviar correo electrónico con la contraseña
 
@@ -90,14 +89,17 @@ if ($result->num_rows > 0) {
                     font-size: 12px;
                     color: #777;
                 }
+                .info {
+                    font-weight: bold;
+                }
             </style>
         </head>
         <body>
             <div class="container">
                 <div class="header">Recuperación de Contraseña</div>
                 <div class="content">
-                    <p>Hola '. $nombre_encargado. ',</p>
-                    <p>Hemos recuperado su contraseña para '. $nombre_empresa.', con el cual podrá acceder a su cuenta.<br></p>
+                    <p>Hola '. $nombre_administrador. ',</p>
+                    <p>Hemos recuperado su contraseña para su cuenta, con el cual podrá acceder a su cuenta.<br></p>
                     <p><b>Usuario:</b> ' . $correo_empresa . '</p>
                     <p><b>Contraseña:</b> ' . $contraseña . '</p>
                     <p><br>Por favor, no comparta esta información.<br></p>
@@ -111,23 +113,23 @@ if ($result->num_rows > 0) {
         </html>';
 
         // Plain text body
-        $mail->AltBody = 'Hola ' . $nombre_encargado . ', Hemos recuperado su contraseña para '. $nombre_empresa.', con el cual podrá acceder a su cuenta. Usuario: ' . $correo_empresa . ' Contraseña: ' . $contraseña . ' Por favor, no comparta esta información.';
+        $mail->AltBody = 'Hola ' . $nombre_administrador . ', Hemos recuperado su contraseña para su cuenta, con el cual podrá acceder a su cuenta. Usuario: ' . $correo_empresa . ' Contraseña: ' . $contraseña . ' Por favor, no comparta esta información. Esta es una notificación automática.';
 
         $mail->send();
         $success_message = urlencode("Contraseña enviada con éxito.");
-        header("Location: ../login-sesion/loginCliente.php?success_message=" . $success_message);
+        header("Location: ../login-sesion/login.php?success_message=" . $success_message);
         exit();
 
     } catch (Exception $e) {
         $error_message = urlencode("No se pudo enviar el mensaje. Error: {$mail->ErrorInfo}");
-        header("Location: ../login-sesion/loginCliente.php?error_message=" . $error_message);
+        header("Location: ../login-sesion/login.php?error_message=" . $error_message);
         exit();
     }
 
     ob_end_flush();
 
 } else {
-    header("Location: ../login-sesion/loginCliente.php?error_message=" . urlencode("El correo electrónico no está registrado."));
+    header("Location: ../login-sesion/login.php?error_message=" . urlencode("El correo electrónico no está registrado."));
 }
 
 $stmt->close();

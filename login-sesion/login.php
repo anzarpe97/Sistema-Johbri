@@ -134,7 +134,7 @@
                         class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
                             ¿Eres cliente?
                         </a>
-                        <a href="./olvidarContraseña.php"
+                        <a href="./olvidarContraseña-admin.php"
                         class="text-sm text-custom-blue dark:text-blue-400 hover:underline">
                             ¿Olvidaste tu contraseña?
                         </a>
