@@ -39,8 +39,6 @@ $sql_aprobadas = "SELECT o.id_orden, o.fecha_creacion, o.estado, c.nombre_empres
                 GROUP BY o.id_orden
                 ORDER BY o.fecha_creacion DESC";
 $result_aprobadas = $conn->query($sql_aprobadas);
-
->>>>>>> e9c5b7b8b89cdbcd5ee2689ed8541cea8629c611
 ?>
 
 <!DOCTYPE html>
