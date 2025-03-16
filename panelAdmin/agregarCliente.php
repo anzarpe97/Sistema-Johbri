@@ -16,6 +16,9 @@ if (!isset($_SESSION['id'])) {
 $_SESSION['time'] = time();
 
 $_SESSION['ultimo_acceso'] = time();
+
+$error_message = isset($_GET['error_message']) ? $_GET['error_message'] : '';
+$success_message = isset($_GET['success_message']) ? $_GET['success_message'] : '';
 ?>
 
 <!DOCTYPE html>
@@ -23,6 +26,7 @@ $_SESSION['ultimo_acceso'] = time();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/ico" href="../assets/images/configuraciones.ico">
     <title>Agregar cliente - Autorepuestos Johbri</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -40,6 +44,70 @@ $_SESSION['ultimo_acceso'] = time();
     </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+    <!-- Alerta de errores -->
+    <div id="alertaError" class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-300 ease-in-out">
+        <div class="max-w-4xl mx-auto mt-20 p-4 rounded-md bg-red-50 dark:bg-red-900 border border-red-500">
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <!-- Ícono de error -->
+                    <svg class="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd"
+                            d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+                            clip-rule="evenodd"/>
+                    </svg>
+                </div>
+                <div class="ml-3" id="mensajeError">
+                    <!-- Los mensajes de error se insertarán aquí -->
+                    <?php echo isset($error_message) ? htmlspecialchars($error_message) : ''; ?>
+                    <p class="text-red-600 dark:text-red-200" id="errorMensaje"></p>
+                </div>
+                <div class="ml-auto pl-3">
+                    <div class="-mx-1.5 -my-1.5">
+                        <button onclick="cerrarAlerta()" class="inline-flex rounded-md p-1.5 text-red-500 hover:bg-red-100 dark:hover:bg-red-800 transition-colors duration-200">
+                            <span class="sr-only">Cerrar</span>
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                    clip-rule="evenodd"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Alerta de éxito -->
+    <?php if ($success_message): ?>
+        <div id="alertaExito" class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-300 ease-in-out">
+            <div class="max-w-4xl mx-auto mt-20 p-4 rounded-md bg-green-50 dark:bg-green-900 border border-green-500">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <!-- Ícono de éxito -->
+                        <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.707a1 1 0 011.414 0L10 12.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-green-700 dark:text-green-200"><?php echo htmlspecialchars($success_message); ?></p>
+                    </div>
+                    <div class="ml-auto pl-3">
+                        <div class="-mx-1.5 -my-1.5">
+                            <button onclick="cerrarAlertaExito()" class="inline-flex rounded-md p-1.5 text-green-500 hover:bg-green-100 dark:hover:bg-green-800 transition-colors duration-200">
+                                <span class="sr-only">Cerrar</span>
+                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
     <!-- Navbar -->
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
@@ -229,27 +297,67 @@ $_SESSION['ultimo_acceso'] = time();
     <footer class="bg-custom-blue dark:bg-gray-800 text-white text-center py-4 fixed bottom-0 w-full text-sm">
         <p>&copy; 2025 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
     </footer>
-
     <script>
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.classList.add('dark');
-        }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        document.documentElement.classList.add('dark');
+    }
 
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const showIcon = document.getElementById('showPassword');
-            const hideIcon = document.getElementById('hidePassword');
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const showIcon = document.getElementById('showPassword');
+        const hideIcon = document.getElementById('hidePassword');
 
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                showIcon.classList.add('hidden');
-                hideIcon.classList.remove('hidden');
-            } else {
-                passwordInput.type = 'password';
-                showIcon.classList.remove('hidden');
-                hideIcon.classList.add('hidden');
-            }
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            showIcon.classList.add('hidden');
+            hideIcon.classList.remove('hidden');
+        } else {
+            passwordInput.type = 'password';
+            showIcon.classList.remove('hidden');
+            hideIcon.classList.add('hidden');
         }
-    </script>
+    }
+
+    function mostrarAlerta(mensajes) {
+        const alertaError = document.getElementById('alertaError');
+        const mensajeError = document.getElementById('mensajeError');
+        // Crear lista de errores con estilo mejorado
+        const listaErrores = mensajes.map(error =>
+            `<p class="text-sm text-red-700 dark:text-red-200">• ${error}</p>`
+        ).join('');
+        mensajeError.innerHTML = listaErrores;
+        // Mostrar alerta con animación
+        alertaError.classList.remove('-translate-y-full');
+        // Desplazar la página hacia arriba
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cerrarAlerta() {
+        const alertaError = document.getElementById('alertaError');
+        alertaError.classList.add('-translate-y-full');
+    }
+
+    function cerrarAlertaExito() {
+        const alertaExito = document.getElementById('alertaExito');
+        alertaExito.classList.add('-translate-y-full');
+    }
+
+    <?php if ($error_message): ?>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alertaError = document.getElementById('alertaError');
+        alertaError.classList.remove('-translate-y-full');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    <?php endif; ?>
+
+    <?php if ($success_message): ?>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alertaExito = document.getElementById('alertaExito');
+        alertaExito.classList.remove('-translate-y-full');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+    <?php endif; ?>
+</script>
+
 </body>
 </html>

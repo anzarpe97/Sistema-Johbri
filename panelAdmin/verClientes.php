@@ -37,6 +37,7 @@ if ($result->num_rows > 0) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/ico" href="../assets/images/configuraciones.ico">
   <title>Gestión de Clientes - Autorepuestos Johbri</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
@@ -96,7 +97,7 @@ if ($result->num_rows > 0) {
 
       <!-- Filtros -->
       <div class="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
-          <form method="GET" action="clientes.php" class="flex flex-col md:flex-row gap-4 items-end">
+          <form method="GET" action="verClientes.php" class="flex flex-col md:flex-row gap-4 items-end">
           <div class="w-full md:w-1/3">
               <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               Buscar cliente

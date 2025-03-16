@@ -25,6 +25,7 @@ $success_message = isset($_GET['success_message']) ? $_GET['success_message'] : 
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/ico" href="../assets/images/configuraciones.ico">
 <title>Agregar Producto - Autorepuestos Johbri</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <script>

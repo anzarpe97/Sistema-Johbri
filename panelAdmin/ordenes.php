@@ -16,6 +16,16 @@ else{
 }
 
 $_SESSION['time'] = time();
+
+// Database connection
+require '../logica/conexionbdd.php';
+
+// Fetch pending orders with client data
+$query = "SELECT ordenes.*, clientes.nombre_empresa AS cliente_nombre, clientes.correo AS cliente_email 
+          FROM ordenes 
+          INNER JOIN clientes ON ordenes.cliente_id = clientes.id 
+          WHERE ordenes.estado = 'Pendiente'";
+$result = mysqli_query($conn, $query);
 ?>
 
 <!DOCTYPE html>
@@ -24,6 +34,7 @@ $_SESSION['time'] = time();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Órdenes Pendientes - Autorepuestos Johbri</title>
+    <link rel="icon" type="image/ico" href="../assets/images/configuraciones.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -105,35 +116,47 @@ $_SESSION['time'] = time();
                                     Estado
                                 </th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Cliente
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                                    Email
+                                </th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                     Acciones
                                 </th>
                             </tr>
                         </thead>
                         <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-                            <!-- Ordenes Pendientes -->
+                            <?php while($row = mysqli_fetch_assoc($result)): ?>
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="text-sm font-medium text-gray-900 dark:text-white">
-                                        ORD-2024-001
+                                        <?php echo $row['id_orden']; ?>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900 dark:text-white">Empresa 1</div>
+                                    <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['nombre_empresa']; ?></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">    
+                                    <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['fecha']; ?></div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900 dark:text-white">06-01-2025</div>
-                                </td>
-                                <td class="px-6 py-4 whitespace-nowrap">
-                                    <div class="text-sm text-gray-900 dark:text-white">$150.00</div>
+                                    <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['total']; ?></div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200">
                                         Pendiente
                                     </span>
                                 </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['cliente_nombre']; ?></div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900 dark:text-white"><?php echo $row['cliente_email']; ?></div>
+                                </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <div class="flex space-x-2">
-                                        <a href="detalleOrden.php?orden_id=ORD-2024-001" class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300"
+                                        <a href="detalleOrden.php?orden_id=<?php echo $row['id_orden']; ?>" class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300"
                                                 title="Ver detalles">
                                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -148,13 +171,14 @@ $_SESSION['time'] = time();
                                         </button>
                                         <button class="text-red-500 hover:text-red-600 dark:text-red-400 dark:hover:text-red-300"
                                                 title="Rechazar">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 24 24">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
                                             </svg>
                                         </button>
                                     </div>
                                 </td>
                             </tr>
+                            <?php endwhile; ?>
                         </tbody>
                     </table>
                 </div>
