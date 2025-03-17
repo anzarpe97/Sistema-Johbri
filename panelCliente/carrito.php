@@ -138,7 +138,8 @@ $total = $subtotal + $iva;
                                                 onclick="updateCartQuantity(<?php echo $item['id_producto']; ?>, -1, <?php echo $item['stock_producto']; ?>)">-</button>
                                             <input type="text" value="<?php echo $item['cantidad']; ?>"
                                                 class="w-12 text-center border-x dark:border-gray-600 bg-transparent dark:text-white"
-                                                id="quantity_<?php echo $item['id_producto']; ?>" readonly>
+                                                id="quantity_<?php echo $item['id_producto']; ?>" readonly
+                                                max="<?php echo $item['stock_producto']; ?>">
                                             <button class="px-3 py-1 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700"
                                                 onclick="updateCartQuantity(<?php echo $item['id_producto']; ?>, 1, <?php echo $item['stock_producto']; ?>)">+</button>
                                         </div>
