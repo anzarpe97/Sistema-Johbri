@@ -138,9 +138,10 @@ if ($result->num_rows > 0) {
                 </div>
                 <div class="space-y-1">
                     <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Reportes</div>
+                    <!--
                     <a href="./reportes.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Reporte de Ventas
-                    </a>
+                    </a>-->
                     <a href="./ordenes.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Órdenes
                     </a>
@@ -248,9 +249,10 @@ if ($result->num_rows > 0) {
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 Stock
                             </th>
+                            <!--
                             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                                 Acciones
-                            </th>
+                            </th>-->
                         </tr>
                     </thead>
                     <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
@@ -299,6 +301,7 @@ if ($result->num_rows > 0) {
                                                     }
                                                     ?>
                                         </td>
+                                        <!--
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex space-x-2">
                                                 <button class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300">
@@ -306,6 +309,7 @@ if ($result->num_rows > 0) {
                                                 </button>
                                             </div>
                                         </td>
+                                        -->
                                         <?php
                                     }
                                 } else {
