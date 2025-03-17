@@ -274,7 +274,7 @@ $result_aprobadas = $conn->query($sql_aprobadas);
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                             <div class="flex space-x-2">
-                                                <a href="detalleOrden.php?id_orden=<?php echo $row['id_orden']; ?>"
+                                                <a href="detalleOrden.php?id_orden=<?php echo $row['id_orden']; ?>" title="Ver detalles"> <!-- Fixed closing tag here -->
                                                 <a href="javascript:void(0)"
                                                     onclick="verDetalleOrden(<?php echo $row['id_orden']; ?>)"
                                                     class="text-custom-blue hover:text-custom-blue-light dark:text-blue-400 dark:hover:text-blue-300"

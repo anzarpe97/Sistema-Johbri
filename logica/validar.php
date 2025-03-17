@@ -73,18 +73,38 @@ require 'conexionbdd.php';
                 $stmtUpdate->bind_param("is", $intentos, $correo);
                 $stmtUpdate->execute();
     
-                if ($intentos >= 3) {
+                if ($tabla === "clientes") {
+                   
+                    if ($intentos >= 3) {
 
-                    $error_message = urlencode("El usuario ha sido bloqueado.");
-                    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-                    exit();
+                        $error_message = urlencode("El usuario ha sido bloqueado.");
+                        header("Location: ../login-sesion/loginCliente.php?error_message=" . $error_message);
+                        exit();
+    
+                    } else {
+    
+                        $error_message = urlencode("Contraseña incorrecta. Intentos restantes: " . (3 - $intentos));
+                        header("Location: ../login-sesion/loginCliente.php?error_message=" . $error_message);
+                        exit();
+    
+                    }
+
 
                 } else {
 
-                    $error_message = urlencode("Contraseña incorrecta. Intentos restantes: " . (3 - $intentos));
-                    header("Location: ../login-sesion/login.php?error_message=" . $error_message);
-                    exit();
+                    if ($intentos >= 3) {
 
+                        $error_message = urlencode("El usuario ha sido bloqueado.");
+                        header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+                        exit();
+    
+                    } else {
+    
+                        $error_message = urlencode("Contraseña incorrecta. Intentos restantes: " . (3 - $intentos));
+                        header("Location: ../login-sesion/login.php?error_message=" . $error_message);
+                        exit();
+    
+                    }
                 }
 
                 return false;
