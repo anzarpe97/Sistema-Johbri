@@ -4,7 +4,7 @@ session_start();
 
 
 
-$cliente_id = $_SESSION['cliente_id'];
+$cliente_id = $_SESSION['id'];
 
 // Consulta SQL con placeholder (?)
 $sql_aprobadas = "SELECT o.id_orden, o.fecha_creacion, o.estado,
@@ -152,7 +152,7 @@ $result_rechazadas = $stmt->get_result();
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="./detalleCompra.php?id=<?php echo $row['id_orden']; ?>"
+                                            <a href="./detalleOrdenCliente.php?id=<?php echo $row['id_orden']; ?>"
                                             class="text-custom-blue hover:text-custom-blue-light">
                                                 Ver Detalle
                                             </a>

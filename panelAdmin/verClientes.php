@@ -135,9 +135,17 @@ if ($result->num_rows > 0) {
                       class="w-full px-6 py-4 flex justify-between items-center text-left text-gray-900 dark:text-white hover:bg-gray-50 dark:hover:bg-gray-700">
                   <div class="flex items-center">
                       <span class="text-lg font-semibold"><?php echo $cliente['nombre_empresa']; ?></span>
-                      <span class="ml-3 px-2 py-1 text-sm bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full">
-                          <?php echo $cliente['estado_cliente']; ?>
+                    
+                      <?php if ($cliente['intentos'] == 3): ?>
+                      <span class="ml-3 px-2 py-1 text-sm bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200 rounded-full">
+                          Usuario Bloqueado
                       </span>
+                      <?php else: ?>
+                        <span class="ml-3 px-2 py-1 text-sm bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200 rounded-full">
+                            Activo
+                        </span>
+                        <?php endif; ?>
+
                   </div>
                   <svg id="arrow-cliente<?php echo $cliente['id']; ?>" class="w-5 h-5 transform transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
@@ -182,12 +190,13 @@ if ($result->num_rows > 0) {
                       <!-- Botones de acción -->
                       <div class="flex items-end justify-end md:col-span-2">
                           <div class="flex space-x-2">
-                              <button class="text-yellow-500 hover:text-yellow-600 dark:text-yellow-400 dark:hover:text-yellow-300"
-                                      title="Editar">
+                              <a href="editar-cliente.php?id=<?php echo $cliente['id']; ?>"
+                                 class="text-yellow-500 hover:text-yellow-600 dark:text-yellow-400 dark:hover:text-yellow-300"
+                                 title="Editar">
                                   <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
                                   </svg>
-                              </button>
+                              </a>
                           </div>
                       </div>
                   </div>
