@@ -32,33 +32,41 @@ $result_aprobadas = $stmt->get_result();
 $stmt->close();
 
 
-// Fetch pending orders
+// Query for pending orders
 $sql_pendientes = "SELECT o.id_orden, o.fecha_creacion, o.estado,
-                     SUM(d.cantidad * d.precio_unitario) as total
+                     SUM(d.cantidad * d.precio_unitario) AS total
                 FROM ordenes o
                 INNER JOIN detalle_orden d ON o.id_orden = d.id_orden
-                WHERE o.cliente_id = ? AND o.estado = 'pendiente'
-                GROUP BY o.id_orden
+                WHERE o.estado = 'pendiente' AND o.cliente_id = ?
+                GROUP BY o.id_orden, o.fecha_creacion, o.estado
                 ORDER BY o.fecha_creacion DESC";
 
 $stmt = $conn->prepare($sql_pendientes);
-$stmt->bind_param("i", $_SESSION['cliente_id']);
+if (!$stmt) {
+    die("Error al preparar la consulta: " . $conn->error);
+}
+$stmt->bind_param("i", $cliente_id);
 $stmt->execute();
 $result_pendientes = $stmt->get_result();
+$stmt->close();
 
-// Fetch rejected orders
+// Query for rejected orders
 $sql_rechazadas = "SELECT o.id_orden, o.fecha_creacion, o.estado,
-                     SUM(d.cantidad * d.precio_unitario) as total
+                     SUM(d.cantidad * d.precio_unitario) AS total
                 FROM ordenes o
                 INNER JOIN detalle_orden d ON o.id_orden = d.id_orden
-                WHERE o.cliente_id = ? AND o.estado = 'rechazada'
-                GROUP BY o.id_orden
+                WHERE o.estado = 'rechazada' AND o.cliente_id = ?
+                GROUP BY o.id_orden, o.fecha_creacion, o.estado
                 ORDER BY o.fecha_creacion DESC";
 
 $stmt = $conn->prepare($sql_rechazadas);
-$stmt->bind_param("i", $_SESSION['cliente_id']);
+if (!$stmt) {
+    die("Error al preparar la consulta: " . $conn->error);
+}
+$stmt->bind_param("i", $cliente_id);
 $stmt->execute();
 $result_rechazadas = $stmt->get_result();
+$stmt->close();
 ?>
 
 <!DOCTYPE html>
@@ -147,15 +155,20 @@ $result_rechazadas = $stmt->get_result();
                                             $<?php echo number_format($row['total'], 2); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200">
                                                 Aprobada
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="./detalleOrdenCliente.php?id=<?php echo $row['id_orden']; ?>"
-                                            class="text-custom-blue hover:text-custom-blue-light">
-                                                Ver Detalle
-                                            </a>
+                                            <div class="flex justify-center">
+                                                <a href="./detalleOrdenCliente.php?id=<?php echo $row['id_orden']; ?>"
+                                                class="text-custom-blue hover:text-custom-blue-light" title="Ver Detalle">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
@@ -171,8 +184,8 @@ $result_rechazadas = $stmt->get_result();
                 </div>
             </div>
         </section>
-    <!--fdfdsf
-         ordenes pendientes
+
+        <!--ordenes pendientes -->
         <section class="mb-8">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Órdenes Pendientes</h2>
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
@@ -215,13 +228,18 @@ $result_rechazadas = $stmt->get_result();
                                                 Pendiente
                                             </span>
                                         </td>
+                                        // For pending orders section
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="./detalleOrdenCliente.php?php echo $row['id_orden']; ?>"
-                                            class="text-custom-blue hover:text-custom-blue-light">
-                                                Ver Detalle
-                                            </a>
+                                            <div class="flex justify-center">
+                                                <a href="./detalleOrdenCliente.php?id=<?php echo $row['id_orden']; ?>"
+                                                class="text-custom-blue hover:text-custom-blue-light" title="Ver Detalle">
+                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                    </svg>
+                                                </a>
+                                            </div>
                                         </td>
-                                    </tr>
                                 <?php endwhile; ?>
                             <?php else: ?>
                                 <tr>
@@ -236,7 +254,7 @@ $result_rechazadas = $stmt->get_result();
             </div>
         </section>
 
-         ordenes rechazadas
+        <!-- ordenes rechazadas -->
         <section class="mb-8">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Órdenes Rechazadas</h2>
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden">
@@ -275,15 +293,20 @@ $result_rechazadas = $stmt->get_result();
                                             $<?php echo number_format($row['total'], 2); ?>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap">
-                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                            <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-800 dark:text-red-100">
                                                 Rechazada
                                             </span>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                            <a href="./detalleOrdenCliente.php?php echo $row['id_orden']; ?>"
-                                               class="text-custom-blue hover:text-custom-blue-light">
-                                                Ver Detalle
-                                            </a>
+                                            <div class="flex space-x-2 justify-center">
+                                                <a href="./detalleOrdenCliente.php?id=<?php echo $row['id_orden']; ?>"
+                                                class="text-custom-blue hover:text-custom-blue-light" title="ver detalle">
+                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                                        </svg>
+                                                </a>
+                                            </div>
                                         </td>
                                     </tr>
                                 <?php endwhile; ?>
@@ -299,7 +322,6 @@ $result_rechazadas = $stmt->get_result();
                 </div>
             </div>
         </section>
-    -->
     </main>
 
     <footer class="bg-custom-blue dark:bg-gray-800 text-white text-center py-4 fixed bottom-0 w-full text-sm">
