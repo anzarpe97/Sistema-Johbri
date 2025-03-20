@@ -175,8 +175,19 @@ $result_items = $stmt->get_result();
                 </table>
             </div>
         </div>
+
+        <!-- Add Report Button -->
+        <div class="max-w-7xl mx-auto mt-6 text-right">
+            <form action="../reportes/reporte-compra.php" method="get">
+                <input type="hidden" name="id" value="<?php echo htmlspecialchars($orden['id_orden']); ?>">
+                <button type="submit" class="px-4 py-2 bg-custom-blue text-white rounded-lg hover:bg-custom-blue-light transition-colors duration-200">
+                    Generar Factura
+                </button>
+            </form>
+        </div>
     </main>
 
+    <!-- Footer -->
     <footer class="bg-custom-blue dark:bg-gray-800 text-white text-center py-4 fixed bottom-0 w-full text-sm">
         <p>&copy; 2025 Autorepuestos Johbri, C.A. - Todos los derechos reservados</p>
     </footer>
