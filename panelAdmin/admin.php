@@ -194,7 +194,7 @@ if ($result->num_rows > 0) {
             </div>
             <!-- TARJETA USUARIOS ACTIVOS -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <a href="clientes.php">
+                <a href="./verClientes.php">
                 <div class="flex items-center">
                     <div class="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full">
                         <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -210,7 +210,7 @@ if ($result->num_rows > 0) {
             </div>
             <!-- TARJETA PRODUCTOS SIN STOCK -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-            <a href="ver-producto.php">
+                <a href="./ver-producto.php">
                 <div class="flex items-center">
                     <div class="p-3 bg-red-100 dark:bg-red-900 rounded-full">
                         <svg class="w-6 h-6 text-red-600 dark:text-red-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -226,7 +226,7 @@ if ($result->num_rows > 0) {
             </div>
             <!-- TARJETA ORDENES PENDIENTES -->
             <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6">
-                <a href="ordenes.php">
+                <a href="./ordenes.php">
                     <div class="flex items-center">
                         <div class="p-3 bg-yellow-100 dark:bg-yellow-900 rounded-full">
                             <svg class="w-6 h-6 text-yellow-600 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
