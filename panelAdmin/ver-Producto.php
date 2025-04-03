@@ -35,6 +35,8 @@ if (isset($_GET['search'])) {
 }
 
 $result = $conn->query($sql);
+$success_message = isset($_GET['success_message']) ? $_GET['success_message'] : '';
+
 
 ?>
 
@@ -43,6 +45,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/ico" href="../assets/images/configuraciones.ico">
     <title>Lista de Productos - Autorepuestos Johbri</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -59,7 +62,39 @@ $result = $conn->query($sql);
         }
     </script>
 </head>
+
 <body class="bg-gray-50 dark:bg-gray-900 min-h-screen">
+
+    <!-- Alerta de éxito -->
+    <?php if ($success_message): ?>
+        <div id="alertaExito" class="fixed top-0 left-0 right-0 z-50 transform -translate-y-full transition-transform duration-300 ease-in-out">
+            <div class="max-w-4xl mx-auto mt-20 p-4 rounded-md bg-green-50 dark:bg-green-900 border border-green-500">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <!-- Ícono de éxito -->
+                        <svg class="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm-1.707-5.707a1 1 0 011.414 0L10 12.586l2.293-2.293a1 1 0 011.414 1.414l-3 3a1 1 0 01-1.414 0l-1.293-1.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                        </svg>
+                    </div>
+                    <div class="ml-3">
+                        <p class="text-sm text-green-700 dark:text-green-200"><?php echo htmlspecialchars($success_message); ?></p>
+                    </div>
+                    <div class="ml-auto pl-3">
+                        <div class="-mx-1.5 -my-1.5">
+                            <button onclick="cerrarAlertaExito()" class="inline-flex rounded-md p-1.5 text-green-500 hover:bg-green-100 dark:hover:bg-green-800 transition-colors duration-200">
+                                <span class="sr-only">Cerrar</span>
+                                <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endif; ?>
+
+
     <!-- Navbar -->
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
@@ -71,6 +106,23 @@ $result = $conn->query($sql);
                 <span class="text-sm">Volver</span>
             </a>
             <div class="flex items-center gap-4">
+            <div class="relative group">
+                    <button class="flex items-center hover:text-gray-300 transition-colors duration-200">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.75 2.44995C11.45 1.85995 12.58 1.85995 13.26 2.44995L14.84 3.79995C15.14 4.04995 15.71 4.25995 16.11 4.25995H17.81C18.87 4.25995 19.74 5.12995 19.74 6.18995V7.88995C19.74 8.28995 19.95 8.84995 20.2 9.14995L21.55 10.7299C22.14 11.4299 22.14 12.5599 21.55 13.2399L20.2 14.8199C19.95 15.1199 19.74 15.6799 19.74 16.0799V17.7799C19.74 18.8399 18.87 19.7099 17.81 19.7099H16.11C15.71 19.7099 15.15 19.9199 14.85 20.1699L13.27 21.5199C12.57 22.1099 11.44 22.1099 10.76 21.5199L9.18001 20.1699C8.88001 19.9199 8.31 19.7099 7.92 19.7099H6.17C5.11 19.7099 4.24 18.8399 4.24 17.7799V16.0699C4.24 15.6799 4.04 15.1099 3.79 14.8199L2.44 13.2299C1.86 12.5399 1.86 11.4199 2.44 10.7299L3.79 9.13995C4.04 8.83995 4.24 8.27995 4.24 7.88995V6.19995C4.24 5.13995 5.11 4.26995 6.17 4.26995H7.9C8.3 4.26995 8.86 4.05995 9.16 3.80995L10.75 2.44995Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 8.13V12.96" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
+                        <a href="assets/docs/MANUAL DE USUARIO (ADMIN) (1).pdf" target="_blank" class="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded-t-lg">
+                            Manual de Usuario Admin
+                        </a>
+                        <a href="assets/docs/MANUAL DE USUARIO (CLIENTE) (1).pdf" target="_blank" class="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded-b-lg">
+                            Manual de Usuario Cliente
+                        </a>
+                    </div>
+                </div>
                 <button
                     onclick="document.documentElement.classList.toggle('dark')"
                     class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -85,7 +137,9 @@ $result = $conn->query($sql);
 
     <!-- Contenido Princpal -->
     <main class="pt-24 px-6 pb-20">
-        <!-- Filtros -->
+        
+
+
         <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <form method="GET" action="ver-Producto.php" class="flex flex-col sm:flex-row gap-4 items-end">
                 <div class="w-full sm:w-1/3">
@@ -115,7 +169,7 @@ $result = $conn->query($sql);
                 <div class="flex items-center">
                     <span class="text-lg font-semibold">Productos Agotados</span>
                 </div>
-                <svg id="arrow-sin-stock" class="w-5 h-5 transform rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg id="arrow-sin-stock" class="w-5 h-5 transform rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
                 </svg>
             </button>
@@ -173,7 +227,7 @@ $result = $conn->query($sql);
                                             Editar
                                         </a>
                                         <!--colocar accion -->
-                                        <a href="#" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal()">
+                                        <a href="../logica/eliminar-producto.php?id_producto=<?php echo $row_2['numero_de_parte']; ?>" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal(event)">
                                             Eliminar
                                         </a>
                                     </div>
@@ -184,7 +238,7 @@ $result = $conn->query($sql);
                                             <p class="text-gray-700 dark:text-gray-300 mb-6">¿Estás seguro de que deseas eliminar este producto?</p>
                                             <div class="flex justify-end space-x-4">
                                                 <button onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Cancelar</button>
-                                                <a href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
+                                                <a id="deleteLink" href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
                                             </div>
                                         </div>
                                     </div>
@@ -274,7 +328,7 @@ $result = $conn->query($sql);
                                             Editar
                                         </a>
                                         <!--colocar accion con numero de parte-->
-                                        <a href="#" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal()">
+                                        <a href="../logica/eliminar-producto.php?id_producto=<?php echo $row['numero_de_parte']; ?>" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-md transition-colors duration-200" onclick="openModal(event)">
                                             Eliminar
                                         </a>
                                     </div>
@@ -285,12 +339,12 @@ $result = $conn->query($sql);
                                             <p class="text-gray-700 dark:text-gray-300 mb-6">¿Estás seguro de que deseas eliminar este producto?</p>
                                             <div class="flex justify-end space-x-4">
                                                 <button onclick="closeModal()" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Cancelar</button>
-                                                <a href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
+                                                <a id="deleteLink" href="" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md transition-colors duration-200">Eliminar</a>
                                             </div>
                                         </div>
                                     </div>
                             </td>
-                            </a>
+                            </a>    
                         </tr>
                         <?php
                             } // Cierre del while
@@ -323,13 +377,29 @@ $result = $conn->query($sql);
             }
         }
         // Función para abrir y cerrar la confirmacion de eliminacion
-        function openModal() {
-        document.getElementById('deleteModal').classList.remove('hidden');
+        function openModal(event) {
+            event.preventDefault();
+            const deleteLink = event.target.closest('a').getAttribute('href');
+            document.getElementById('deleteLink').setAttribute('href', deleteLink + '&deleted=true');
+            document.getElementById('deleteModal').classList.remove('hidden');
         }
 
         function closeModal() {
             document.getElementById('deleteModal').classList.add('hidden');
         }
+
+        function cerrarAlertaExito() {
+            const alertaExito = document.getElementById('alertaExito');
+            alertaExito.classList.add('-translate-y-full');
+        }
+
+        <?php if ($success_message): ?>
+    document.addEventListener('DOMContentLoaded', function() {
+        const alertaExito = document.getElementById('alertaExito');
+        alertaExito.classList.remove('-translate-y-full');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+<?php endif; ?>
     </script>
 </body>
 </html>

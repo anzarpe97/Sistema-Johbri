@@ -19,8 +19,84 @@ if (!isset($_SESSION['id'])) {
 
 $_SESSION['time'] = time();
 
-// Fetch available products from the database
-$product_query = "SELECT id_producto, numero_de_parte, nombre_producto, precio_producto, categoria_producto, stock_producto FROM productos WHERE stock_producto > 0";
+// Get filter parameters
+$search = isset($_GET['search']) ? $_GET['search'] : '';
+$filter = isset($_GET['filter']) ? $_GET['filter'] : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+
+// Base query
+$product_query = "SELECT id_producto, numero_de_parte, nombre_producto, precio_producto, categoria_producto, stock_producto 
+                FROM productos
+                WHERE stock_producto > 0";
+
+// Add search filter
+if (!empty($search)) {
+    $search = $conn->real_escape_string($search);
+    $product_query .= " AND (nombre_producto LIKE '%$search%' OR numero_de_parte LIKE '%$search%')";
+}
+
+// Add category/brand/availability/price filters
+if (!empty($filter)) {
+    switch($filter) {
+        // Categories
+        case 'Frenos':
+        case 'Suspensión':
+        case 'Motor':
+        case 'Transmisión':
+        case 'Electricidad':
+        case 'Carrocería':
+            $filter = $conn->real_escape_string($filter);
+            $product_query .= " AND categoria_producto = '$filter'";
+            break;
+
+        // Stock filters
+        case 'En stock':
+            $product_query .= " AND stock_producto > 10";
+            break;
+        case 'Poco stock':
+            $product_query .= " AND stock_producto <= 10 AND stock_producto > 0";
+            break;
+        case 'Sin stock':
+            $product_query .= " AND stock_producto = 0";
+            break;
+
+        // Price ranges
+        case 'Menor a $50':
+            $product_query .= " AND precio_producto < 50";
+            break;
+        case '$50 - $100':
+            $product_query .= " AND precio_producto >= 50 AND precio_producto <= 100";
+            break;
+        case '$100 - $200':
+            $product_query .= " AND precio_producto > 100 AND precio_producto <= 200";
+            break;
+        case 'Mayor a $200':
+            $product_query .= " AND precio_producto > 200";
+            break;
+    }
+}
+
+// Add sorting
+if (!empty($sort)) {
+    switch($sort) {
+        case 'Precio: Menor a mayor':
+            $product_query .= " ORDER BY precio_producto ASC";
+            break;
+        case 'Precio: Mayor a menor':
+            $product_query .= " ORDER BY precio_producto DESC";
+            break;
+        case 'Nombre: A-Z':
+            $product_query .= " ORDER BY nombre_producto ASC";
+            break;
+        case 'Nombre: Z-A':
+            $product_query .= " ORDER BY nombre_producto DESC";
+            break;
+        case 'Mayor stock':
+            $product_query .= " ORDER BY stock_producto DESC";
+            break;
+    }
+}
+
 $product_result = $conn->query($product_query);
 
 ?>
@@ -50,20 +126,34 @@ $product_result = $conn->query($product_query);
     <!-- Navbar -->
     <nav class="bg-custom-blue dark:bg-gray-800 text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg">
         <div class="flex justify-between items-center">
-        <a href="cliente.php"
-                class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
+            <div class="text-xl font-bold">
+                <a href="./cliente.php"
+                    class="text-xl hover:text-gray-200 transition-colors duration-200 flex items-center gap-2 cursor-pointer">
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                     </svg>
                     <span class="text-sm">Volver</span>
-            </a>
-
-            <div class="text-xl font-bold">Autorepuestos Johbri, C.A.</div>
+                </a>
+            </div>
             <div class="flex items-center gap-4">
+
+                <div class="relative group">
+                    <button class="flex items-center hover:text-gray-300 transition-colors duration-200">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.75 2.44995C11.45 1.85995 12.58 1.85995 13.26 2.44995L14.84 3.79995C15.14 4.04995 15.71 4.25995 16.11 4.25995H17.81C18.87 4.25995 19.74 5.12995 19.74 6.18995V7.88995C19.74 8.28995 19.95 8.84995 20.2 9.14995L21.55 10.7299C22.14 11.4299 22.14 12.5599 21.55 13.2399L20.2 14.8199C19.95 15.1199 19.74 15.6799 19.74 16.0799V17.7799C19.74 18.8399 18.87 19.7099 17.81 19.7099H16.11C15.71 19.7099 15.15 19.9199 14.85 20.1699L13.27 21.5199C12.57 22.1099 11.44 22.1099 10.76 21.5199L9.18001 20.1699C8.88001 19.9199 8.31 19.7099 7.92 19.7099H6.17C5.11 19.7099 4.24 18.8399 4.24 17.7799V16.0699C4.24 15.6799 4.04 15.1099 3.79 14.8199L2.44 13.2299C1.86 12.5399 1.86 11.4199 2.44 10.7299L3.79 9.13995C4.04 8.83995 4.24 8.27995 4.24 7.88995V6.19995C4.24 5.13995 5.11 4.26995 6.17 4.26995H7.9C8.3 4.26995 8.86 4.05995 9.16 3.80995L10.75 2.44995Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 8.13V12.96" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
+                        <a href="../assets/docs/MANUAL DE USUARIO (CLIENTE) (1).pdf" target="_blank" class="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded-b-lg">
+                            Manual de Usuario Cliente
+                        </a>
+                    </div>
+            </div>
                 <button
                     onclick="document.documentElement.classList.toggle('dark')"
-                    class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
-                >
+                    class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200">
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
@@ -75,7 +165,7 @@ $product_result = $conn->query($product_query);
     <!-- Contenido Principal -->
     <main class="pt-24 px-6 pb-20">
         <!-- Filtros -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
+        <form method="GET" action="" class="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6">
             <div class="flex flex-col sm:flex-row gap-4 items-end">
                 <div class="w-full sm:w-1/3">
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
@@ -83,7 +173,9 @@ $product_result = $conn->query($product_query);
                     </label>
                     <input
                         type="text"
+                        name="search"
                         placeholder="Nombre del producto..."
+                        value="<?php echo htmlspecialchars($search); ?>"
                         class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                             dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue"
                     >
@@ -92,34 +184,27 @@ $product_result = $conn->query($product_query);
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Filtrar por
                     </label>
-                    <select class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                    <select name="filter" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
                         <option value="">Todas las categorías</option>
                         <optgroup label="Categorías">
-                            <option>Frenos</option>
-                            <option>Suspensión</option>
-                            <option>Motor</option>
-                            <option>Transmisión</option>
-                            <option>Electricidad</option>
-                            <option>Carrocería</option>
-                        </optgroup>
-                        <optgroup label="Marcas">
-                            <option>Toyota</option>
-                            <option>Honda</option>
-                            <option>Chevrolet</option>
-                            <option>Ford</option>
-                            <option>Nissan</option>
+                            <option <?php echo $filter === 'Frenos' ? 'selected' : ''; ?>>Frenos</option>
+                            <option <?php echo $filter === 'Suspensión' ? 'selected' : ''; ?>>Suspensión</option>
+                            <option <?php echo $filter === 'Motor' ? 'selected' : ''; ?>>Motor</option>
+                            <option <?php echo $filter === 'Transmisión' ? 'selected' : ''; ?>>Transmisión</option>
+                            <option <?php echo $filter === 'Electricidad' ? 'selected' : ''; ?>>Electricidad</option>
+                            <option <?php echo $filter === 'Carrocería' ? 'selected' : ''; ?>>Carrocería</option>
                         </optgroup>
                         <optgroup label="Disponibilidad">
-                            <option>En stock</option>
-                            <option>Poco stock</option>
-                            <option>Sin stock</option>
+                            <option <?php echo $filter === 'En stock' ? 'selected' : ''; ?>>En stock</option>
+                            <option <?php echo $filter === 'Poco stock' ? 'selected' : ''; ?>>Poco stock</option>
+                            <option <?php echo $filter === 'Sin stock' ? 'selected' : ''; ?>>Sin stock</option>
                         </optgroup>
                         <optgroup label="Precio">
-                            <option>Menor a $50</option>
-                            <option>$50 - $100</option>
-                            <option>$100 - $200</option>
-                            <option>Mayor a $200</option>
+                            <option <?php echo $filter === 'Menor a $50' ? 'selected' : ''; ?>>Menor a $50</option>
+                            <option <?php echo $filter === '$50 - $100' ? 'selected' : ''; ?>>$50 - $100</option>
+                            <option <?php echo $filter === '$100 - $200' ? 'selected' : ''; ?>>$100 - $200</option>
+                            <option <?php echo $filter === 'Mayor a $200' ? 'selected' : ''; ?>>Mayor a $200</option>
                         </optgroup>
                     </select>
                 </div>
@@ -127,32 +212,30 @@ $product_result = $conn->query($product_query);
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Ordenar por
                     </label>
-                    <select class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
+                    <select name="sort" class="w-full px-4 py-2 rounded-md border border-gray-300 dark:border-gray-600
                                 dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-custom-blue">
-                        <option>Precio: Menor a mayor</option>
-                        <option>Precio: Mayor a menor</option>
-                        <option>Nombre: A-Z</option>
-                        <option>Nombre: Z-A</option>
-                        <option>Mayor stock</option>
-                        <option>Más vendidos</option>
+                        <option value="">Sin ordenar</option>
+                        <option <?php echo $sort === 'Precio: Menor a mayor' ? 'selected' : ''; ?>>Precio: Menor a mayor</option>
+                        <option <?php echo $sort === 'Precio: Mayor a menor' ? 'selected' : ''; ?>>Precio: Mayor a menor</option>
+                        <option <?php echo $sort === 'Nombre: A-Z' ? 'selected' : ''; ?>>Nombre: A-Z</option>
+                        <option <?php echo $sort === 'Nombre: Z-A' ? 'selected' : ''; ?>>Nombre: Z-A</option>
+                        <option <?php echo $sort === 'Mayor stock' ? 'selected' : ''; ?>>Mayor stock</option>
                     </select>
                 </div>
-                <button class="w-full sm:w-auto px-1 py-1 bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600
+                <button type="submit" class="w-full sm:w-auto px-6 py-2 bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600
                             dark:hover:bg-blue-700 text-white rounded-md transition-colors duration-200">
                     Aplicar Filtros
                 </button>
             </div>
-        </div>
+        </form>
 
         <!-- Grid de Productos -->
-        <div class="grid grid-cols-4 sm:grid-cols-4 pl-40 pr-40 mt-20 lg:grid-cols-3 xl:grid-cols-3 gap-6">
-            <?php while ($product = $product_result->fetch_assoc()):              
-                
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 px-4">
+            <?php while ($product = $product_result->fetch_assoc()):
                 $foto_productos = obtenerRutasArchivos($product['id_producto']);
-                
-                
+
                 ?>
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow duration-300 w-full max-w-sm mx-auto">
                     <div class="relative">
                         <img src="<?php echo $foto_productos; ?>" alt="<?php echo htmlspecialchars($product['nombre_producto']); ?>" class="w-full h-48 object-cover">
                         <span class="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full text-xs">
@@ -161,21 +244,21 @@ $product_result = $conn->query($product_query);
                     </div>
                     <div class="p-4">
                         <div class="text-xs text-gray-500 dark:text-gray-400 mb-1"> <?php echo htmlspecialchars($product['categoria_producto']); ?></div>
-                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2 whitespace-nowrap overflow-hidden text-ellipsis">
                             <?php echo htmlspecialchars($product['nombre_producto']); ?>
                         </h3>
                         <div class="flex justify-between items-center mb-3">
                             <span class="text-2xl font-bold text-custom-blue dark:text-blue-400">$<?php echo htmlspecialchars($product['precio_producto']); ?></span>
                         </div>
                         <div>
-                            <a href="producto-detalle.php?id=<?php echo htmlspecialchars($product['numero_de_parte']); ?>"
+                            <a href="producto-detalle.php?id=<?php echo htmlspecialchars($product['id_producto']); ?>"
                             class="block w-full text-center bg-custom-blue hover:bg-custom-blue-light dark:bg-blue-600 dark:hover:bg-blue-700 text-white py-2 px-4 rounded-md transition-colors duration-200">
                                 Ver Detalles
                             </a>
                         </div>
                     </div>
                 </div>
-            <?php 
+            <?php
         endwhile; ?>
         </div>
     </main>

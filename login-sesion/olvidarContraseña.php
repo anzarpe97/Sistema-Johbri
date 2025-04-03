@@ -83,7 +83,7 @@
         <span class="sr-only">Cerrar</span>
         <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fill-rule="evenodd"
-                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                                  d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 111.414 1.414L11.414 10l4.293 4.293a1 1 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 01-1.414-1.414L8.586 10 4.293 5.707a1 1 010-1.414z"
                                   clip-rule="evenodd"/>
                           </svg>
                       </button>
@@ -91,7 +91,7 @@
               </div>
           </div>
     <h2 class="text-3xl font-semibold mb-6 text-center text-custom-blue dark:text-white">Recuperar Contraseña</h2>
-    <form id="passwordRecoveryForm" action="recuperar-contraseña.php" method="POST" onsubmit="showSuccessMessage(event)">
+    <form id="passwordRecoveryForm" action="../logica/enviar-contraseña.php" method="GET">
       <div class="mb-5">
         <label for="email" class="block text-gray-700 dark:text-gray-200 font-medium mb-2">Correo Electrónico:</label>
         <input type="email" id="email" name="email" class="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-custom-blue dark:focus:border-blue-500 dark:bg-gray-700 dark:text-white" required>
@@ -106,10 +106,7 @@
         <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 text-custom-blue dark:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
-        <h3 class="text-xl font-medium text-gray-700 dark:text-gray-200">
-          <a href="#" class="text-custom-blue dark:text-blue-400 hover:text-custom-blue-light dark:hover:text-blue-300">Cambiar contraseña</a>
-        </h3>
-        <p class="text-gray-600 dark:text-gray-300">Revisa tu correo electrónico</p>
+        <p class="text-gray-600 dark:text-gray-300">Revisa tu correo electrónico hemos enviado tus datos de acceso</p>
         <p class="text-sm text-gray-500 dark:text-gray-400 break-all">
           <span class="email-preview"></span>
         </p>

@@ -1,7 +1,56 @@
 <?php
 require("conexionbdd.php");
+require("validar.php");
 
 session_start();
+
+$flag = true;
+
+//Parte 1: Agregar Producto
+
+if (empty($_POST['num_parte'])) {
+    $flag = false;
+    header("location: ../panelAdmin/agregar-producto.php?error_message=Ingrese el número de parte");
+    exit();
+}
+
+if (empty($_POST['nombre_producto'])) {
+    $flag = false;
+    header("location: ../panelAdmin/agregar-producto.php?error_message=Ingrese el nombre del producto");
+    exit();
+}
+
+if (empty($_POST['categoria'])) {
+    $flag = false;
+    header("location: ../panelAdmin/agregar-producto.php?error_message=Ingrese la categoría del producto");
+    exit();
+}
+
+if (empty($_POST['marca'])) {
+    $flag = false;
+    header("location: ../panelAdmin/agregar-producto.php?error_message=Ingrese la marca del producto");
+    exit();
+}
+
+if (empty($_POST['precio'])) {
+    $flag = false;
+    header("location: ../panelAdmin/agregar-producto.php?error_message=Ingrese el precio del producto");
+    exit();
+}
+
+if (empty($_POST['stock'])) {
+    $flag = false;
+    header("location: ../panelAdmin/agregar-producto.php?error_message=Ingrese el stock del producto");
+    exit();
+}
+
+if (!is_numeric($_POST['stock'])) {
+    $flag = false;
+    header("location: ../panelAdmin/agregar-producto.php?error_message=La cantidad del producto debe ser un tipo de dato numérico");
+    exit();
+}
+
+
 
 $stmt = $conn->prepare("INSERT INTO productos (
     numero_de_parte, 
@@ -29,279 +78,31 @@ $stmt->execute();
 $id_producto = $conn->insert_id;
 echo $id_producto;
 
+
+
+//Parte 2: Agregar Fotos
 //Subir Foto 1
 
 if (isset($_FILES['file-upload-1'])) {
 
-    $fotonum = 1;
-    $archivo = $_FILES['file-upload-1'];
+    insertarFotos($_FILES['file-upload-1'], 1, $id_producto);
 
-    if ($archivo['error'] === UPLOAD_ERR_OK) {
+}
 
-        $nombre_variable = $_POST['num_parte']." - 1";// Asumiendo que se envía a través de un formulario
-
-        $nombre_archivo = $nombre_variable . "." . pathinfo($archivo['name'], PATHINFO_EXTENSION);
-        $tipo_archivo = $archivo['type'];
-        $tamano_archivo = $archivo['size'];
-        $ruta_temporal = $archivo['tmp_name'];
-
-        $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
-        $tamano_maximo = 10 * 1024 * 1024;
-
-        if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
-
-            $ruta_destino = '../assets/foto-repuestos/' . $nombre_archivo;
-            if (move_uploaded_file($ruta_temporal, $ruta_destino)) {
-
-                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 1, ?)");
-                $stmt->bind_param("si", $ruta_destino, $id_producto); 
-                $stmt->execute();
-
-                echo "Archivo subido correctamente.";
-
-            } else {
-                echo "Error al mover el archivo.";
-            }
-        } else {
-            echo "Error: Tipo de archivo no permitido o tamaño excedido.";
-        }
-
-    } else {
-        switch ($archivo['error']) {
-            case UPLOAD_ERR_INI_SIZE:
-                echo "Error: El archivo excede el tamaño máximo permitido por PHP.";
-                break;
-            case UPLOAD_ERR_FORM_SIZE:
-                echo "Error: El archivo excede el tamaño máximo permitido por el formulario.";
-                break;
-            case UPLOAD_ERR_PARTIAL:
-                echo "Error: El archivo fue subido parcialmente.";
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                echo "Error: No se ha subido ningún archivo.";
-                break;
-            case UPLOAD_ERR_NO_TMP_DIR:
-                echo "Error: No se ha encontrado la carpeta temporal.";
-                break;
-            case UPLOAD_ERR_CANT_WRITE:
-                echo "Error: No se pudo escribir el archivo en el disco.";
-                break;
-            case UPLOAD_ERR_EXTENSION:
-                echo "Error: Una extensión de PHP impidió la subida del archivo.";
-                break;
-            default:
-                echo "Error desconocido al subir el archivo.";
-        }//IF ERORRES
-    }//ELSE Subir Foto 1
-} // IF Subir Foto 1
-else { 
-} 
-
-//Subir Foto 1
-
+//Subir Foto 2
 if (isset($_FILES['file-upload-2'])) {
+    insertarFotos($_FILES['file-upload-2'], 2, $id_producto);
+}
 
-    $fotonum = 1;
-    $archivo = $_FILES['file-upload-2'];
-
-    if ($archivo['error'] === UPLOAD_ERR_OK) {
-
-        $nombre_variable = $_POST['num_parte']." - 2";// Asumiendo que se envía a través de un formulario
-
-        $nombre_archivo = $nombre_variable . "." . pathinfo($archivo['name'], PATHINFO_EXTENSION);
-        $tipo_archivo = $archivo['type'];
-        $tamano_archivo = $archivo['size'];
-        $ruta_temporal = $archivo['tmp_name'];
-
-        $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
-        $tamano_maximo = 10 * 1024 * 1024;
-
-        if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
-
-            $ruta_destino = '../assets/foto-repuestos/' . $nombre_archivo;
-            if (move_uploaded_file($ruta_temporal, $ruta_destino)) {
-
-                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 2, ?)");
-                $stmt->bind_param("si", $ruta_destino, $id_producto); 
-                $stmt->execute();
-
-                echo "Archivo subido correctamente.";
-
-            } else {
-                echo "Error al mover el archivo.";
-            }
-        } else {
-            echo "Error: Tipo de archivo no permitido o tamaño excedido.";
-        }
-
-    } else {
-        switch ($archivo['error']) {
-            case UPLOAD_ERR_INI_SIZE:
-                echo "Error: El archivo excede el tamaño máximo permitido por PHP.";
-                break;
-            case UPLOAD_ERR_FORM_SIZE:
-                echo "Error: El archivo excede el tamaño máximo permitido por el formulario.";
-                break;
-            case UPLOAD_ERR_PARTIAL:
-                echo "Error: El archivo fue subido parcialmente.";
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                echo "Error: No se ha subido ningún archivo.";
-                break;
-            case UPLOAD_ERR_NO_TMP_DIR:
-                echo "Error: No se ha encontrado la carpeta temporal.";
-                break;
-            case UPLOAD_ERR_CANT_WRITE:
-                echo "Error: No se pudo escribir el archivo en el disco.";
-                break;
-            case UPLOAD_ERR_EXTENSION:
-                echo "Error: Una extensión de PHP impidió la subida del archivo.";
-                break;
-            default:
-                echo "Error desconocido al subir el archivo.";
-        }//IF ERORRES
-    }//ELSE Subir Foto 1
-} // IF Subir Foto 1
-else { 
-} 
-
-//Subir Foto 1
-
+//Subir Foto 3
 if (isset($_FILES['file-upload-3'])) {
+    insertarFotos($_FILES['file-upload-3'], 3, $id_producto);
+}
 
-    $fotonum = 1;
-    $archivo = $_FILES['file-upload-3'];
-
-    if ($archivo['error'] === UPLOAD_ERR_OK) {
-
-        $nombre_variable = $_POST['num_parte']." - 3";// Asumiendo que se envía a través de un formulario
-
-        $nombre_archivo = $nombre_variable . "." . pathinfo($archivo['name'], PATHINFO_EXTENSION);
-        $tipo_archivo = $archivo['type'];
-        $tamano_archivo = $archivo['size'];
-        $ruta_temporal = $archivo['tmp_name'];
-
-        $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
-        $tamano_maximo = 10 * 1024 * 1024;
-
-        if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
-
-            $ruta_destino = '../assets/foto-repuestos/' . $nombre_archivo;
-            if (move_uploaded_file($ruta_temporal, $ruta_destino)) {
-
-                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 3, ?)");
-                $stmt->bind_param("si", $ruta_destino, $id_producto); 
-                $stmt->execute();
-
-                echo "Archivo subido correctamente.";
-
-            } else {
-                echo "Error al mover el archivo.";
-            }
-        } else {
-            echo "Error: Tipo de archivo no permitido o tamaño excedido.";
-        }
-
-    } else {
-        switch ($archivo['error']) {
-            case UPLOAD_ERR_INI_SIZE:
-                echo "Error: El archivo excede el tamaño máximo permitido por PHP.";
-                break;
-            case UPLOAD_ERR_FORM_SIZE:
-                echo "Error: El archivo excede el tamaño máximo permitido por el formulario.";
-                break;
-            case UPLOAD_ERR_PARTIAL:
-                echo "Error: El archivo fue subido parcialmente.";
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                echo "Error: No se ha subido ningún archivo.";
-                break;
-            case UPLOAD_ERR_NO_TMP_DIR:
-                echo "Error: No se ha encontrado la carpeta temporal.";
-                break;
-            case UPLOAD_ERR_CANT_WRITE:
-                echo "Error: No se pudo escribir el archivo en el disco.";
-                break;
-            case UPLOAD_ERR_EXTENSION:
-                echo "Error: Una extensión de PHP impidió la subida del archivo.";
-                break;
-            default:
-                echo "Error desconocido al subir el archivo.";
-        }//IF ERORRES
-    }//ELSE Subir Foto 1
-} // IF Subir Foto 1
-else { 
-} 
-
-//Subir Foto 1
-
+//Subir Foto 4
 if (isset($_FILES['file-upload-4'])) {
-
-    $fotonum = 1;
-    $archivo = $_FILES['file-upload-4'];
-
-    if ($archivo['error'] === UPLOAD_ERR_OK) {
-
-        $nombre_variable = $_POST['num_parte']." - 4";// Asumiendo que se envía a través de un formulario
-
-        $nombre_archivo = $nombre_variable . "." . pathinfo($archivo['name'], PATHINFO_EXTENSION);
-        $tipo_archivo = $archivo['type'];
-        $tamano_archivo = $archivo['size'];
-        $ruta_temporal = $archivo['tmp_name'];
-
-        $tipos_permitidos = array('image/jpeg', 'image/png', 'image/webp');
-        $tamano_maximo = 10 * 1024 * 1024;
-
-        if (in_array($tipo_archivo, $tipos_permitidos) && $tamano_archivo <= $tamano_maximo) {
-
-            $ruta_destino = '../assets/foto-repuestos/' . $nombre_archivo;
-            if (move_uploaded_file($ruta_temporal, $ruta_destino)) {
-
-                $stmt = $conn->prepare("INSERT INTO foto_productos(ruta_foto, num_foto, id_producto) VALUES (?, 4, ?)");
-                $stmt->bind_param("si", $ruta_destino, $id_producto); 
-                $stmt->execute();
-
-                echo "Archivo subido correctamente.";
-
-            } else {
-                echo "Error al mover el archivo.";
-            }
-        } else {
-            echo "Error: Tipo de archivo no permitido o tamaño excedido.";
-        }
-
-    } else {
-        switch ($archivo['error']) {
-            case UPLOAD_ERR_INI_SIZE:
-                echo "Error: El archivo excede el tamaño máximo permitido por PHP.";
-                break;
-            case UPLOAD_ERR_FORM_SIZE:
-                echo "Error: El archivo excede el tamaño máximo permitido por el formulario.";
-                break;
-            case UPLOAD_ERR_PARTIAL:
-                echo "Error: El archivo fue subido parcialmente.";
-                break;
-            case UPLOAD_ERR_NO_FILE:
-                echo "Error: No se ha subido ningún archivo.";
-                break;
-            case UPLOAD_ERR_NO_TMP_DIR:
-                echo "Error: No se ha encontrado la carpeta temporal.";
-                break;
-            case UPLOAD_ERR_CANT_WRITE:
-                echo "Error: No se pudo escribir el archivo en el disco.";
-                break;
-            case UPLOAD_ERR_EXTENSION:
-                echo "Error: Una extensión de PHP impidió la subida del archivo.";
-                break;
-            default:
-                echo "Error desconocido al subir el archivo.";
-        }//IF ERORRES
-    }//ELSE Subir Foto 1
-} // IF Subir Foto 1
-else { 
-} 
-$stmt->close();
-$conn->close();
+    insertarFotos($_FILES['file-upload-4'], 4, $id_producto);
+}
 header("location: ../panelAdmin/agregar-producto.php?success_message=Producto agregado correctamente");
 
 exit();

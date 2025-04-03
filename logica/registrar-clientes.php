@@ -200,12 +200,25 @@ if (!validated_password($contraseña)) {
 
 if ($flag) {
 
-    $sql = "INSERT INTO clientes (nombre_empresa, rif, telefono_empresa, direccion, nombre_encargado, cedula_encargado, telefono_encargado, correo_empresa, contraseña) VALUES ('$nombre_empresa', '$rif', '$telefono_empresa', '$direccion', '$nombre_encargado', '$cedula_encargado', '$telefono_encargado', '$correo_empresa', '$contraseña')";
+    $sql = "INSERT INTO clientes (nombre_empresa, rif, telefono_empresa, direccion, nombre_encargado, cedula_encargado, telefono_encargado, correo, contrasena) VALUES ('$nombre_empresa', '$rif', '$telefono_empresa', '$direccion', '$nombre_encargado', '$cedula_encargado', '$telefono_encargado', '$correo_empresa', '$contraseña')";
 
     if ($conn->query($sql) === TRUE) {
-        $error_message = urlencode("Cliente registrado con éxito.");
-        header("Location:../panelAdmin/agregarCliente.php?error_message=" . $error_message);
-        exit();
+        $query_params = http_build_query([
+            'nombre_empresa' => $nombre_empresa,
+            'rif' => $rif,
+            'telefono_empresa' => $telefono_empresa,
+            'direccion' => $direccion,
+            'nombre_encargado' => $nombre_encargado,
+            'cedula_encargado' => $cedula_encargado,
+            'telefono_encargado' => $telefono_encargado,
+            'correo_empresa' => $correo_empresa,
+            'contrasena' => $contraseña
+        ]);
+        header("Location: enviar-usuario.php?$query_params");
+
+        // $error_message = urlencode("Cliente registrado con éxito.");
+        // header("Location:../panelAdmin/agregarCliente.php?error_message=" . $error_message);
+        // exit();
     } else {
         $error_message = urlencode("Error: " . $sql . "<br>" . $conn->error);
         header("Location:../panelAdmin/agregarCliente.php?error_message=" . $error_message);

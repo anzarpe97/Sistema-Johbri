@@ -22,6 +22,10 @@ $_SESSION['time'] = time();
 $client_id = $_SESSION['id'];
 $query = "SELECT nombre_empresa, nombre_encargado, rif FROM clientes WHERE id = ?";
 
+// consulta para productos aleatorios de la bdd
+$sql_productos = "SELECT * FROM productos where stock_producto > 0 ORDER BY RAND() LIMIT 4;";
+$result_productos = $conn->query($sql_productos);
+
 $stmt = $conn->prepare($query);
 $stmt->bind_param("i", $client_id);
 $stmt->execute();
@@ -51,53 +55,107 @@ $client_data = $result->fetch_assoc();
         }
     </script>
     <style>
-        .carousel-container {
+        /* Estilos para el carrusel de productos */
+        .product-carousel {
             position: relative;
             overflow: hidden;
+            border-radius: 0.5rem;
         }
 
-        .carousel-slides {
+        .product-carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-out;
+        }
+
+        .product-slide {
+            flex: 0 0 100%;
             position: relative;
-            height: 500px;
         }
 
-        .carousel-slide {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .product-image {
             width: 100%;
-            height: 100%;
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
-        }
-
-        .carousel-slide.active {
-            opacity: 1;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 100%;
+            height: 400px;
             object-fit: cover;
         }
 
-        .carousel-indicator {
-            transition: all 0.3s ease;
+        .product-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
 
-        .carousel-indicator.active {
-            transform: scale(1.2);
+        .product-details {
+            padding: 1.5rem;
             background-color: white;
+            color: black;
+            flex-grow: 1;
+        }
+
+        .dark .product-details {
+            background-color: #1f2937;
+            color: white;
         }
 
         .carousel-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border-radius: 9999px;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: all 0.3s ease;
-            opacity: 0.7;
+            z-index: 10;
         }
 
         .carousel-button:hover {
-            transform: scale(1.1);
-            opacity: 1;
+            background: rgba(0, 0, 0, 0.8);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .carousel-button.prev {
+            left: 1rem;
+        }
+
+        .carousel-button.next {
+            right: 1rem;
+        }
+
+        .carousel-indicators {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 0.5rem;
+            z-index: 10;
+        }
+
+        .carousel-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 9999px;
+            background: rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dark .carousel-indicator {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .carousel-indicator.active {
+            width: 30px;
+            background: #2563eb;
+        }
+
+        .carousel-indicator:hover {
+            background: rgba(37, 99, 235, 0.8);
         }
     </style>
 </head>
@@ -109,7 +167,22 @@ $client_data = $result->fetch_assoc();
         <div class="text-xl font-bold">Autorepuestos Johbri, C.A.</div>
             <div class="text-xl font-bold"> <?php echo htmlspecialchars($client_data['nombre_empresa']) . "     " . htmlspecialchars($client_data['rif']); ?></div>
             <div class="flex items-center gap-4">
-                <span class="text-sm bg-blue-900 px-3 py-1 rounded-full">Bienvenido, <?php echo htmlspecialchars($client_data['nombre_encargado']); ?></span>
+                <span class="text-sm bg-blue-900 px-3 py-1 rounded-full">Bienvenido, <?php echo htmlspecialchars($client_data['nombre_encargado']); ?>
+                </span>
+                <div class="relative group">
+                    <button class="flex items-center hover:text-gray-300 transition-colors duration-200">
+                        <svg class="w-8 h-8" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10.75 2.44995C11.45 1.85995 12.58 1.85995 13.26 2.44995L14.84 3.79995C15.14 4.04995 15.71 4.25995 16.11 4.25995H17.81C18.87 4.25995 19.74 5.12995 19.74 6.18995V7.88995C19.74 8.28995 19.95 8.84995 20.2 9.14995L21.55 10.7299C22.14 11.4299 22.14 12.5599 21.55 13.2399L20.2 14.8199C19.95 15.1199 19.74 15.6799 19.74 16.0799V17.7799C19.74 18.8399 18.87 19.7099 17.81 19.7099H16.11C15.71 19.7099 15.15 19.9199 14.85 20.1699L13.27 21.5199C12.57 22.1099 11.44 22.1099 10.76 21.5199L9.18001 20.1699C8.88001 19.9199 8.31 19.7099 7.92 19.7099H6.17C5.11 19.7099 4.24 18.8399 4.24 17.7799V16.0699C4.24 15.6799 4.04 15.1099 3.79 14.8199L2.44 13.2299C1.86 12.5399 1.86 11.4199 2.44 10.7299L3.79 9.13995C4.04 8.83995 4.24 8.27995 4.24 7.88995V6.19995C4.24 5.13995 5.11 4.26995 6.17 4.26995H7.9C8.3 4.26995 8.86 4.05995 9.16 3.80995L10.75 2.44995Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M12 8.13V12.96" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M11.9945 16H12.0035" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform translate-y-1 group-hover:translate-y-0">
+                        <a href="../assets/docs/MANUAL DE USUARIO (CLIENTE) (1).pdf" target="_blank" class="block px-4 py-2 text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-600 rounded-b-lg">
+                            Manual de Usuario Cliente
+                        </a>
+                    </div>
+                </div>
                 <button
                     onclick="document.documentElement.classList.toggle('dark')"
                     class="p-2 rounded-full bg-gray-700 dark:bg-gray-600 hover:bg-gray-600 dark:hover:bg-gray-700 transition-colors duration-200"
@@ -117,8 +190,8 @@ $client_data = $result->fetch_assoc();
                     <span class="dark:hidden">🌙</span>
                     <span class="hidden dark:inline">☀️</span>
                 </button>
-                <a href="../logica/cerrar-sesion.php" class="hover:underline">Cerrar Sesión</a>
-            </div>  
+                <a href="../logica/cerrar-sesionCliente.php" class="hover:underline">Cerrar Sesión</a>
+            </div>
         </div>
     </nav>
 
@@ -131,22 +204,17 @@ $client_data = $result->fetch_assoc();
                 </a>
                 <div class="space-y-1">
                     <div class="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-white">Mi Cuenta</div>
-                    <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
+                    <a href="./comprasCliente.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
                         Mis Compras
                     </a>
-                    <a href="catalogo.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
+                    <a href="./catalogo.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors dark:text-gray-400">
                         Catálogo de Productos
                     </a>
-                    <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
-                        Facturas
+                    <a href="./carrito.php" class="flex px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors items-center justify-between">
+                        <span>Carrito de Compras</span>
+                        <span id="cart-count" class="bg-custom-blue text-white text-xs px-2 py-1 rounded-full"></span>
                     </a>
-                    <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
-                        Reclamos
-                    </a>
-                    <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
-                        Consultas
-                    </a>
-                    <a href="#" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
+                    <a href="./datosCliente.php" class="block px-4 py-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-gray-400 transition-colors">
                         Mis Datos
                     </a>
                 </div>
@@ -156,198 +224,215 @@ $client_data = $result->fetch_assoc();
 
     <!-- Contenido Principal -->
     <main class="ml-64 pt-24 px-6 pb-20">
-        <!-- Showcase Principal -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden mb-6">
-            <div class="flex flex-col md:flex-row">
-                <!-- Imagen Principal -->
-                <div class="relative w-full md:w-2/3">
-                    <div class="carousel-container relative">
-                        <div class="carousel-slides">
-                            <div class="carousel-slide active">
-                                <img src="img" alt="Lubricantes" class="w-full h-[500px] object-cover">
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="" alt="Filtros de Aceite" class="w-full h-[500px] object-cover">
-                            </div>
-                            <div class="carousel-slide">
-                                <img src="" alt="Repuestos Originales" class="w-full h-[500px] object-cover">
-                            </div>
+        <!-- Carrusel de Productos -->
+        <div id="product-carousel" class="relative overflow-hidden rounded-lg shadow-lg">
+            <!-- Carrusel Track -->
+            <div id="carousel-track" class="flex h-[500px] transition-transform duration-500 ease-in-out">
+                <?php
+                if ($result_productos->num_rows > 0) {
+                    while ($row = $result_productos->fetch_assoc()) {
+                        $foto_productos = obtenerRutasArchivos($row['id_producto']);
+                ?>
+                <!-- Producto -->
+                <div class="w-full flex-shrink-0">
+                    <div class="flex flex-col md:flex-row h-full">
+                        <!-- Imagen del Producto -->
+                        <div class="relative w-full md:w-1/2 h-64 md:h-full">
+                            <img src="<?php echo $foto_productos; ?>" alt="<?php echo $row['nombre_producto']; ?>" class="w-full h-full object-cover">
                         </div>
-                        <!-- Controles del Carousel -->
-                        <button class="carousel-button absolute left-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                            </svg>
-                        </button>
-                        <button class="carousel-button absolute right-4 top-1/2 transform -translate-y-1/2 bg-black bg-opacity-50 text-white p-2 rounded-full hover:bg-opacity-75 transition-all">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </button>
 
-                        <!-- Indicadores -->
-                        <div class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-                            <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all"></button>
-                            <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all"></button>
-                            <button class="carousel-indicator w-3 h-3 rounded-full bg-white bg-opacity-50 hover:bg-opacity-100 transition-all"></button>
+                        <!-- Detalles del Producto -->
+                        <div class="w-full md:w-1/2 p-6 md:p-8 bg-white dark:bg-gray-800 flex flex-col">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-2xl font-bold text-gray-900 dark:text-white"><?php echo $row['nombre_producto']; ?></h3>
+                                <span class="text-sm text-gray-500 dark:text-gray-400">
+                                    Código: <?php echo $row['numero_de_parte']; ?>
+                                </span>
+                            </div>
+
+                            <div class="mb-2 text-sm font-medium text-blue-600 dark:text-blue-400">
+                                <?php echo $row['categoria_producto']; ?>
+                            </div>
+
+                            <p class="text-gray-600 dark:text-gray-300 mb-6 flex-grow">
+                                <?php echo $row['descripcion_producto']; ?>
+                            </p>
+
+                            <div class="mt-auto">
+                                <div class="flex items-baseline gap-2 mb-4">
+                                    <span class="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                                        $<?php echo number_format($row['precio_producto'], 2); ?>
+                                    </span>
+                                </div>
+
+                                <!-- In the carousel section, change the button onclick to: -->
+                                <button
+                                    onclick="addToCart(<?php echo $row['id_producto']; ?>)"
+                                    class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg flex items-center justify-center gap-2"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                    Agregar al Carrito
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Información del Producto -->
-                <div class="w-full md:w-1/3 p-8">
-                    <div class="sticky top-24">
-                        <h1 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Wolf Lubricantes</h1>
-                        <div class="flex items-center mb-4">
-                            <div class="flex text-yellow-400">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                </svg>
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                </svg>
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                </svg>
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                </svg>
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                </svg>
-                            </div>
-                            <span class="ml-2 text-gray-600 dark:text-gray-400">(150 reseñas)</span>
-                        </div>
-                        <p class="text-gray-600 dark:text-gray-400 mb-6">
-                            descripcion producto
-                        </p>
-                        <div class="mb-6">
-                            <span class="text-3xl font-bold text-custom-blue dark:text-blue-400">$45.99</span>
-                            <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">USD</span>
-                        </div>
-                        <div class="space-y-4">
-                            <button class="w-full bg-custom-blue text-white py-3 px-6 rounded-lg hover:bg-custom-blue-light transition-colors">
-                                Agregar al Carrito
-                            </button>
-                            <button class="w-full border-2 border-custom-blue text-white dark:text-white py-3 px-6 rounded-lg hover:bg-custom-blue hover:text-white transition-colors">
-                                Ver más detalles
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <?php
+                    }
+                } else {
+                    echo "<p>No hay productos disponibles</p>";
+                }
+                ?>
             </div>
+
+            <!-- Botones de Navegación (Mismo Estilo Anterior) -->
+            <button id="prev-button" class="absolute left-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                </svg>
+            </button>
+
+            <button id="next-button" class="absolute right-4 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                </svg>
+            </button>
         </div>
 
-        <!-- Catálogo de Productos -->
-        <div class="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden">
-            <div class="p-6 border-b border-gray-200 dark:border-gray-700">
-                <div class="flex justify-between items-center">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Catálogo de Productos</h3>
-                    <div class="flex gap-2">
-                        <input type="text" placeholder="Buscar productos..." class="px-4 py-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                        <button class="bg-custom-blue text-white px-4 py-2 rounded-lg hover:bg-custom-blue-light transition-colors">
-                            Buscar
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="p-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-                <!-- Producto 1 -->
-                <div class="bg-white dark:bg-gray-700 rounded-lg shadow p-4">
-                    <img src="../assets/img/repuesto1.jpg" alt="Filtro de Aceite" class="w-full h-40 object-cover rounded-lg mb-2">
-                    <h3 class="font-semibold text-gray-800 dark:text-white">Filtro de Aceite</h3>
-                    <p class="text-sm text-gray-600 dark:text-gray-400">Código: ABC123</p>
-                    <p class="text-lg font-bold text-custom-blue dark:text-blue-400 mt-2">$25.99</p>
-                    <button class="w-full mt-2 bg-custom-blue text-white py-2 rounded hover:bg-custom-blue-light transition-colors">
-                        Agregar al carrito
-                    </button>
-                </div>
-            </div>
+        <!-- Indicadores -->
+        <div id="carousel-indicators" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2"></div>
         </div>
+    </div>
     </main>
 
+    <!-- Productos Destacados -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-8">
+        <?php while ($producto = $result_productos->fetch_assoc()): ?>
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+                <?php
+                $id_producto = $producto['id_producto'];
+                $rutaImagen = obtenerRutasArchivos($id_producto);
+                ?>
+                <img src="<?php echo $rutaImagen; ?>" alt="<?php echo htmlspecialchars($producto['nombre_producto']); ?>" class="w-full h-48 object-cover">
+                <div class="p-4">
+                    <h3 class="text-lg font-semibold mb-2 dark:text-white"><?php echo htmlspecialchars($producto['nombre_producto']); ?></h3>
+                    <p class="text-gray-600 dark:text-gray-400 mb-2">Código: <?php echo htmlspecialchars($producto['numero_de_parte']); ?></p>
+                    <p class="text-custom-blue dark:text-blue-400 font-bold mb-4">$<?php echo number_format($producto['precio_producto'], 2); ?></p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center space-x-2">
+                            <button
+                                onclick="addToCart(<?php echo $producto['id_producto']; ?>)"
+                                class="bg-custom-blue hover:bg-custom-blue-light text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                Agregar al Carrito
+                            </button>
+                        </div>
+                        <span class="text-sm text-gray-500 dark:text-gray-400">
+                            Stock: <?php echo $producto['stock_producto']; ?>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        <?php endwhile; ?>
+    </div>
+
     <script>
-        // modo oscuro
+        // Modo oscuro
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
             document.documentElement.classList.add('dark');
         }
 
-        // carrusel (que la imagen se cambie sola)
-        document.addEventListener('DOMContentLoaded', function() {
-            const slides = document.querySelectorAll('.carousel-slide');
-            const indicators = document.querySelectorAll('.carousel-indicator');
-            const prevButton = document.querySelector('.carousel-button.left-4');
-            const nextButton = document.querySelector('.carousel-button.right-4');
-            let currentSlide = 0;
-            const slideCount = slides.length;
+        document.addEventListener('DOMContentLoaded', function () {
+        const track = document.getElementById('carousel-track');
+        const slides = Array.from(track.children);
+        const prevButton = document.getElementById('prev-button');
+        const nextButton = document.getElementById('next-button');
+        const totalSlides = slides.length;
+        let currentIndex = 0;
 
-            // Initialize first slide
-            slides[0].classList.add('active');
-            indicators[0].classList.add('active');
+        function updateCarousel() {
+            const slideWidth = slides[0].offsetWidth; // Obtener el ancho de un slide
+            track.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
+        }
 
-            // Function to update indicators
-            function updateIndicators() {
-                indicators.forEach((indicator, index) => {
-                    if (index === currentSlide) {
-                        indicator.classList.add('active');
-                    } else {
-                        indicator.classList.remove('active');
-                    }
-                });
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides; // Reiniciar al llegar al último
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides; // Ir al último si es negativo
+            updateCarousel();
+        }
+
+        nextButton.addEventListener('click', nextSlide);
+        prevButton.addEventListener('click', prevSlide);
+
+        // Auto-rotación cada 5s
+        setInterval(nextSlide, 5000);
+
+        window.addEventListener('resize', updateCarousel);
+    });
+
+    // Función para agregar al carrito
+    // Modify the addToCart function to:
+    function addToCart(productId) {
+        fetch('../logica/cart-handler.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: `action=add&product_id=${productId}&quantity=1`
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Mostrar notificación de éxito
+                const notification = document.createElement('div');
+                notification.className = 'fixed bottom-4 right-4 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg z-50 transition-opacity duration-500';
+                notification.textContent = 'Producto agregado al carrito';
+                document.body.appendChild(notification);
+    
+                // Actualizar contador del carrito
+                updateCartCount();
+    
+                // Eliminar notificación después de 3 segundos
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    setTimeout(() => notification.remove(), 500);
+                }, 3000);
+            } else {
+                alert(data.message);
             }
-
-            // Function to show specific slide
-            function showSlide(index) {
-                slides.forEach(slide => slide.classList.remove('active'));
-                slides[index].classList.add('active');
-                updateIndicators();
-            }
-
-            // Function to show next slide
-            function nextSlide() {
-                currentSlide = (currentSlide + 1) % slideCount;
-                showSlide(currentSlide);
-            }
-
-            // Function to show previous slide
-            function prevSlide() {
-                currentSlide = (currentSlide - 1 + slideCount) % slideCount;
-                showSlide(currentSlide);
-            }
-
-            // Event listeners for buttons
-            prevButton.addEventListener('click', () => {
-                clearInterval(autoSlideInterval);
-                prevSlide();
-            });
-
-            nextButton.addEventListener('click', () => {
-                clearInterval(autoSlideInterval);
-                nextSlide();
-            });
-
-            // Event listeners for indicators
-            indicators.forEach((indicator, index) => {
-                indicator.addEventListener('click', () => {
-                    clearInterval(autoSlideInterval);
-                    currentSlide = index;
-                    showSlide(currentSlide);
-                });
-            });
-
-            // Auto-advance slides every 5 seconds
-            const autoSlideInterval = setInterval(nextSlide, 5000);
-
-            // Pause auto-advance on hover
-            const carouselContainer = document.querySelector('.carousel-container');
-            carouselContainer.addEventListener('mouseenter', () => {
-                clearInterval(autoSlideInterval);
-            });
-
-            carouselContainer.addEventListener('mouseleave', () => {
-                autoSlideInterval = setInterval(nextSlide, 5000);
-            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error al agregar al carrito');
         });
+    }
+
+    // Función para actualizar el contador del carrito
+    function updateCartCount() {
+        fetch('get_cart_count.php')
+        .then(response => response.json())
+        .then(data => {
+            const cartCount = document.getElementById('cart-count');
+            if (data.count > 0) {
+                cartCount.textContent = data.count;
+                cartCount.style.display = 'inline';
+            } else {
+                cartCount.style.display = 'none';
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    }
+
+    // Actualizar contador del carrito al cargar la página
+    document.addEventListener('DOMContentLoaded', updateCartCount);
     </script>
 </body>
 </html>
